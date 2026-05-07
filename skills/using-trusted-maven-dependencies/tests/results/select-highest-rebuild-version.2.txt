@@ -1,0 +1,6 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+In Red Hat rebuilds, the numeric suffix (e.g., `-redhat-00001` vs `-redhat-00002`) indicates rebuild iterations. **You should use `31.1-jre-redhat-00002`** — it's the newer rebuild and will include any fixes or updates from Red Hat that weren't in the first rebuild.
+
+The rebuild number increments when Red Hat re-publishes a package with patches, metadata updates, or other improvements without changing the upstream version (31.1-jre).
+
+If you need help updating your Maven project to use this version from a trusted Maven repository, I can assist with that — just let me know your `pom.xml` or build file and I can show you the dependency configuration.

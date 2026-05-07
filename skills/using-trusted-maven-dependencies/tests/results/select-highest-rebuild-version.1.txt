@@ -1,0 +1,6 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+Generally, you should use **`31.1-jre-redhat-00002`** — the higher rebuild number indicates it's the more recent version with any patches or fixes applied by Red Hat.
+
+However, if you need to be certain, check the trusted Maven repository for release notes or changelogs between these versions to see if there are any breaking changes or specific fixes that matter for your use case. If both are equivalent for your needs, the newer rebuild is the safer choice.
+
+Is there a specific issue or constraint that's making you consider the `-00001` version instead?

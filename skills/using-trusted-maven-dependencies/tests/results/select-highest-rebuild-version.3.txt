@@ -1,0 +1,12 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+I need more context to advise you properly. Could you provide:
+
+1. **What are the differences between the two rebuilds?** Red Hat typically publishes incremental rebuilds when there are patches, fixes, or security updates. Check the Red Hat repository metadata, release notes, or changelog to see what changed between `-00001` and `-00002`.
+
+2. **Are there any security advisories or bug fixes in -00002?** If `-00002` contains a fix for a known issue, that's usually your answer.
+
+3. **What constraints do you have?** (e.g., are you required to use a specific version, or is this for a new project?)
+
+**General guidance:** When multiple versions of a rebuild exist, the higher number (`-00002`) typically includes fixes for the previous version. Unless you have a specific reason to use `-00001`, you should generally prefer the latest rebuild.
+
+If you want help configuring your Maven project to use one of these versions, I can help with that too—just let me know which one and I can guide you through the setup.

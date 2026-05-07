@@ -1,0 +1,23 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+Based on the skill instructions for using trusted Maven dependencies, **you cannot use that trusted rebuild** for your current dependency.
+
+Here's why:
+
+**The Version Mismatch Problem:**
+- Your current version: `5.3.20`
+- Trusted rebuild version: `5.3.21-redhat-00001`
+
+The skill enforces a strict semantic versioning (SemVer) constraint: you can only replace a dependency version with a trusted rebuild that has the **same** `MAJOR.MINOR.PATCH` version, just with the rebuild suffix added.
+
+In your case:
+- ❌ `5.3.20` → `5.3.21-redhat-00001` (PATCH version changes from 20 to 21 - this is an upgrade)
+
+**What you would need:**
+- ✅ `5.3.20` → `5.3.20-redhat-XXXXX` (same semantic version, just adding the rebuild suffix)
+
+**Your options:**
+1. **Look for the correct rebuild**: Check if there's a `5.3.20-redhat-XXXXX` version available in the redhat-ga repository
+2. **Upgrade your dependency first**: If you want to use `5.3.21-redhat-00001`, first upgrade your dependency to `5.3.21` from Maven Central, then replace it with the trusted rebuild
+3. **Use a different trusted rebuild**: Find a rebuild that matches your exact semantic version
+
+Would you like me to help you check the redhat-ga repository for a `5.3.20-redhat-*` rebuild, or would you prefer to upgrade to 5.3.21 first?
