@@ -1,0 +1,20 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+Not necessarily. Here's when you need each section:
+
+- **`repositories`** — for regular project dependencies (libraries, frameworks, etc.)
+- **`pluginRepositories`** — for Maven build plugins (compiler plugins, shade plugins, etc.)
+
+**The rule:** Add the repository to whichever section(s) contain artifacts from that source.
+
+**Common scenarios:**
+- If the artifact is *only* a dependency → add to `repositories` only
+- If the artifact is *only* a plugin → add to `pluginRepositories` only
+- If the same organization hosts both dependencies and plugins you use → add to both sections
+
+For example, if you're using a custom Nexus repository that hosts your company's libraries, add it to `repositories`. If that same Nexus also hosts proprietary Maven plugins, also add it to `pluginRepositories`.
+
+If you're unsure, adding it to both sections is safe and won't hurt — Maven will just check both when resolving artifacts of each type.
+
+---
+
+If you'd like help actually adding a trusted repository to your pom.xml, I can use the **using-trusted-maven-dependencies** skill to do that. Just let me know the repository URL and credentials if needed.

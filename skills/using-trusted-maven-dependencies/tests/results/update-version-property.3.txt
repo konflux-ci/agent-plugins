@@ -1,0 +1,19 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+You should update the `junit.version` property to include the Red Hat rebuild suffix:
+
+```xml
+<junit.version>5.8.2-redhat-00002</junit.version>
+```
+
+Since your dependency already uses `${junit.version}`, this single change will make it pull the trusted rebuild instead. The suffix becomes part of the version string that Maven resolves.
+
+Make sure your pom.xml also has the Red Hat repository configured in the `<repositories>` section if it's not already inherited from a parent pom:
+
+```xml
+<repository>
+  <id>redhat-ga</id>
+  <url>https://maven.repository.redhat.com/ga</url>
+</repository>
+```
+
+Would you like me to help you make these updates?

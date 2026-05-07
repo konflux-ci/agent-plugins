@@ -1,0 +1,15 @@
+# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
+No, it depends on your use case:
+
+- **`<repositories>`** — for regular project dependencies (libraries your code imports)
+- **`<pluginRepositories>`** — for Maven plugins and their dependencies
+
+You only need to add the repository to the section(s) where you're actually getting artifacts from it:
+
+- If you're sourcing only regular dependencies from the repo → add to `<repositories>`
+- If you're sourcing only plugins from the repo → add to `<pluginRepositories>`
+- If you're sourcing both → add to both sections
+
+Most of the time you'll only need `<repositories>` unless you have custom plugins coming from that repository. If you're unsure, start with just `<repositories>` and add `<pluginRepositories>` only if you get "plugin not found" errors.
+
+If you'd like help updating your pom.xml to add a trusted Maven repository, use the `using-trusted-maven-dependencies` skill and let me know which repository you're adding and what artifacts you're sourcing from it.
