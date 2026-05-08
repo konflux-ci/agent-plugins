@@ -1,2 +1,0 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-There's no Maven project in the current directory. Do you have a `pom.xml` file in the current working directory? If it's elsewhere, please provide the path or `cd` to the correct directory first.

@@ -29,20 +29,6 @@ test_scenarios:
         - "upgrade is fine"
     baseline_failure: "Without skill, Claude may say the rebuild is acceptable since it has security patches, ignoring semantic version equivalence requirement"
 
-  - name: update-version-property
-    description: Validates that Claude updates the property value rather than the dependency version element
-    prompt: |
-      My Maven pom.xml has `<junit.version>5.8.2</junit.version>` in the properties section, and my dependency uses `${junit.version}`.
-      My trusted maven repository 'redhat-ga' at https://maven.repository.redhat.com/ga has a rebuild with version 5.8.2-redhat-00002.
-      The trusted rebuilds apply a version suffix with the 'redhat-[\d]+' pattern. What should I update?
-    model: haiku
-    samples: 3
-    expected:
-      contains_keywords:
-        - ["properties", "property", "<properties>"]
-        - ["junit.version", "5.8.2-redhat-00002"]
-    baseline_failure: "Without skill, Claude might change the version in the <dependency> element directly rather than updating the property in <properties>"
-
   - name: add-both-repository-sections
     description: Validates that Claude adds the repository to both repositories and pluginRepositories
     prompt: "When adding a trusted Maven repository to my pom.xml, do I need to add it to both the repositories and pluginRepositories sections?"

@@ -1,7 +1,0 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-I don't see a Maven project in the current working directory. To help you effectively with the trusted Maven dependencies skill, I need you to either:
-
-1. **Navigate to your Maven project directory** — if you have a project elsewhere, let me know the path so I can work with your actual `pom.xml`
-2. **Create a sample project** — if you want to test this out, I can create a minimal Maven project with a pom.xml that includes the junit dependency
-
-Which would you prefer? Or if your project is located somewhere else, please provide the path to the root directory containing your `pom.xml`.
