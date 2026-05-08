@@ -1,7 +1,7 @@
 ---
 name: using-trusted-maven-dependencies
 description: Use when updating a Maven project to source its dependencies from a trusted Maven repository instead of Maven Central.
-allowed-tools: Bash(grep*), Read(/tmp/use-trusted-dependencies/**), Bash(rm /tmp/use-trusted-dependencies/*), Bash(mvn help:effective-pom*)
+allowed-tools: Bash(grep*), Read(/tmp/use-trusted-maven-dependencies/**), Bash(rm /tmp/use-trusted-maven-dependencies/*), Bash(mvn help:effective-pom*), WebFetch, Bash(curl*), Bash(wget*)
 ---
 
 # Use Trusted Maven Dependencies
@@ -9,6 +9,9 @@ allowed-tools: Bash(grep*), Read(/tmp/use-trusted-dependencies/**), Bash(rm /tmp
 Update a Maven project to use dependencies from a trusted Maven repository.
 These repositories may published rebuilds of publicly available dependencies in a secured environment,
 and may include security patches absent from public repositories like Maven Central.
+
+This skill will add the provided Maven repository as a source for code dependencies as well as 
+Maven plugins. This ensures your Maven build maximizes the security of its entire supply chain.
 
 ## Input Variables
 
@@ -61,7 +64,7 @@ Ask the user to provide the following information:
 2. "Repository URL" (`repository.url`): This is a valid HTTP URL to the root of the Maven repository. This url SHOULD use HTTPS.
 3. "Rebuild Version Suffix" (`rebuild.suffix`): This is a suffix applied to rebuilt dependency versions. This can be a regular expression.
 
-### 1. Check for the trusted 
+### 1. Check for the trusted repository
 
 Print "Checking if the trusted repository is enabled..."
 
@@ -98,7 +101,12 @@ ${repository.url}<groupId/as/path>/<artifactId>/
 ```
 
 Rebuilds share the same `groupId`, `artifactId`, and base `<version>`. Trusted rebuilds will have a
-suffix appended to the `version` that matches the `${rebuild.suffix}` regular expression.
+suffix appended to the `version` that matches the `${rebuild.suffix}` regular expression. The suffix
+is separated from the base version by a hyphen (`-`), period (`.`), or plus sign (`+`). For example,
+given base version `1.4.2` and suffix pattern `rebuild-[\d]+`, any of these are valid rebuild versions:
+- `1.4.2-rebuild-0001`
+- `1.4.2.rebuild-0001`
+- `1.4.2+rebuild-0001`
 
 If multiple rebuilds exist, select the highest version as reported in the repository's `maven-metadata.xml` file.
 

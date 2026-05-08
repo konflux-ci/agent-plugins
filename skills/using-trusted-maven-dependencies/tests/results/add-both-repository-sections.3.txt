@@ -1,15 +1,29 @@
-# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
-No, you only need to add it to **one or both** depending on what you're sourcing:
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+No, it depends on what you need from that repository:
 
-- **`<repositories>`** — for regular project dependencies (libraries your code imports)
-- **`<pluginRepositories>`** — for Maven plugins (tools Maven uses during the build)
+- **`repositories`** — for project dependencies (JARs your code imports)
+- **`pluginRepositories`** — for Maven plugins (tools used during the build)
 
-Add the repository to whichever section(s) contain what you need from that repository:
+Add to only the section that applies:
+- If the repository only hosts dependencies: just `repositories`
+- If the repository only hosts plugins: just `pluginRepositories`
+- If it hosts both: add to both sections
 
-- If you're only getting **dependencies**: add it to `<repositories>` only
-- If you're only getting **plugins**: add it to `<pluginRepositories>` only  
-- If you're getting **both**: add it to both sections
+**Example:**
+```xml
+<repositories>
+  <repository>
+    <id>trusted-repo</id>
+    <url>https://your-trusted-repo.com/maven</url>
+  </repository>
+</repositories>
 
-Most of the time, you'll only need `<repositories>` unless you have custom Maven plugins from a non-standard source.
+<pluginRepositories>
+  <pluginRepository>
+    <id>trusted-repo</id>
+    <url>https://your-trusted-repo.com/maven</url>
+  </pluginRepository>
+</pluginRepositories>
+```
 
-If you want to update your pom.xml to use a trusted Maven repository, I can help with that — just let me know the repository URL and what you're sourcing from it.
+If you're updating a Maven project to use a trusted repository and want help applying this, I can assist with the `using-trusted-maven-dependencies` skill.

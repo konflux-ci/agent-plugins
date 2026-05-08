@@ -1,15 +1,31 @@
-# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
-No, it depends on your use case:
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+It depends on what you're sourcing from the trusted repository:
 
-- **`<repositories>`** — for regular project dependencies (libraries your code imports)
-- **`<pluginRepositories>`** — for Maven plugins and their dependencies
+- **`<repositories>`** — where Maven looks for project dependencies (libraries your code depends on)
+- **`<pluginRepositories>`** — where Maven looks for Maven plugins (build tools and extensions)
 
-You only need to add the repository to the section(s) where you're actually getting artifacts from it:
+Add the repository to:
+- **Just `<repositories>`** if you're only sourcing project dependencies
+- **Just `<pluginRepositories>`** if you're only sourcing Maven plugins
+- **Both sections** if you're sourcing both types of artifacts from the same repository
 
-- If you're sourcing only regular dependencies from the repo → add to `<repositories>`
-- If you're sourcing only plugins from the repo → add to `<pluginRepositories>`
-- If you're sourcing both → add to both sections
+In practice, if you're setting up a trusted internal repository, it often makes sense to add it to both sections since it typically serves as a complete replacement for Maven Central and hosts both types of artifacts.
 
-Most of the time you'll only need `<repositories>` unless you have custom plugins coming from that repository. If you're unsure, start with just `<repositories>` and add `<pluginRepositories>` only if you get "plugin not found" errors.
+Example structure:
+```xml
+<repositories>
+  <repository>
+    <id>trusted-repo</id>
+    <url>https://your-repo-url</url>
+  </repository>
+</repositories>
 
-If you'd like help updating your pom.xml to add a trusted Maven repository, use the `using-trusted-maven-dependencies` skill and let me know which repository you're adding and what artifacts you're sourcing from it.
+<pluginRepositories>
+  <pluginRepository>
+    <id>trusted-repo</id>
+    <url>https://your-repo-url</url>
+  </pluginRepository>
+</pluginRepositories>
+```
+
+If you're updating your pom.xml to use a trusted Maven repository, I can help with that—use the `/using-trusted-maven-dependencies` skill if you'd like guidance on configuration.
