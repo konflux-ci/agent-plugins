@@ -1,15 +1,12 @@
-# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
-I'll help you update your Maven project to use a trusted repository. To get started, I need some information from you.
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+I'll help you update your Maven project to use a trusted repository. To get started, I need some information about your trusted repository.
 
-Please provide the following details:
+Please provide the following:
 
-1. **Repository ID**: A single kebab-case identifier for the Maven repository (e.g., `my-trusted-repo`, `internal-secure-repo`)
+1. **Repository ID** — A single kebab-case identifier for this repository (e.g., `my-trusted-repo`, `internal-artifacts`)
 
-2. **Repository URL**: The HTTPS URL to the root of the Maven repository (e.g., `https://repo.company.com/maven`)
+2. **Repository URL** — The HTTPS URL to the root of your Maven repository (e.g., `https://artifacts.example.com/maven/`)
 
-3. **Rebuild Version Suffix**: The suffix pattern applied to rebuilt dependency versions. This can be a regular expression (e.g., `redhat-[\d]+` or `company-rebuild-[\d]+`)
+3. **Rebuild Version Suffix** — The suffix pattern applied to rebuilt dependency versions as a regular expression (e.g., `rebuild-[\d]+`, `redhat-\d+`, or `myorg-[\d]*`)
 
-Once you provide these details, I'll:
-- Check if the repository is already configured
-- Add the repository configuration to your `pom.xml` if needed
-- Replace your dependency and plugin versions with trusted rebuilds from that repository
+Once you provide these details, I'll configure your Maven project to use this trusted repository for both dependencies and plugins.

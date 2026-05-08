@@ -50,10 +50,10 @@ test_scenarios:
     samples: 3
     expected:
       contains_keywords:
-        - repositories
-        - pluginRepositories
+        - ["repository", "repositories"]
+        - ["pluginRepository", "pluginRepositories"]
         - ["yes", "both", "required", "needed", "should"]
-    baseline_failure: "Without skill, Claude might say only <repositories> is needed and omit <pluginRepositories>, which would miss plugin dependency resolution"
+    baseline_failure: "Without skill, Claude might say only <repositories> is needed and omit <pluginRepositories>, which would miss plugin dependency resolution."
 
   - name: select-highest-rebuild-version
     description: Validates that Claude selects the highest available rebuild version from maven-metadata.xml

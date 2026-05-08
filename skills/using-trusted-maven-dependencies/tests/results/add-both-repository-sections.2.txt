@@ -1,20 +1,27 @@
-# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
-Not necessarily. Here's when you need each section:
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+No, it depends on what you need from the repository:
 
-- **`repositories`** — for regular project dependencies (libraries, frameworks, etc.)
-- **`pluginRepositories`** — for Maven build plugins (compiler plugins, shade plugins, etc.)
+- **`<repositories>` only** — if you only use regular project dependencies from it
+- **`<pluginRepositories>` only** — if you only use Maven plugins from it  
+- **Both sections** — if you need both project dependencies and plugins from the same repository
 
-**The rule:** Add the repository to whichever section(s) contain artifacts from that source.
+In practice, if you're adding a trusted Maven repository, it's safest to add it to both sections. This ensures that whether Maven needs to resolve a plugin or a dependency from that repository, it can find it. The extra entry is minimal and prevents issues if you later add a plugin or dependency from the same repository.
 
-**Common scenarios:**
-- If the artifact is *only* a dependency → add to `repositories` only
-- If the artifact is *only* a plugin → add to `pluginRepositories` only
-- If the same organization hosts both dependencies and plugins you use → add to both sections
+**Example:**
+```xml
+<repositories>
+  <repository>
+    <id>my-trusted-repo</id>
+    <url>https://repo.example.com/maven</url>
+  </repository>
+</repositories>
 
-For example, if you're using a custom Nexus repository that hosts your company's libraries, add it to `repositories`. If that same Nexus also hosts proprietary Maven plugins, also add it to `pluginRepositories`.
+<pluginRepositories>
+  <pluginRepository>
+    <id>my-trusted-repo</id>
+    <url>https://repo.example.com/maven</url>
+  </pluginRepository>
+</pluginRepositories>
+```
 
-If you're unsure, adding it to both sections is safe and won't hurt — Maven will just check both when resolving artifacts of each type.
-
----
-
-If you'd like help actually adding a trusted repository to your pom.xml, I can use the **using-trusted-maven-dependencies** skill to do that. Just let me know the repository URL and credentials if needed.
+If you're actively adding a trusted repository to your pom.xml right now, the `/using-trusted-maven-dependencies` skill can help walk through the full setup.

@@ -1,12 +1,10 @@
-# skill_digest: ac3227fe0b42d9e153410755f6edf0fb372192a2d8f4f46d728f02750f919a08
-I need more context to advise you properly. Could you provide:
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+I'd recommend **31.1-jre-redhat-00002** (the newer rebuild) unless you have a specific reason to use 00001.
 
-1. **What are the differences between the two rebuilds?** Red Hat typically publishes incremental rebuilds when there are patches, fixes, or security updates. Check the Red Hat repository metadata, release notes, or changelog to see what changed between `-00001` and `-00002`.
+In general, for Maven rebuilds from a trusted repository:
+- The higher rebuild number (00002) typically includes bug fixes, security patches, or other improvements over the previous rebuild (00001)
+- If there were issues with 00002, the repository maintainer would usually document them or not publish it at all
 
-2. **Are there any security advisories or bug fixes in -00002?** If `-00002` contains a fix for a known issue, that's usually your answer.
+To be certain, check if the trusted Maven repository's documentation or release notes explain what changed between the two rebuilds—that would tell you if there's a specific reason to prefer one over the other. If both are recommended equally, going with the latest is the safer default.
 
-3. **What constraints do you have?** (e.g., are you required to use a specific version, or is this for a new project?)
-
-**General guidance:** When multiple versions of a rebuild exist, the higher number (`-00002`) typically includes fixes for the previous version. Unless you have a specific reason to use `-00001`, you should generally prefer the latest rebuild.
-
-If you want help configuring your Maven project to use one of these versions, I can help with that too—just let me know which one and I can guide you through the setup.
+Is there anything else about updating your Maven dependencies you'd like help with? I can assist with configuring your project to use the trusted repository if needed.
