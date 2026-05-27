@@ -49,7 +49,7 @@
     {
       "name": "using-trusted-maven-dependencies",
       "source": "./skills/using-trusted-maven-dependencies",
-      "description": "Use when updating a Maven project to source its dependencies from a trusted repository instead of Maven Central, replacing dependency and plugin versions with security-patched rebuilds.",
+      "description": "Use when updating a Maven project to source its dependencies from a trusted Maven repository instead of Maven Central.",
       "version": "1.0.0",
       "author": {
         "name": "Konflux CI Team"
