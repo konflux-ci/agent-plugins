@@ -1,0 +1,31 @@
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+It depends on what you're sourcing from the trusted repository:
+
+- **`<repositories>`** — where Maven looks for project dependencies (libraries your code depends on)
+- **`<pluginRepositories>`** — where Maven looks for Maven plugins (build tools and extensions)
+
+Add the repository to:
+- **Just `<repositories>`** if you're only sourcing project dependencies
+- **Just `<pluginRepositories>`** if you're only sourcing Maven plugins
+- **Both sections** if you're sourcing both types of artifacts from the same repository
+
+In practice, if you're setting up a trusted internal repository, it often makes sense to add it to both sections since it typically serves as a complete replacement for Maven Central and hosts both types of artifacts.
+
+Example structure:
+```xml
+<repositories>
+  <repository>
+    <id>trusted-repo</id>
+    <url>https://your-repo-url</url>
+  </repository>
+</repositories>
+
+<pluginRepositories>
+  <pluginRepository>
+    <id>trusted-repo</id>
+    <url>https://your-repo-url</url>
+  </pluginRepository>
+</pluginRepositories>
+```
+
+If you're updating your pom.xml to use a trusted Maven repository, I can help with that—use the `/using-trusted-maven-dependencies` skill if you'd like guidance on configuration.

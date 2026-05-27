@@ -1,0 +1,27 @@
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+No, it depends on what you need from the repository:
+
+- **`<repositories>` only** — if you only use regular project dependencies from it
+- **`<pluginRepositories>` only** — if you only use Maven plugins from it  
+- **Both sections** — if you need both project dependencies and plugins from the same repository
+
+In practice, if you're adding a trusted Maven repository, it's safest to add it to both sections. This ensures that whether Maven needs to resolve a plugin or a dependency from that repository, it can find it. The extra entry is minimal and prevents issues if you later add a plugin or dependency from the same repository.
+
+**Example:**
+```xml
+<repositories>
+  <repository>
+    <id>my-trusted-repo</id>
+    <url>https://repo.example.com/maven</url>
+  </repository>
+</repositories>
+
+<pluginRepositories>
+  <pluginRepository>
+    <id>my-trusted-repo</id>
+    <url>https://repo.example.com/maven</url>
+  </pluginRepository>
+</pluginRepositories>
+```
+
+If you're actively adding a trusted repository to your pom.xml right now, the `/using-trusted-maven-dependencies` skill can help walk through the full setup.

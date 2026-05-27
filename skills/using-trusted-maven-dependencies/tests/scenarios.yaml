@@ -1,0 +1,53 @@
+skill_name: using-trusted-maven-dependencies
+description: Validates that Claude follows the correct process for updating Maven projects to use trusted repositories and rebuilds
+
+test_scenarios:
+  - name: initial-setup-steps
+    description: Validates that Claude prompts for required inputs and explains the overall process
+    prompt: "How do I update my Maven project to use dependencies from a trusted repository instead of Maven Central?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - repository
+        - ["repository id", "repository url", "url", "trusted repository", "maven project"]
+    baseline_failure: "Without skill, Claude may explain generic Maven repo config without asking for required inputs or explaining the step-by-step process"
+
+  - name: semver-no-upgrade
+    description: Validates that Claude refuses to use a rebuild with a different base version (upgrade case)
+    prompt: |
+      I'm updating Maven dependencies to trusted rebuilds. My dependency org.springframework:spring-core:5.3.20 has a trusted rebuild on the
+      'redhat-ga' Maven repository at https://maven.repository.redhat.com/ga at version 5.3.21-redhat-00001. Can I use that?
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["no", "not", "cannot", "should not", "must not", "don't", "incorrect", "wrong"]
+        - ["5.3.20", "5.3.21", "version", "base version", "semantic"]
+      does_not_contain:
+        - "yes, use 5.3.21"
+        - "upgrade is fine"
+    baseline_failure: "Without skill, Claude may say the rebuild is acceptable since it has security patches, ignoring semantic version equivalence requirement"
+
+  - name: add-both-repository-sections
+    description: Validates that Claude adds the repository to both repositories and pluginRepositories
+    prompt: "When adding a trusted Maven repository to my pom.xml, do I need to add it to both the repositories and pluginRepositories sections?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["repository", "repositories"]
+        - ["pluginRepository", "pluginRepositories"]
+        - ["yes", "both", "required", "needed", "should"]
+    baseline_failure: "Without skill, Claude might say only <repositories> is needed and omit <pluginRepositories>, which would miss plugin dependency resolution."
+
+  - name: select-highest-rebuild-version
+    description: Validates that Claude selects the highest available rebuild version from maven-metadata.xml
+    prompt: "The trusted Maven repository has two rebuilds for com.google.guava:guava:31.1-jre: versions 31.1-jre-redhat-00001 and 31.1-jre-redhat-00002. Which one should I use?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["31.1-jre-redhat-00002", "redhat-00002", "00002"]
+        - ["highest", "latest", "most recent", "higher", "last", "newer", "newest"]
+    baseline_failure: "Without skill, Claude may arbitrarily pick either version or not know the selection criteria from maven-metadata.xml"

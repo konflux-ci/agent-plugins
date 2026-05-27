@@ -1,0 +1,29 @@
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+No, it depends on what you need from that repository:
+
+- **`repositories`** — for project dependencies (JARs your code imports)
+- **`pluginRepositories`** — for Maven plugins (tools used during the build)
+
+Add to only the section that applies:
+- If the repository only hosts dependencies: just `repositories`
+- If the repository only hosts plugins: just `pluginRepositories`
+- If it hosts both: add to both sections
+
+**Example:**
+```xml
+<repositories>
+  <repository>
+    <id>trusted-repo</id>
+    <url>https://your-trusted-repo.com/maven</url>
+  </repository>
+</repositories>
+
+<pluginRepositories>
+  <pluginRepository>
+    <id>trusted-repo</id>
+    <url>https://your-trusted-repo.com/maven</url>
+  </pluginRepository>
+</pluginRepositories>
+```
+
+If you're updating a Maven project to use a trusted repository and want help applying this, I can assist with the `using-trusted-maven-dependencies` skill.

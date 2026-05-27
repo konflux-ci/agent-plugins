@@ -1,0 +1,15 @@
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+I'll help you update your Maven project to use a trusted Maven repository. To get started, I need some information about your repository.
+
+Please provide the following:
+
+1. **Repository ID** — A kebab-case identifier for the repository (e.g., `my-trusted-repo`, `internal-artifacts`)
+
+2. **Repository URL** — The HTTPS URL to the root of the Maven repository (e.g., `https://repo.company.com/maven/`)
+
+3. **Rebuild Version Suffix** — A regex pattern for the suffix applied to rebuilt dependency versions (e.g., `rebuild-[\d]+`, `myorg-[\d]*`)
+
+Once you provide these, I'll:
+- Check if the repository is already configured
+- Add it to your project's `pom.xml` if needed
+- Replace your dependencies and plugins with their trusted rebuild versions

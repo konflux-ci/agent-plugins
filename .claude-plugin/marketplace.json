@@ -45,6 +45,15 @@
       "name": "component-build-status",
       "source": "./skills/component-build-status",
       "description": "Use to trigger component builds, releases or get a component or application status"
+    },
+    {
+      "name": "using-trusted-maven-dependencies",
+      "source": "./skills/using-trusted-maven-dependencies",
+      "description": "Use when updating a Maven project to source its dependencies from a trusted Maven repository instead of Maven Central.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Konflux CI Team"
+      }
     }
   ]
 }

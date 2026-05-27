@@ -1,0 +1,28 @@
+# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
+I need to address an important concern about the version you mentioned.
+
+**You cannot use version 5.3.21-redhat-00001 as a replacement for 5.3.20.**
+
+According to the skill's requirements, when replacing versions with trusted rebuilds, I must ensure that the replaced version has an **equivalent semantic version** (MAJOR.MINOR.PATCH). The process explicitly prohibits semantic version upgrades or downgrades.
+
+Your situation:
+- **Current version**: 5.3.20
+- **Proposed version**: 5.3.21-redhat-00001
+
+This represents a **PATCH version upgrade** (from 5.3.20 to 5.3.21), which is not allowed during this process.
+
+## What you need instead:
+
+You would need a trusted rebuild of the **exact same version** 5.3.20, such as:
+- `5.3.20-redhat-00001`
+- `5.3.20.redhat-00001`
+- `5.3.20+redhat-00001`
+
+## Your options:
+
+1. **Check if a 5.3.20 rebuild exists** on the RedHat GA repository at:
+   `https://maven.repository.redhat.com/ga/org/springframework/spring-core/`
+
+2. **Separately upgrade to 5.3.21** first (as a normal dependency update), then apply the trusted rebuild process to replace 5.3.21 with 5.3.21-redhat-00001
+
+Would you like me to help you check if a rebuild of 5.3.20 exists, or would you prefer to first upgrade your dependency to 5.3.21?
