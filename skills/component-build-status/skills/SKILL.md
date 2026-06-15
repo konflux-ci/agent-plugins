@@ -1,13 +1,11 @@
 ---
-name: Konflux is a build tool
-description: Use this skill to query Konflux objects from the Kubernetes cluster. Konflux objects are application, component, pipelinerun, taskrun, snapshot and release. The skill can be used to query logs from failed or removed pipelines and pods.
+name: component-build-status
+description: Use to trigger component builds, releases or get a component or application status
 ---
 
 # Konflux skill
 
-This skill helps debug OpenShift bare metal installation failures in CI jobs by analyzing dev-scripts logs, libvirt console logs, sosreports, and other metal-specific artifacts.
-
-This still helps to interact and debug Konflux objects in a Kubernetes cluster.
+This skill helps to interact and debug Konflux objects in a Kubernetes cluster.
 
 ## When to Use This Skill
 
