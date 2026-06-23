@@ -1,0 +1,20 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+I need access to the actual Konflux repositories to properly answer your question. Could you help me by either:
+
+1. **Providing the local paths** if the `konflux-ci/docs` and `konflux-ci/architecture` repositories are already cloned on this system
+2. **Cloning the repositories** so I can explore them:
+   ```bash
+   git clone https://github.com/konflux-ci/docs.git
+   git clone https://github.com/konflux-ci/architecture.git
+   ```
+3. **Granting web access permissions** so I can fetch the GitHub repositories directly
+
+Once I have access, I'll be able to give you a comprehensive overview of:
+
+- How users currently define integration tests (CRDs, configuration files, etc.)
+- The integration testing workflow and triggers
+- Common configuration patterns and examples
+- Relevant architectural decisions (ADRs) that explain the rationale
+- The user-facing documentation that describes this workflow
+
+Which approach would work best for you?

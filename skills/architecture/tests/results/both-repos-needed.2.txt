@@ -1,0 +1,47 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Great! Now you have the foundation. Here's what to review when critiquing a release strategy feature proposal:
+
+## Key Areas to Examine
+
+### 1. **Release Service Architecture**
+Start by reading `architecture/core/release-service.md` in the [konflux-ci/architecture](https://github.com/konflux-ci/architecture) repo. This will tell you:
+- What the release service currently owns
+- How release strategies fit into its responsibility boundaries
+- What CRDs (Custom Resource Definitions) it manages
+- How it interacts with other services (e.g., build, integration, pipeline services)
+
+### 2. **Existing ADRs on Release Strategies**
+Search the `ADR/` directory for decisions about release strategies:
+- Look for keywords: "release", "strategy", "deployment", "promotion"
+- Check if there are prior decisions that would constrain or inform the new proposal
+- Understand the rationale behind existing choices—this reveals what trade-offs were already considered
+
+### 3. **Current Release Strategy Implementation**
+Review the [konflux-ci/docs](https://github.com/konflux-ci/docs) repo:
+- Check `modules/releasing/` for how release strategies are currently documented to users
+- Look at the user-facing contract—what configuration options, CRDs, and workflows exist today?
+- This matters because the proposal shouldn't contradict documented behavior
+
+### 4. **Service Boundaries & Dependencies**
+Ask yourself:
+- **Which services does this strategy touch?** (release, build, integration, enterprise-contract, etc.)
+- **Are new dependencies being introduced?** Check those service specs too
+- **Does it require changes to CRDs or APIs?** That affects user-facing contracts and backward compatibility
+
+### 5. **Design Rationale in the Proposal**
+Look for clarity on:
+- **Why** this strategy is needed (use cases, limitations of current approaches)
+- **What trade-offs** are being made vs. alternatives
+- **Backward compatibility** - does it affect existing release workflows?
+- **Operational concerns** - how will it be monitored, debugged, documented?
+
+## Questions to Ask When Reviewing
+
+- Does the proposal reference existing ADRs or explain why it differs from them?
+- Is the service boundary clear? (Does it require changes outside release-service?)
+- Are the new CRDs/APIs clearly defined and versioned appropriately?
+- Does it require documentation changes? If so, are they planned?
+- How does it interact with the enterprise-contract service (which validates releases)?
+- Are there operational/observability implications not yet addressed?
+
+This should give you a solid framework for informed, architecture-grounded feedback!

@@ -44,6 +44,10 @@ Trace Konflux builds from container images back to source:
 - Verify source commits for deployed containers
 - Navigate from artifacts back to builds and source code
 
+### architecture
+
+Navigate the two canonical sources of Konflux design information (service specs, ADRs, user guides, API references) with a progressive discovery strategy for evaluating and critiquing feature proposals.
+
 ### component-build-status
 
 Trigger build of Konflux Component:

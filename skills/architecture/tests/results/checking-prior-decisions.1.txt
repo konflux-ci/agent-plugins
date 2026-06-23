@@ -1,0 +1,21 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Based on the architecture skill guidance, here's what I recommend:
+
+**To understand if component models decisions have been made before, you should:**
+
+1. **Check the ADRs first** in the [konflux-ci/architecture](https://github.com/konflux-ci/architecture) repo's `ADR/` directory. Search for decisions mentioning "component" or "model" - this will show you if there's prior design rationale that your proposal might build on, conflict with, or duplicate.
+
+2. **Read the relevant service docs**, likely:
+   - `architecture/core/pipeline-service.md` (manages component definitions and relationships)
+   - `architecture/core/integration-service.md` (works with components for testing)
+   - Other core services depending on your specific angle
+
+3. **Check the docs repo** at [konflux-ci/docs](https://github.com/konflux-ci/docs) to understand how component models are currently documented for users - this reveals the user-facing contract that your changes would affect.
+
+**What specifically are you proposing to change about component models?** That will help me point you to the exact ADRs and service docs to review. For example:
+- How components are defined or structured?
+- How components relate to builds, tests, or releases?
+- How components are organized in workspaces?
+- Something else?
+
+Once you clarify, I can help you search for relevant prior decisions and understand the architectural constraints around your proposal.

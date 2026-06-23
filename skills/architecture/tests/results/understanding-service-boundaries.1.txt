@@ -1,0 +1,28 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Based on the architecture guidance, here's where to find the specific information you need:
+
+## Finding Integration vs Release Service Responsibilities
+
+Go to the [konflux-ci/architecture](https://github.com/konflux-ci/architecture) repository and read:
+
+1. **`architecture/core/integration-service.md`** - Documents what the integration service owns and is responsible for
+2. **`architecture/core/release-service.md`** - Documents what the release service owns and is responsible for
+
+Each service spec covers:
+- **Responsibilities** - what the service does
+- **CRDs owned** - which Kubernetes custom resources the service manages
+- **Interactions with other services** - how it communicates with build, release, pipeline, etc.
+
+## Quick Context
+
+In Konflux:
+- **Integration Service** typically handles the testing/integration phase - running tests, validating builds, managing integration test pipelines
+- **Release Service** typically handles the release phase - creating release artifacts, managing release pipelines, deploying to production
+
+But for the authoritative definitions specific to your version of Konflux, read those service docs directly.
+
+## If You Need Design Rationale
+
+If you're trying to understand **why** responsibilities are divided this way, check the `ADR/` directory in the same repo for any Architecture Decision Records related to service boundaries or the integration/release workflow.
+
+Would you like help navigating anything specific in those service specs once you access them?

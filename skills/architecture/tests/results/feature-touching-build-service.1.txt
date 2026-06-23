@@ -1,0 +1,25 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Great! Now you have a clear path to understanding Konflux's architecture. Here's what I recommend for your container build triggering feature proposal:
+
+## Step-by-step approach:
+
+1. **Start with the overview** (`architecture/index.md` in the [konflux-ci/architecture](https://github.com/konflux-ci/architecture) repo) to understand the principles and identify which core services handle builds
+
+2. **Read the Build Service spec** (`architecture/core/build-service.md`) - this is likely the primary service you'll need to understand, since it's responsible for triggering and managing container builds
+
+3. **Search ADRs for existing decisions** on build triggering - look through the `ADR/` directory for any prior architectural decisions about:
+   - How builds are currently triggered
+   - What events/webhooks initiate builds
+   - Why the current approach was chosen
+   
+   This is critical to avoid proposing something that contradicts or duplicates existing decisions.
+
+4. **Check related services** that might interact with build triggering:
+   - **Pipeline Service** - if your feature affects how pipelines initiate builds
+   - **Integration Service** - if it relates to test/integration build flows
+   - **Enterprise Contract** - if it involves build verification/gating
+
+5. **Review the docs repo** (`modules/building/` in [konflux-ci/docs](https://github.com/konflux-ci/docs)) to understand the current user-facing workflow and what documentation would need updating
+
+## Key question for your proposal:
+What aspect of build triggering are you looking to change? (e.g., event types, trigger conditions, timing, parallel builds, etc.) This will help focus which service specs and ADRs are most relevant to read first.

@@ -1,0 +1,35 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Perfect! Here's a structured approach for understanding Konflux's current build triggering design before writing your proposal:
+
+## Where to Look
+
+**Start with the architecture repo** ([konflux-ci/architecture](https://github.com/konflux-ci/architecture)):
+
+1. **Overview** - Read `architecture/index.md` to understand the service landscape and core principles
+2. **Build Service** - Read `architecture/core/build-service.md` since build triggering is directly its responsibility
+3. **Related Services** - Likely relevant:
+   - `architecture/core/integration-service.md` - if your feature affects test/integration workflows
+   - `architecture/core/pipeline-service.md` - if it touches pipeline execution
+4. **ADRs** - Search `ADR/` directory for existing decisions on:
+   - Build triggering mechanisms
+   - Push/PR/tag-based triggers
+   - Build parallelization or queueing
+   - Any prior decisions on triggering strategy you want to change
+
+5. **Diagrams** - Check `diagrams/` for service interaction flows to visualize how builds are currently triggered across services
+
+**Then check the docs repo** ([konflux-ci/docs](https://github.com/konflux-ci/docs)):
+
+- `modules/building/` - How users currently configure and trigger builds
+- `modules/reference/` - CRD specs for build configuration
+- `modules/troubleshooting/` - Common build triggering issues
+
+## Key Things to Understand Before Proposing
+
+- What are the current trigger types? (push, PR, tag, manual?)
+- Which services own the triggering logic?
+- What constraints exist (performance, security, scalability)?
+- What has been explicitly decided against in ADRs?
+- How would your change affect the user-facing workflow documented in docs?
+
+This approach prevents you from proposing something that contradicts existing design decisions or duplicates work already considered. Good luck with your proposal!

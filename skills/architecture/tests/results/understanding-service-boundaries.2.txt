@@ -1,0 +1,32 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Perfect! Based on the architecture skill guidance, here's where to find the information about integration service vs. release service responsibilities:
+
+## Where to Find This Information
+
+### Primary Source: Konflux Architecture Repository
+Go to [konflux-ci/architecture](https://github.com/konflux-ci/architecture) and read:
+
+1. **Service Specifications** (Start here):
+   - `architecture/core/integration-service.md` - Integration service responsibilities, CRDs owned, and interactions
+   - `architecture/core/release-service.md` - Release service responsibilities, CRDs owned, and interactions
+
+2. **Architecture Overview**:
+   - `architecture/index.md` - High-level service inventory and core principles
+
+3. **Design Decisions**:
+   - `ADR/` directory - Search for ADRs related to integration or release workflows to understand the **why** behind the design
+
+### Supplementary Source: Konflux Docs Repository
+For operational details and how users interact with these services:
+- [konflux-ci/docs](https://github.com/konflux-ci/docs)
+- `modules/testing/` - Integration testing workflows
+- `modules/releasing/` - Release pipeline workflows
+- `modules/troubleshooting/` - Service-specific debugging guides
+
+## Quick Summary Strategy
+
+**Step 1**: Read the two service spec files above to understand their distinct responsibilities and CRDs  
+**Step 2**: Look at the diagrams in `diagrams/` to visualize how they interact  
+**Step 3**: Check relevant ADRs if you need to understand design rationale for a specific feature decision
+
+This gives you the authoritative, design-level understanding of how these services are separated and what each owns.

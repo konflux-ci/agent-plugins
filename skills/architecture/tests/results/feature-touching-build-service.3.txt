@@ -1,0 +1,29 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+For your feature proposal about changing how container builds are triggered, here's the recommended path:
+
+## 1. **Understand Current Build Triggering** (Start Here)
+   - Read [`konflux-ci/architecture/core/build-service.md`](https://github.com/konflux-ci/architecture/blob/main/architecture/core/build-service.md) to understand:
+     - The build service's responsibilities and current triggering mechanisms
+     - CRDs it owns (like `PipelineRun`, how builds are initiated)
+     - How it interacts with other services
+
+## 2. **Check for Existing Design Decisions**
+   - Search [`konflux-ci/architecture/ADR/`](https://github.com/konflux-ci/architecture/tree/main/ADR) for ADRs related to:
+     - Build triggering strategies
+     - CI/CD pipelines
+     - Event-driven architecture
+   - This prevents proposing something that contradicts existing architectural decisions
+
+## 3. **Understand the Integration Points**
+   - Read [`architecture/core/integration-service.md`](https://github.com/konflux-ci/architecture/blob/main/architecture/core/integration-service.md) since it likely orchestrates with build triggering
+   - Check [`architecture/core/pipeline-service.md`](https://github.com/konflux-ci/architecture/blob/main/architecture/core/pipeline-service.md) if your feature affects pipeline execution
+
+## 4. **Review User-Facing Workflows**
+   - In [`konflux-ci/docs`](https://github.com/konflux-ci/docs), check:
+     - `modules/building/` for current build configuration and trigger documentation
+     - `modules/patterns/` for how users currently interact with build triggering
+
+## 5. **Check for Diagrams**
+   - Look in [`architecture/diagrams/`](https://github.com/konflux-ci/architecture/tree/main/diagrams) for visual representations of build service interactions
+
+This progressive approach will give you the design rationale and constraints before you propose changes, making your proposal stronger and more aligned with Konflux's architecture.
