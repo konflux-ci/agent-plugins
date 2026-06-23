@@ -1,0 +1,69 @@
+# Test scenarios for architecture skill
+# Validates that agents use the canonical architecture repos for Konflux questions
+
+skill_name: architecture
+description: Tests for architecture reference discovery and progressive navigation
+
+test_scenarios:
+  - name: feature-touching-build-service
+    description: Agent should reference architecture repo when evaluating a feature proposal
+    prompt: "I'm proposing a new feature for Konflux that changes how container builds are triggered. Where should I look to understand the current design before writing the proposal?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - build-service
+        - ADR
+        - ["konflux-ci/architecture", "architecture repo", "architecture repository", "architecture overview"]
+      does_not_contain: []
+    baseline_failure: "Agent gives generic advice without pointing to specific repos or directories"
+
+  - name: understanding-service-boundaries
+    description: Agent should know where service specs live
+    prompt: "In Konflux, I need to understand what the integration service is responsible for versus the release service. Where do I find that?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["architecture/core", "core/"]
+        - integration-service
+        - release-service
+      does_not_contain: []
+    baseline_failure: "Agent explains from training data rather than directing to authoritative source"
+
+  - name: checking-prior-decisions
+    description: Agent should direct to ADRs for design rationale
+    prompt: "I want to propose changing how Konflux handles component models. Has this been decided before?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - ADR
+        - ["konflux-ci/architecture", "architecture repo", "architecture repository", "architecture/"]
+      does_not_contain: []
+    baseline_failure: "Agent answers from memory without checking for existing architecture decisions"
+
+  - name: user-facing-workflow-docs
+    description: Agent should reference docs repo for operational/user-facing information
+    prompt: "In Konflux, how do users currently configure integration tests? I need to understand the current workflow before proposing changes to the architecture."
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["konflux-ci/docs", "docs repo", "docs repository", "modules/testing"]
+        - ["testing", "integration test", "IntegrationTestScenario"]
+      does_not_contain: []
+    baseline_failure: "Agent explains from training data without pointing to docs repo"
+
+  - name: both-repos-needed
+    description: Agent should reference both repos when question spans design and usage
+    prompt: "I'm critiquing a feature proposal that adds a new release strategy to Konflux. What should I review to give informed feedback?"
+    model: haiku
+    samples: 3
+    expected:
+      contains_keywords:
+        - release
+        - ["konflux-ci/architecture", "architecture repo", "architecture repository", "architecture/core"]
+        - ["konflux-ci/docs", "docs repo", "docs repository", "modules/releasing"]
+      does_not_contain: []
+    baseline_failure: "Agent only references one repo or neither"

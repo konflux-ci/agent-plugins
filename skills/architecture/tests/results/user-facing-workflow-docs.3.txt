@@ -1,0 +1,31 @@
+# skill_digest: 4d7c5bc939f867c7b1bdefccdca8cc9b237f2458d161240872fcbaebc2a669e5
+Since I can't directly access the GitHub repositories or search the filesystem without your approval, let me provide you with guidance on how to explore this yourself:
+
+## How to Research Konflux Integration Test Configuration
+
+Based on the architecture reference, here's the structured approach:
+
+### **1. Start with the Docs Repository** (`konflux-ci/docs`)
+Navigate to: `modules/testing/` 
+- Look for pages on integration test configuration
+- Check the `nav.adoc` file to see what testing topics are documented
+- You'll find user-facing guides on how to configure integration tests
+
+### **2. Check the Architecture Repository** (`konflux-ci/architecture`)
+- Read: `architecture/core/integration-service.md` - explains the service responsible for running integration tests
+- Search: `ADR/` directory for ADRs containing "integration" or "test" - these explain design decisions
+- Review: `diagrams/` for visual flows of how integration tests fit into the pipeline
+
+### **3. Key Things to Look For**
+- **Configuration format** - Are tests defined in a specific CRD (Custom Resource Definition)?
+- **Test definition location** - Do users define tests in their repository, in a separate config, or both?
+- **Trigger mechanism** - How do tests get invoked in the pipeline?
+- **Results and reporting** - How are test results captured and reported?
+- **Current limitations** - What do users find difficult about the current workflow?
+
+### **4. Specific Files to Review**
+- Integration test configuration examples in the docs
+- `integration-service.md` architecture document
+- Any ADRs about test execution, pipeline integration, or test configuration
+
+Once you've gathered this information, I can help you analyze it and understand the current workflow before you propose architectural changes. Would you like to share any of these files or their contents for me to analyze?
