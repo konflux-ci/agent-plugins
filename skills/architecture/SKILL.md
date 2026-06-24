@@ -1,82 +1,75 @@
 ---
 name: architecture
-description: Use when needing to understand Konflux architecture, design decisions, service responsibilities, APIs, build/test/release workflows, or how Konflux components fit together. Provides navigation to the two canonical architecture sources and strategies for progressive discovery.
+description: Use when needing to understand Konflux architecture, design decisions, service responsibilities, APIs, build/test/release workflows, or how Konflux components fit together.
+allowed-tools: Bash(git clone:*), Bash(git pull:*), Bash(find:*), Bash(ls:*), Bash(grep:*), Bash(cat:*), Read, Glob, Grep
 ---
 
 # Konflux Architecture Reference
 
 ## Overview
 
-Two GitHub repositories are the canonical source of truth for Konflux architecture. Use them together - they serve complementary purposes.
+Two GitHub repositories are the canonical source of truth for Konflux architecture. **Clone them and read the actual content** - do not answer architecture questions from memory or training data alone.
 
 ## The Two Sources
 
-| Repository | What It Contains | When to Use |
+| Repository | Clone To | Contains |
 |---|---|---|
-| [konflux-ci/architecture](https://github.com/konflux-ci/architecture) | ADRs, service specs, design diagrams, architectural constraints | Understanding **why** things work the way they do, service boundaries, design rationale |
-| [konflux-ci/docs](https://github.com/konflux-ci/docs) | User-facing guides (AsciiDoc/Antora), API references, troubleshooting, workflows | Understanding **how** to use Konflux, configuration, operational procedures |
+| [konflux-ci/architecture](https://github.com/konflux-ci/architecture) | `/tmp/konflux-architecture` | ADRs, service specs, design diagrams, architectural constraints |
+| [konflux-ci/docs](https://github.com/konflux-ci/docs) | `/tmp/konflux-docs` | User-facing guides (AsciiDoc/Antora), API references, troubleshooting |
 
-Use **architecture** for design-level questions. Use **docs** for usage-level questions. Most feature work requires both.
+## How to Gather Information
 
-## Progressive Discovery Strategy
+**Always clone and read.** Do not describe directory layouts from memory - fetch the actual content.
 
-Don't try to read everything. Navigate from broad to specific:
+```bash
+# Clone if not already present
+[ -d /tmp/konflux-architecture ] || git clone https://github.com/konflux-ci/architecture /tmp/konflux-architecture
+[ -d /tmp/konflux-docs ] || git clone https://github.com/konflux-ci/docs /tmp/konflux-docs
+```
 
-**Step 1 - Orient** with the architecture repo's main overview:
-- `architecture/index.md` - Principles, constraints, and service inventory
-- Core services live in `architecture/core/` (build, integration, release, pipeline, enterprise-contract, hybrid-application-service, konflux-ui)
-- Add-on services live in `architecture/add-ons/` (image-controller, mintmaker, multi-platform-controller, and others)
+Then navigate from broad to specific:
 
-**Step 2 - Find the relevant service** by reading the specific service doc:
-- `architecture/core/<service-name>.md` - e.g., `build-service.md`, `integration-service.md`, `release-service.md`
-- Each service doc covers responsibilities, CRDs owned, and interactions with other services
+**Step 1 - Orient.** Read the overview to identify which services are relevant:
+- Read `/tmp/konflux-architecture/architecture/index.md`
+- Core services: `architecture/core/` (build-service, integration-service, release-service, pipeline-service, enterprise-contract, hybrid-application-service, konflux-ui)
+- Add-ons: `architecture/add-ons/` (image-controller, mintmaker, multi-platform-controller, etc.)
 
-**Step 3 - Check ADRs** for design rationale on the topic:
-- `ADR/` contains 60+ numbered decision records: `ADR/NNNN-description.md`
-- ADRs explain **why** a design choice was made, not just what it is
-- Search ADR filenames and content for your topic before proposing changes that might contradict existing decisions
+**Step 2 - Read the relevant service doc:**
+- Read `/tmp/konflux-architecture/architecture/core/<service-name>.md`
+- Extract: responsibilities, CRDs owned, interactions with other services
 
-**Step 4 - Get operational details** from the docs repo:
-- Docs are organized by workflow stage: `modules/building/`, `modules/testing/`, `modules/releasing/`, `modules/installing/`
-- Each module has `pages/` (main content) and `nav.adoc` (table of contents)
-- Also check: `modules/troubleshooting/`, `modules/patterns/`, `modules/reference/`
+**Step 3 - Search ADRs** for design rationale:
+```bash
+# Find ADRs related to your topic
+grep -ril "your-topic" /tmp/konflux-architecture/ADR/
+# Then read the matching ADRs
+```
+- 60+ numbered decision records in `ADR/NNNN-description.md`
+- ADRs explain **why** a design choice was made
+
+**Step 4 - Get user-facing details** from the docs repo:
+```bash
+# Find relevant docs pages
+grep -ril "your-topic" /tmp/konflux-docs/modules/
+```
+- Organized by workflow: `modules/building/`, `modules/testing/`, `modules/releasing/`
+- Also: `modules/troubleshooting/`, `modules/patterns/`, `modules/reference/`
 
 ## When Refining or Critiquing Feature Definitions
 
-Before evaluating a proposed feature:
-1. Identify which service(s) the feature touches
-2. Read those service architecture docs to understand current boundaries and responsibilities
-3. Search ADRs for prior decisions on the same topic - a proposal may conflict with or duplicate an existing ADR
-4. Check the docs repo for how the current workflow is documented to users - this reveals the user-facing contract that changes would affect
-
-## Key Directories Quick Reference
-
-**konflux-ci/architecture:**
-```
-architecture/core/       - Service specs (build, integration, release, pipeline, etc.)
-architecture/add-ons/    - Optional service specs (mintmaker, image-controller, etc.)
-ADR/                     - Architecture Decision Records (0001-00XX)
-diagrams/                - Service and ADR diagrams (draw.io SVG/PNG)
-```
-
-**konflux-ci/docs:**
-```
-modules/building/        - Build configuration, secrets, optimization
-modules/testing/         - Integration tests, build-time tests
-modules/releasing/       - Release pipelines and management
-modules/installing/      - Setup and installation
-modules/troubleshooting/ - Debugging guides by service area
-modules/patterns/        - Best practices, monorepos, GitOps
-modules/reference/       - API references, Kubernetes CRDs
-modules/glossary/        - Terminology definitions
-```
+Before evaluating a proposed feature, **actually read** these sources:
+1. Clone both repos (if not already cloned)
+2. Read the service doc(s) the feature touches to understand current boundaries
+3. Search ADRs for prior decisions - a proposal may conflict with an existing ADR
+4. Read the docs repo to understand the user-facing contract changes would affect
+5. Cite specific documents and content in your analysis
 
 ## Common Mistakes
 
 | Mistake | Better Approach |
 |---|---|
-| Proposing a feature without checking ADRs | Search `ADR/` for prior decisions on the topic first |
-| Reading only one repo | Architecture repo explains design; docs repo explains usage. Both matter. |
-| Reading entire service docs upfront | Start with the overview, then read only the relevant service doc |
-| Ignoring diagrams | `diagrams/` directory has visual service interaction flows that clarify text docs |
-| Assuming docs repo is just tutorials | It contains API references, CRD specs, and troubleshooting that inform architecture |
+| Describing repos without reading them | Clone and read the actual files |
+| Answering from training data | Fetch current content - repos evolve |
+| Proposing features without checking ADRs | `grep -ril "topic" /tmp/konflux-architecture/ADR/` first |
+| Reading only one repo | Design repo + docs repo together give the full picture |
+| Reading everything upfront | Start with overview, then drill into relevant service docs only |

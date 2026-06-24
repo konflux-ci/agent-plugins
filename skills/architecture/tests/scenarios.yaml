@@ -1,69 +1,66 @@
 # Test scenarios for architecture skill
-# Validates that agents use the canonical architecture repos for Konflux questions
+# Validates that agents actually clone and read from the canonical repos
 
 skill_name: architecture
-description: Tests for architecture reference discovery and progressive navigation
+description: Tests that agents retrieve real content from konflux-ci/architecture and konflux-ci/docs
 
 test_scenarios:
-  - name: feature-touching-build-service
-    description: Agent should reference architecture repo when evaluating a feature proposal
-    prompt: "I'm proposing a new feature for Konflux that changes how container builds are triggered. Where should I look to understand the current design before writing the proposal?"
-    model: haiku
+  - name: adr-component-model-ownership
+    description: Agent should clone the architecture repo and read ADR-0056 to find specific ownership details
+    prompt: "I want to propose changes to the Konflux component model. Clone the architecture repo and check for any prior ADRs on this topic. Tell me what was decided."
+    model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - build-service
-        - ADR
-        - ["konflux-ci/architecture", "architecture repo", "architecture repository", "architecture overview"]
+        - ["ADR", "0056"]
+        - ["build-service owns", "Component API", "Group API", "ComponentGroup"]
       does_not_contain: []
-    baseline_failure: "Agent gives generic advice without pointing to specific repos or directories"
+    baseline_failure: "Agent describes ADRs generically without reading actual content"
 
-  - name: understanding-service-boundaries
-    description: Agent should know where service specs live
-    prompt: "In Konflux, I need to understand what the integration service is responsible for versus the release service. Where do I find that?"
-    model: haiku
+  - name: integration-service-controllers
+    description: Agent should read the integration service doc and list its specific controllers
+    prompt: "What are the specific controllers that make up the Konflux integration service? Clone the architecture repo and read integration-service.md to find out."
+    model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - ["architecture/core", "core/"]
-        - integration-service
-        - release-service
+        - ["Snapshot Controller", "snapshot controller", "SnapshotController"]
+        - ["StatusReport", "status report", "statusreport"]
       does_not_contain: []
-    baseline_failure: "Agent explains from training data rather than directing to authoritative source"
+    baseline_failure: "Agent gives generic description without naming specific controllers"
 
-  - name: checking-prior-decisions
-    description: Agent should direct to ADRs for design rationale
-    prompt: "I want to propose changing how Konflux handles component models. Has this been decided before?"
-    model: haiku
+  - name: build-request-annotations
+    description: Agent should read the docs repo and find specific build configuration annotations
+    prompt: "In Konflux, what annotation do I set on a Component to reconfigure its build pipeline? Clone the docs repo and find the exact annotation key and value."
+    model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - ADR
-        - ["konflux-ci/architecture", "architecture repo", "architecture repository", "architecture/"]
+        - build.appstudio.openshift.io/request
+        - configure-pac
       does_not_contain: []
-    baseline_failure: "Agent answers from memory without checking for existing architecture decisions"
+    baseline_failure: "Agent cannot provide exact annotation without reading docs"
 
-  - name: user-facing-workflow-docs
-    description: Agent should reference docs repo for operational/user-facing information
-    prompt: "In Konflux, how do users currently configure integration tests? I need to understand the current workflow before proposing changes to the architecture."
-    model: haiku
+  - name: integration-test-resolver-config
+    description: Agent should find specific integration test configuration detail from docs
+    prompt: "In Konflux, when creating an integration test, what do I set ResourceKind to if I want to customize pipeline timeouts? Clone the docs repo and check the testing module."
+    model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - ["konflux-ci/docs", "docs repo", "docs repository", "modules/testing"]
-        - ["testing", "integration test", "IntegrationTestScenario"]
+        - ["pipelinerun", "PipelineRun"]
+        - ["ResolverRef", "resolverref", "ResourceKind", "resourceKind"]
       does_not_contain: []
-    baseline_failure: "Agent explains from training data without pointing to docs repo"
+    baseline_failure: "Agent cannot provide exact field and value without reading docs"
 
-  - name: both-repos-needed
-    description: Agent should reference both repos when question spans design and usage
-    prompt: "I'm critiquing a feature proposal that adds a new release strategy to Konflux. What should I review to give informed feedback?"
-    model: haiku
+  - name: build-service-crds
+    description: Agent should read the build service architecture doc and identify its CRDs
+    prompt: "What CRDs does the Konflux build service own? Clone the architecture repo and read build-service.md to find out."
+    model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - release
-        - ["konflux-ci/architecture", "architecture repo", "architecture repository", "architecture/core"]
-        - ["konflux-ci/docs", "docs repo", "docs repository", "modules/releasing"]
+        - Component
+        - Repository
       does_not_contain: []
-    baseline_failure: "Agent only references one repo or neither"
+    baseline_failure: "Agent guesses CRD names from general knowledge instead of reading the doc"

@@ -18,7 +18,3 @@ Directs agents to the two canonical sources of Konflux architecture information 
 - Specific guidance for feature definition refinement and critique
 - Common mistakes table
 
-## Metrics
-
-- Word count: ~500 words
-- Frontmatter: < 1024 characters

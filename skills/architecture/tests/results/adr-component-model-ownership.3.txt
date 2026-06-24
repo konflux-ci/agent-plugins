@@ -1,0 +1,68 @@
+# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
+Here is a summary of what the architecture repo records on prior decisions about the Konflux component model:
+
+---
+
+## Konflux Component Model — ADR Summary
+
+### Current State (as of the repo)
+
+The component model has been substantially revised and is mid-migration. The most important ADRs are:
+
+---
+
+### ADR-0056 — Revised Component Model *(Implementable)*
+The pivotal decision. Key changes:
+- **Component Versions:** A single `Component` CR can now track multiple branches/tags via `spec.source.versions[]`. No more duplicating Component objects per branch.
+- **ComponentGroup replaces Application:** A `ComponentGroup` is a DAG of Component Versions representing a release unit. A Component can belong to *multiple* ComponentGroups (removing the old one-component-one-application constraint).
+- **HAS deprecated:** `hybrid-application-service` is archived. Its webhook validations move to CRD CEL rules; its OwnerReference defaulting moves to Build Service.
+- **Clear ownership:** Build Service owns the `Component` CRD. Integration Service will own `ComponentGroup`.
+
+---
+
+### ADR-0060 — ComponentGroups *(Proposed)*
+Specifies the `ComponentGroup` CRD in detail:
+- Defined top-down: the ComponentGroup lists which `Component/Version` pairs it contains (not bottom-up via `spec.application`).
+- `spec.dependents[]` triggers downstream Snapshots.
+- `spec.testGraph` supports test ordering between IntegrationTestScenarios.
+- `status.globalCandidateList` replaces per-Component GCL tracking.
+
+---
+
+### ADR-0067 — NudgeConfig Singleton CRD *(Proposed)*
+Moves nudging relationships off the Component CR:
+- Replaces `spec.build-nudges-ref` (ADR-0029) with a new `NudgeConfig` singleton CRD per namespace.
+- Adds a `validated` mode: nudges only fire after integration tests pass, not immediately after a build.
+- Nudge orchestration moves from Build Service → Integration Service.
+
+---
+
+### ADR-0068 — API Group Migration *(Proposed)*
+All CRDs (including `Component`) migrate from `appstudio.redhat.com/v1alpha1` → `konflux-ci.dev/v1alpha1`.
+
+---
+
+### Earlier Decisions Still Relevant
+
+| ADR | What was decided |
+|-----|-----------------|
+| **0004** | Image Controller creates a per-Component Quay.io repo on Component creation; sets `spec.containerImage` |
+| **0029** | `build-nudges-ref` on Component CR for nudging; nudging components are never tested or released directly |
+| **0032** | Deployment (Environments, GitOps) decoupled from build/test; Component model retained as-is at that point |
+| **0037/0038** | GCL promoted *immediately* on Snapshot creation (not gated by test pass); Composite Snapshots removed |
+| **0052** | GitOps-only Component onboarding; UI-based creation deprecated |
+
+---
+
+### Key Constraints to Be Aware of for a New Proposal
+
+1. `spec.source.url` is **immutable** once set on a Component.
+2. `spec.source.versions[].revision` (branch) is **immutable** per version entry.
+3. Components can now belong to **multiple** ComponentGroups — proposals that assume a one-to-one Application relationship conflict with ADR-0056/0060.
+4. CDQ (auto-detection of buildable components from a repo URL) was **intentionally not migrated** and will not return.
+5. NudgeConfig is **namespace-scoped** (ADR-0067), not Application-scoped.
+6. Release Service CRDs must be installed even in clusters that don't use nudging — the Build Service nudging controller cannot be selectively disabled.
+
+---
+
+What changes are you proposing? Given the active work on ADR-0056 and ADR-0060, it would be worth checking whether your proposal aligns with or conflicts with the revised Component/ComponentGroup model that is currently being implemented.
