@@ -1,12 +1,12 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-The Integration Service is composed of **5 controllers**, documented in the `Sub-components/Controllers` section (lines 176–184):
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+The Integration Service is made up of **5 controllers**, documented in the `Sub-components/Controllers` section (lines 176–184):
 
-1. **Build Pipeline Controller** - Monitors completed Component build PipelineRuns, creates Snapshot CRs representing collections of components to be tested together, and updates Component status to promote images to the Global Candidate List (GCL).
+1. **Build Pipeline Controller** — Monitors completed Component build PipelineRuns, creates `Snapshot` CRs representing collections of components to be tested together, and updates the Component status to promote images to the Global Candidate List (GCL).
 
-2. **Snapshot Controller** - Watches for new Snapshot CRs, creates PipelineRuns based on IntegrationTestScenarios to test those Snapshots, updates Snapshot status based on test results, and creates Release CRs when a Snapshot passes all required tests and auto-release is enabled.
+2. **Snapshot Controller** — Watches for new `Snapshot` CRs, creates `PipelineRun`s based on `IntegrationTestScenario`s to test each snapshot, updates Snapshot status based on test results, and creates `Release` CRs when a Snapshot passes all tests and auto-release is enabled.
 
-3. **Component Controller** - Handles Component CR deletions so that a fresh Snapshot can be regenerated without the deleted component.
+3. **Component Controller** — Handles `Component` CR deletions in order to regenerate a fresh Snapshot that excludes the deleted component.
 
-4. **Scenario Controller** - Manages IntegrationTestScenario CRs — validates their configurations and ensures they are properly set up before use.
+4. **Scenario Controller** — Manages `IntegrationTestScenario` CRs, validates their configurations, and ensures they are properly set up before use.
 
-5. **StatusReport Controller** - Manages Snapshot CRs and their testing status, creating and updating them based on test results from PipelineRuns to provide status reporting for integration test execution.
+5. **StatusReport Controller** — Manages Snapshot CRs and their testing status, creating and updating them based on test results from PipelineRuns to provide status reporting for integration test execution.

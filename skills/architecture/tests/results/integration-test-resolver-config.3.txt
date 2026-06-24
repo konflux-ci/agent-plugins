@@ -1,21 +1,12 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-You set `Spec.ResolverRef.ResourceKind` to **`pipelinerun`** (lowercase `r`).
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+Set `Spec.ResolverRef.ResourceKind` to **`pipelinerun`** (lowercase `r`).
 
-From `/tmp/konflux-docs/modules/testing/pages/integration/creating.adoc` (line 188–208):
+By default, this field is set to `pipeline`. You only need to change it to `pipelinerun` when you want to customize things that are defined at the PipelineRun level rather than the Pipeline level — such as:
 
-> If you need to customize pipeline timeouts, service accounts, or workspaces — attributes that can only be defined for PipelineRuns — you must set `Spec.ResolverRef.ResourceKind` to `pipelinerun` (lowercase `r`) within your integration test scenario definition. The default value is `pipeline`.
+- Pipeline timeouts
+- Service accounts
+- Workspaces
 
-Example snippet from the doc:
+This is documented in `/tmp/konflux-docs/modules/testing/pages/integration/creating.adoc` (line 188), and the API reference confirms:
 
-```yaml
-resolverRef:
-  resolver: git
-  resourceKind: pipelinerun
-  params:
-    - name: url
-      value: https://github.com/konflux-ci/integration-examples
-    - name: revision
-      value: main
-```
-
-The key distinction: `pipeline` (the default) resolves a Pipeline object, while `pipelinerun` resolves a PipelineRun object — and only PipelineRun definitions support timeout customization.
+> `resourceKind` defines the kind of resource being resolved. It can either be `"pipeline"` or `"pipelinerun"` but defaults to `"pipeline"` if no value is set.

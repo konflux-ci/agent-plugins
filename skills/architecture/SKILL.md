@@ -22,9 +22,9 @@ Two GitHub repositories are the canonical source of truth for Konflux architectu
 **Always clone and read.** Do not describe directory layouts from memory - fetch the actual content.
 
 ```bash
-# Clone if not already present
-[ -d /tmp/konflux-architecture ] || git clone https://github.com/konflux-ci/architecture /tmp/konflux-architecture
-[ -d /tmp/konflux-docs ] || git clone https://github.com/konflux-ci/docs /tmp/konflux-docs
+# Clone or pull to ensure fresh content
+if [ -d /tmp/konflux-architecture ]; then git -C /tmp/konflux-architecture pull --ff-only; else git clone https://github.com/konflux-ci/architecture /tmp/konflux-architecture; fi
+if [ -d /tmp/konflux-docs ]; then git -C /tmp/konflux-docs pull --ff-only; else git clone https://github.com/konflux-ci/docs /tmp/konflux-docs; fi
 ```
 
 Then navigate from broad to specific:

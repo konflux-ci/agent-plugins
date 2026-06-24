@@ -1,4 +1,8 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-According to the Konflux docs (`modules/testing/pages/integration/creating.adoc:188`), you set **`Spec.ResolverRef.ResourceKind`** to **`pipelinerun`** (lowercase `r`) in your integration test scenario definition.
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+The answer is clear from the docs. When you want to customize pipeline timeouts in a Konflux integration test, you set `Spec.ResolverRef.ResourceKind` to **`pipelinerun`** (lowercase `r`).
 
-This is needed when you want to customize things like pipeline timeouts, service accounts, or workspaces — since the default `ResourceKind` is `pipeline`, but `pipelinerun` allows you to define those additional configurations directly in the referenced resource.
+From `/tmp/konflux-docs/modules/testing/pages/integration/creating.adoc:188`:
+
+> If this is your case, you need to set **`Spec.ResolverRef.ResourceKind`** to `pipelinerun` (lower case `r`) within your integration test scenario definition — `pipeline` is the default.
+
+Pipeline timeouts are one of several attributes that can only be defined at the `pipelineRun` level (others being service accounts and workspaces). By setting `ResourceKind: pipelinerun`, the integration service resolves your test as a `PipelineRun` definition instead of a `Pipeline`, giving you access to those run-level fields.

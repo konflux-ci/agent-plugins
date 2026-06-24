@@ -1,65 +1,61 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-Here is a summary of what was decided across the relevant ADRs:
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+Here's a summary of what was decided across the relevant ADRs:
 
 ---
 
-## Prior ADRs on the Konflux Component Model
+## Konflux Component Model ADRs — Summary
 
-### ADR-0056 — Revised Component Model (`status: Implementable`)
+### ADR-0056: Revised Component Model (`Implementable`)
+**The central decision.** The old model required a new `Component` CR per use case (per branch, per release target), and API ownership was unclear after HAS was deprecated.
 
-This is the primary, active ADR for the component model redesign. Key decisions:
-
-**Problem:** The old model required a new `Component` CR per use case even when the same code was used in multiple release scenarios, and API ownership was unclear (originally HAS, now deprecated).
-
-**Decisions:**
-- **Replace "Application" with "ComponentGroup"** as the grouping primitive.
-- **Introduce Component Versions** (`spec.source.versions[]`): a single `Component` CR now lists multiple named branches/tags (versions) instead of requiring a separate CR per branch. Each version has its own `revision`, `context`, `dockerfileUri`, and optionally a custom build pipeline.
-- **`build-service` owns the `Component` API** going forwards (including the new versions spec).
-- **`integration-service` owns the new `ComponentGroup` API** and will decommission the old `Application` API.
-- Default branch tracking is explicitly **not supported** — all versions must declare an explicit `revision`.
-- Phased rollout: build team first, then integration, then release, then full migration and decommission of old model.
+**Decided:**
+- **Replace "Application" with "ComponentGroup"** as the grouping concept.
+- **Introduce Component Versions** — a `Component` CR now holds multiple named versions (`spec.source.versions[]`), each representing a branch/tag. A single component can be referenced by multiple groups without re-registration.
+- **Ownership split:** `build-service` owns the `Component` API and branch/version management. `integration-service` owns the new `ComponentGroup` API and will decommission the old `Application` API.
+- **Default branch is no longer supported** — every version must have an explicit `revision`.
+- **Phased rollout** ending in full decommission of the old Application/Component model.
 
 ---
 
-### ADR-0060 — ComponentGroups (`status: Proposed`)
+### ADR-0060: ComponentGroups (`Proposed`)
+**Defines the replacement for `Application`.** Companion to ADR-0056.
 
-Companion to ADR-0056, owned by integration-service. Key decisions:
-
-**Decisions:**
-- `ComponentGroup` replaces `Application`. The relationship is now **top-down** (ComponentGroup lists its components), not bottom-up (Component declaring its parent Application). This allows a Component to belong to **multiple ComponentGroups**.
-- `spec.components[]` lists component name + componentVersion name pairs.
-- `spec.testGraph` (optional) defines a **DAG of IntegrationTestScenarios** for ordered test execution — upstream prerequisites must pass before dependent tests run.
-- `spec.dependents` (optional) allows a snapshot on one ComponentGroup to **cascade and trigger snapshot creation** on listed child ComponentGroups.
-- `status.globalCandidateList` (GCL) moves onto the ComponentGroup itself.
-- **Multiple versions of the same component per group** are deferred — requires custom snapshot creation, not yet supported (workaround: list the same component twice with different versions).
-- `release-service` will need to update its `Release`, `ReleasePlan`, and `ReleasePlanAdmission` CRDs to reference `ComponentGroup` instead of `Application`.
-
----
-
-### ADR-0029 — Component Dependencies (`status: Accepted`)
-
-Decided the **nudging model** for inter-component build propagation:
-
-- `build-nudges-ref` field on a Component names other Components whose git repos should receive digest-update PRs after a successful build.
-- **Nudging** components (those that nudge others) skip integration testing and do not trigger releases directly.
-- **Nudged** components are tested and released normally.
-- PR Groups (using `@`-prefixed source branch names) group related cross-component PRs for coordinated pre-merge testing.
-- **Note:** ADR-0056 mentions nudging is being **moved to the integration test pipeline** as part of the new model.
+**Decided:**
+- New CR `ComponentGroup` owned by integration-service, using `konflux-ci.dev/v1alpha1` API group.
+- Relationship direction is **reversed**: ComponentGroup lists its components (top-down), not the other way around. This allows a Component to belong to multiple groups.
+- Spec includes:
+  - `spec.components[]` — list of `{name, componentVersion.name}` pairs
+  - `spec.dependents[]` — other ComponentGroups that get snapshots triggered when this one does
+  - `spec.testGraph` — optional DAG for **ordered/serialized test execution** (IntegrationTestScenarios with `onFail: run|skip`)
+- Status tracks a `globalCandidateList` per group (last promoted image/commit per component).
+- Release service must update `Release`, `ReleasePlan`, and `ReleasePlanAdmission` CRDs to support ComponentGroups alongside (or instead of) Applications.
+- **Multi-version-per-component** is deferred; workaround is listing the same component twice with different versions.
+- **Custom Snapshot creation** is a future enhancement.
 
 ---
 
-### ADR-0004 — Component Image Location (`status: Implemented`)
+### ADR-0029: Component Dependencies (`Accepted`)
+**Predates the new model; defines nudging and PR Groups.**
 
-Early, foundational decision: provision a **per-component Quay.io image repository** automatically (under `quay.io/redhat-user-workloads`) via the image-controller. This remains in effect.
+**Decided:**
+- `build-nudges-ref` field on `Component` CR declares that builds of one component should propagate digest updates to another (as automated PRs).
+- **"Nudging" components** (those that nudge others) are never directly tested or released by integration-service — only promoted to the Global Candidate List.
+- **"Nudged" components** proceed through the full test/promote/release cycle normally.
+- **PR Groups**: PRs sharing a branch name prefix (delimited by `@`) are grouped and tested together by integration-service.
+- Note: ADR-0056 says nudging will move to the integration test pipeline going forward.
 
 ---
 
-## Bottom Line
+### ADR-0004: Component Image Location (`Implemented`)
+Early/foundational decision — each `Component` gets a dedicated Quay.io image repository automatically provisioned by image-controller. Not directly about the component model structure, but relevant background.
 
-If you're proposing changes to the component model, the key constraints to be aware of are:
+---
 
-1. **ADR-0056 is Implementable** — the new model (Component versions + ComponentGroups) is the committed direction. Any proposal needs to fit within or explicitly revise it.
-2. **API ownership is settled:** `build-service` → Component, `integration-service` → ComponentGroup.
-3. **The old Application CR is being deprecated** — proposals that depend on it will face headwinds.
-4. **Custom snapshot creation and multi-version-per-component are deferred** future enhancements.
-5. **Nudging is moving** from `build-nudges-ref` on Component CRs to integration test pipelines.
+## Key Constraints for Your Proposal
+
+1. **`build-service` owns `Component`; `integration-service` owns `ComponentGroup`** — proposals crossing those boundaries need justification.
+2. **The old `Application` API is being decommissioned** — don't build on it.
+3. **Default branch is explicitly unsupported** in the new model — every version needs an explicit `revision`.
+4. **A component can belong to multiple ComponentGroups** — this is a core design goal; don't regress it.
+5. **Custom Snapshot creation and multi-version-per-component are deliberately deferred** — if your proposal touches either, it may conflict with the design intent to solve those separately.
+6. **API group is `konflux-ci.dev/v1alpha1`** for ComponentGroup (not the old `appstudio.redhat.com`).
