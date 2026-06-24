@@ -44,7 +44,11 @@
     {
       "name": "component-build-status",
       "source": "./skills/component-build-status",
-      "description": "Use to trigger component builds, releases or get a component or application status"
+      "description": "Use to trigger component builds, releases or get a component or application status",
+      "version": "1.0.0",
+      "author": {
+        "name": "Pavol Loffay"
+      }
     }
   ]
 }
