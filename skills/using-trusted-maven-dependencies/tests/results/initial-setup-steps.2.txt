@@ -1,8 +1,97 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-To update your Maven project to use a trusted repository instead of Maven Central, I need three pieces of information from you:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+I'll help you configure Maven to use a trusted repository instead of Maven Central. Here are the main approaches:
 
-1. **Repository ID**: A kebab-case identifier for the repository (e.g., `trusted-repo`, `internal-maven`)
-2. **Repository URL**: The HTTPS URL to the root of the Maven repository (e.g., `https://repo.example.com/maven`)
-3. **Rebuild Version Suffix**: A regex pattern that matches the suffix applied to rebuilt dependencies (e.g., `rebuild-[\d]+`, `redhat-[\d]+`)
+## Option 1: Update `pom.xml` (Recommended for project-specific configuration)
 
-Please provide these three values, and I'll proceed with updating your Maven configuration.
+Add a `<repositories>` section to your `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>trusted-repo</id>
+        <name>Trusted Repository</name>
+        <url>https://your-trusted-repo-url/repository</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+```
+
+To disable Maven Central and prioritize your repository, add this before your custom repository:
+
+```xml
+<repositories>
+    <repository>
+        <id>central</id>
+        <url>https://repo.maven.apache.org/maven2</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+    </repository>
+    <!-- Your trusted repository here -->
+</repositories>
+```
+
+## Option 2: Update `settings.xml` (For all projects on your machine)
+
+Edit `~/.m2/settings.xml` to configure repositories globally:
+
+```xml
+<settings>
+    <profiles>
+        <profile>
+            <id>trusted-repos</id>
+            <repositories>
+                <repository>
+                    <id>trusted-repo</id>
+                    <name>Trusted Repository</name>
+                    <url>https://your-trusted-repo-url/repository</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>trusted-repos</activeProfile>
+    </activeProfiles>
+</settings>
+```
+
+## Option 3: Command Line Override
+
+```bash
+mvn clean install -Dmaven.repo.local=/path/to/trusted/repo
+```
+
+Or use the `-s` flag to specify a custom settings file:
+
+```bash
+mvn clean install -s /path/to/custom-settings.xml
+```
+
+## Common Trusted Repositories
+
+- **Sonatype Nexus**: `https://nexus.company.com/repository/maven-public/`
+- **Artifactory**: `https://artifactory.company.com/artifactory/libs-release/`
+- **GitHub Packages**: `https://maven.pkg.github.com/owner/repo/`
+
+## For Authentication (if needed)
+
+Add credentials to `~/.m2/settings.xml`:
+
+```xml
+<servers>
+    <server>
+        <id>trusted-repo</id>
+        <username>your-username</username>
+        <password>your-password</password>
+    </server>
+</servers>
+```
+
+The `id` must match the `<id>` in your repository configuration.
+
+Do you have a specific repository URL or authentication setup you need help with?

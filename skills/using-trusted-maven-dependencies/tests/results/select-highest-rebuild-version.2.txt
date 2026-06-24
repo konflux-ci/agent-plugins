@@ -1,14 +1,15 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-I don't have specific information about the differences between those two Red Hat rebuilds of Guava 31.1-jre (versions 31.1-jre-redhat-00001 and 31.1-jre-redhat-00002).
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+I don't have specific information about those two Red Hat rebuild versions of Guava 31.1-jre in my knowledge base. To give you accurate guidance, I'd need to understand:
 
-To help you choose the right version, I'd recommend:
+1. **What's the difference between them?** Check the Maven repository metadata or release notes to see what changed between `-redhat-00001` and `-redhat-00002`.
 
-1. **Check the Red Hat repository documentation** - Red Hat typically provides release notes or changelogs that explain what differs between rebuild versions. The higher version number (00002) usually indicates a more recent rebuild with additional fixes.
+2. **Are there known issues?** Search for any bug fixes or security patches between those versions.
 
-2. **Review any security advisories** - Check if either version addresses specific CVEs or security issues that matter for your use case.
+3. **Your use case**: Are you starting fresh (use the latest, `-redhat-00002`) or upgrading from an existing version?
 
-3. **Check your project's requirements** - If your project or dependencies have specific version constraints, one might be required.
+Generally, **you should use the latest rebuild (`31.1-jre-redhat-00002`)** unless:
+- You have compatibility issues with it
+- An older version is explicitly required by your project or organization
+- There's a known regression in the newer version
 
-4. **Default to the latest** - Unless you have a reason to use the older rebuild, the newer version (31.1-jre-redhat-00002) would typically be the safer choice as it likely includes any fixes from the first rebuild.
-
-If you're working with a Maven project and need help configuring it to use one of these versions from the trusted repository, I can assist with that. Would you like help updating your Maven configuration?
+If you can check the repository (like Maven Central or Red Hat's repository) for release notes or changelogs between those versions, that would clarify which one to use. Alternatively, if this is for a Red Hat product or certified stack, their documentation would have the recommendation.

@@ -1,10 +1,96 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-I need three pieces of information from you to update your Maven project:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+I'll help you configure your Maven project to use a trusted repository instead of Maven Central. Here's how to do it:
 
-1. **Repository ID** - A kebab-case identifier for your trusted Maven repository (e.g., `trusted-repo`, `internal-maven`, `redhat-ga`)
+## Option 1: Modify `pom.xml` (Project-Level)
 
-2. **Repository URL** - The HTTPS URL to the root of your Maven repository (e.g., `https://repo.example.com/maven`)
+Add a `<repositories>` section to your `pom.xml`:
 
-3. **Rebuild Version Suffix** - A regex pattern that matches the suffix applied to rebuilt dependency versions (e.g., `rebuild-[\d]+`, `redhat-[0-9]+`)
+```xml
+<project>
+  ...
+  <repositories>
+    <repository>
+      <id>my-trusted-repo</id>
+      <name>My Trusted Repository</name>
+      <url>https://repo.example.com/nexus/content/repositories/releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  ...
+</project>
+```
 
-Please provide these three values, and I'll update your `pom.xml` file accordingly.
+## Option 2: Modify `settings.xml` (User/Global Level)
+
+Edit `~/.m2/settings.xml` (or `%USERPROFILE%\.m2\settings.xml` on Windows):
+
+```xml
+<settings>
+  ...
+  <profiles>
+    <profile>
+      <id>trusted-repo</id>
+      <repositories>
+        <repository>
+          <id>my-trusted-repo</id>
+          <name>My Trusted Repository</name>
+          <url>https://repo.example.com/nexus/content/repositories/releases/</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>trusted-repo</activeProfile>
+  </activeProfiles>
+  ...
+</settings>
+```
+
+## Option 3: Disable Maven Central Completely
+
+To prevent Maven from using Maven Central at all, add this to `pom.xml`:
+
+```xml
+<repositories>
+  <repository>
+    <id>central</id>
+    <url>https://repo.maven.apache.org/maven2</url>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+  </repository>
+  <repository>
+    <id>my-trusted-repo</id>
+    <url>https://repo.example.com/nexus/content/repositories/releases/</url>
+  </repository>
+</repositories>
+```
+
+## Authentication (if needed)
+
+If your trusted repository requires authentication, add to `settings.xml`:
+
+```xml
+<servers>
+  <server>
+    <id>my-trusted-repo</id>
+    <username>your-username</username>
+    <password>your-password</password>
+  </server>
+</servers>
+```
+
+**Key differences:**
+- **pom.xml**: Project-specific, committed to version control, affects all developers
+- **settings.xml**: User/machine-specific, not committed, useful for credentials
+- Use `<enabled>false</enabled>` to disable a repository; use `<enabled>true</enabled>` to enable it
+
+Which repository are you using, and do you need help with authentication or any specific configuration?
