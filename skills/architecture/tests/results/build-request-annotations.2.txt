@@ -1,9 +1,11 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-Here's the exact annotation to set on a Component to reconfigure its build pipeline, sourced from `/tmp/konflux-docs/modules/building/pages/reconfiguring-build-pipeline.adoc`:
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+The key annotation is:
 
----
+```
+build.appstudio.openshift.io/request: "configure-pac"
+```
 
-## To reset the pipeline to its latest default
+Set this under `metadata.annotations` on your `Component` resource:
 
 ```yaml
 metadata:
@@ -11,13 +13,11 @@ metadata:
     build.appstudio.openshift.io/request: "configure-pac"
 ```
 
-This triggers Konflux to open a PR in your repository that resets the Tekton pipeline definitions to the current defaults.
+This triggers Konflux to submit a pull request that resets the Tekton pipeline in your git repository to the latest definition.
 
 ---
 
-## To switch to a different pipeline template
-
-Set both annotations together:
+If you also want to **switch to a different pipeline template** at the same time, add a second annotation alongside it:
 
 ```yaml
 metadata:
@@ -26,9 +26,6 @@ metadata:
     build.appstudio.openshift.io/request: "configure-pac"
 ```
 
-- **Key:** `build.appstudio.openshift.io/request`
-- **Value:** `"configure-pac"`
+**Important:** The generated PR will not preserve any previous customizations you made to the pipeline. You'll need to re-apply them manually after merging.
 
-The optional `build.appstudio.openshift.io/pipeline` annotation selects which named pipeline template to use. If omitted, Konflux uses the current default.
-
-> **Warning:** The resulting PR will not preserve any customizations you previously made to the pipeline. Re-apply them manually after merging.
+Source: `/tmp/konflux-docs/modules/building/pages/reconfiguring-build-pipeline.adoc`

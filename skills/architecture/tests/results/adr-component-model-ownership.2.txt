@@ -1,72 +1,69 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-Here's a summary of what has been decided across the relevant ADRs on the Konflux component model:
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+Here is a summary of all prior ADR decisions on the Konflux component model:
 
 ---
 
-## ADR Summary: Konflux Component Model
+## Prior ADRs on the Konflux Component Model
 
-### ADR-0056 — Revised Component Model (`status: Implementable`)
+### ADR 0004 — Component Image Location (`Implemented`)
+**Decision:** Each `Component` CR gets a dedicated Quay.io image repository at `quay.io/redhat-user-workloads/<namespace>/<app>/<component>`, provisioned automatically by image-controller. No user-specified registry required at onboarding. This remains in effect.
 
-This is the central decision. The existing model — one Component per use case, all coupled to an Application — was found to create unnecessary overhead and unclear API ownership (HAS was deprecated).
+---
 
-**What was decided:**
+### ADR 0029 — Component Dependencies (`Accepted`)
+**Decision:** Introduced `build-nudges-ref` on the `Component` spec — a list of other Components whose image digests should be auto-updated (via PR) when a build of the source component completes. Also introduced **PR Groups** (via `@`-prefixed branch naming) for coordinated cross-component pre-merge testing. Key behavioral rules:
+- **Nudging** components skip tests, skip deployment/release, but promote to the Global Candidate List.
+- **Nudged** components run tests and deployments normally.
+- `build-service` files the digest-update PRs; `integration-service` handles testing logic.
 
-- **Replace "Application" with "Component Group"** as the grouping primitive.
-- **Introduce Component Versions**: a Component can now have multiple named versions, each tied to a specific branch or tag. A single component can be reused across multiple groups without re-registration.
-- **Ownership split**:
-  - `build-service` owns the `Component` API and manages versions/branches.
-  - `integration-service` owns the new `ComponentGroup` API and will decommission the old `Application` API.
-- The new `Component` spec nests versions under `spec.source.versions[]`, each with its own `revision`, `context`, `dockerfileUri`, `skip-builds`, and `build-pipeline` overrides.
-- **Implementation is phased**: new model ships as tech preview, then old model is auto-migrated and decommissioned.
+---
+
+### ADR 0056 — Revised Component Model (`Implementable`)
+**Decision:** The biggest architectural shift. Replaces the `Application` CR concept with **Component Versions** and **Component Groups**:
+- A `Component` now has `spec.source.versions[]` — a list of named branches/tags, each with its own build pipeline config. One `Component` CR covers all release branches.
+- **build-service** takes sole ownership of the `Component` API.
+- **integration-service** owns a new `ComponentGroup` API (replaces `Application`).
+- The old Application/Component model is to be decommissioned in a phased migration.
 - Nudging moves to integration test pipelines.
 
 ---
 
-### ADR-0060 — ComponentGroups (`status: Proposed`)
-
-Companion to ADR-0056, detailing the `integration-service` side.
-
-**What was decided:**
-
-- Introduce a new `ComponentGroup` CR to replace `Application`.
-- Relationship is now **top-down**: the `ComponentGroup` lists which Component+version combinations it contains (instead of Components pointing up to an Application). This allows a Component to belong to multiple groups.
-- `spec.components[]` lists Component + `componentVersion.name` pairs.
-- `spec.testGraph` provides an optional DAG for **test ordering** (run expensive/dependent tests in sequence).
-- `spec.dependents` allows one group's new snapshot to trigger snapshot creation for other groups.
-- `status.globalCandidateList` is owned by integration-service and tracks the last promoted image per component.
-- The `Release`/`ReleasePlan`/`ReleasePlanAdmission` CRDs need minor updates to support `ComponentGroup` alongside or instead of `Application`.
-- Multiple versions per component in one group is intentionally **deferred** to a future "custom Snapshot creation" feature.
+### ADR 0060 — ComponentGroups (`Proposed`)
+**Decision:** Deprecates and replaces the `Application` CR with a `ComponentGroup` CR owned by integration-service. Key design choices:
+- Relationship defined **top-down**: the `ComponentGroup` lists which `Component`/`componentVersion` pairs it contains (inverts the old `spec.application` field on `Component`).
+- A single Component can belong to **multiple** ComponentGroups (solving the old 1:1 constraint).
+- The `spec.testGraph` field enables **ordered integration testing** (DAG of `IntegrationTestScenario` dependencies).
+- The `spec.dependents` field triggers Snapshot creation for child ComponentGroups when a parent Snapshot is created.
+- The `status.globalCandidateList` replaces the per-Application GCL.
+- Release CRDs must be updated to reference a `ComponentGroup` instead of an `Application`.
 
 ---
 
-### ADR-0029 — Component Dependencies / Nudging (`status: Accepted`)
-
-An earlier (2023) decision that introduced the **nudging** mechanism, still relevant to the new model.
-
-**What was decided:**
-
-- New `build-nudges-ref` field on `Component` lets one component declare it should push digest updates to another (forming a DAG).
-- **Nudging** components: builds skip all testing/promotion; build-service propagates a PR with the new digest to the nudged repo.
-- **Nudged** components: tested and promoted normally.
-- **PR Groups**: PRs sharing a branch-name prefix (delimited by `@`) are treated as a group and tested together by integration-service.
-- ADR-0056 later moved nudging into the integration test pipeline.
-
----
-
-### ADR-0004 — Component Image Location (`status: Implemented`)
-
-An early (2022) decision, now largely superseded.
-
-**What was decided:** Each Component gets an auto-provisioned Quay.io image repository under `quay.io/redhat-user-workloads/<namespace>/<app>/<component>`, managed by `image-controller` with scoped robot account tokens.
+### ADR 0067 — Nudging Relationship via Singleton CRD (`Proposed`, partially supersedes ADR 0029)
+**Decision:** Moves nudging relationship storage off the `Component` CR into a new **`NudgeConfig`** singleton CRD per namespace, owned by integration-service. Key points:
+- At most one `NudgeConfig` per namespace, enforced by CEL validation on `metadata.name`.
+- Each entry specifies `from`, `to`, and `mode` (`immediate` or `validated`).
+- **Immediate mode:** nudge fires as soon as the source build PipelineRun succeeds (preserves ADR 29 behavior).
+- **Validated mode:** nudge fires only after the Snapshot for the named `gatingGroup` passes integration tests — eliminates redundant downstream builds.
+- build-service retains Renovate tooling; integration-service becomes the nudge orchestrator.
+- Cycle detection, self-nudge prevention, and duplicate-pair rejection enforced via CRD-level CEL rules.
+- One-time automated migration from `build-nudges-ref` → `NudgeConfig` (mode: immediate).
+- The `build-nudges-ref` field on `Component` is deprecated and will be removed.
 
 ---
 
-## Key Takeaways for Your Proposal
+## Summary for Your Proposal
 
-Before proposing changes, be aware:
+The key active decisions you must be aware of when proposing changes to the component model are:
 
-1. The community has **already decided** to deprecate the `Application` CR in favor of `ComponentGroup` (ADR-0060). Any proposal that touches this boundary needs to align with or explicitly engage that decision.
-2. Multi-version support is now **first-class** in the `Component` spec (ADR-0056) — you don't need a new Component per branch.
-3. Service ownership is clearly split: `build-service` → Component/versions, `integration-service` → ComponentGroup.
-4. The `Snapshot` resource remains a shared coupling point between integration-service and release-service — noted as a known limitation.
-5. ADR-0056 is `Implementable` (in progress); ADR-0060 is still `Proposed` — so the ComponentGroup side has room for input.
+| Topic | Current ADR decision |
+|---|---|
+| What is a Component? | One CR per git repo, with multiple named `versions` (branches/tags) inside it — **ADR 56** |
+| What replaces Application? | `ComponentGroup` CR, owned by integration-service — **ADR 60** |
+| Who owns the Component API? | build-service — **ADR 56** |
+| Who owns ComponentGroup API? | integration-service — **ADR 60** |
+| How are nudge dependencies stored? | New `NudgeConfig` singleton CRD per namespace — **ADR 67** |
+| Who orchestrates nudges? | integration-service (moved from build-service) — **ADR 67** |
+| Cross-component scope for nudges? | Namespace-scoped (widened from Application-scoped) — **ADR 67** |
+
+All four ADRs are interlinked — any new proposal touching the component model should cite ADR 56 and 60 as the baseline, and be careful not to conflict with the ownership boundaries (build-service owns `Component`, integration-service owns `ComponentGroup` and `NudgeConfig`).

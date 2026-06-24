@@ -1,68 +1,61 @@
-# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
-Here is a summary of what the architecture repo records on prior decisions about the Konflux component model:
+# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
+Here is a summary of what was decided across the relevant ADRs:
 
 ---
 
-## Konflux Component Model — ADR Summary
+## ADRs on the Konflux Component Model
 
-### Current State (as of the repo)
+### ADR-0056 — Revised Component Model (`Implementable`)
+**The core decision.** The old `Application`/`Component` model is being replaced with two new concepts:
 
-The component model has been substantially revised and is mid-migration. The most important ADRs are:
+- **Component Versions** (`spec.source.versions[]`): A single `Component` CR now carries multiple branches/tags as named versions. No more creating a separate Component per branch/release stream. `build-service` owns this API going forward.
+- **Component Groups** (replaces `Application`): A `ComponentGroup` CR references one or more `(Component, version)` pairs and forms a DAG representing the release structure. A component version can belong to multiple groups. `integration-service` owns this API and is responsible for decommissioning the old `Application` API.
 
----
+The old model forced re-registration of a component for each use case and had unclear ownership (originally HAS, which is now deprecated). The new model fixes both.
 
-### ADR-0056 — Revised Component Model *(Implementable)*
-The pivotal decision. Key changes:
-- **Component Versions:** A single `Component` CR can now track multiple branches/tags via `spec.source.versions[]`. No more duplicating Component objects per branch.
-- **ComponentGroup replaces Application:** A `ComponentGroup` is a DAG of Component Versions representing a release unit. A Component can belong to *multiple* ComponentGroups (removing the old one-component-one-application constraint).
-- **HAS deprecated:** `hybrid-application-service` is archived. Its webhook validations move to CRD CEL rules; its OwnerReference defaulting moves to Build Service.
-- **Clear ownership:** Build Service owns the `Component` CRD. Integration Service will own `ComponentGroup`.
-
----
-
-### ADR-0060 — ComponentGroups *(Proposed)*
-Specifies the `ComponentGroup` CRD in detail:
-- Defined top-down: the ComponentGroup lists which `Component/Version` pairs it contains (not bottom-up via `spec.application`).
-- `spec.dependents[]` triggers downstream Snapshots.
-- `spec.testGraph` supports test ordering between IntegrationTestScenarios.
-- `status.globalCandidateList` replaces per-Component GCL tracking.
+**Key spec changes to `Component`:**
+- `spec.source.versions[]` — list of named versions (branch + optional dockerfile/context/pipeline overrides)
+- `spec.default-build-pipeline` — default pipeline for all versions, overridable per version
+- `spec.actions` — imperative triggers (e.g., `trigger-push-build`, `create-pipeline-configuration-pr`)
+- `spec.containerImage` — set by controller when an `ImageRepository` is created
 
 ---
 
-### ADR-0067 — NudgeConfig Singleton CRD *(Proposed)*
-Moves nudging relationships off the Component CR:
-- Replaces `spec.build-nudges-ref` (ADR-0029) with a new `NudgeConfig` singleton CRD per namespace.
-- Adds a `validated` mode: nudges only fire after integration tests pass, not immediately after a build.
-- Nudge orchestration moves from Build Service → Integration Service.
+### ADR-0060 — ComponentGroups (`Proposed`)
+**The integration-service's design for the replacement of `Application`.** Key decisions:
+
+- `ComponentGroup` lists `(component, componentVersion.name)` pairs top-down (instead of components pointing up to an application). This allows a component to belong to multiple groups.
+- Adds a `testGraph` field to define an ordered DAG of `IntegrationTestScenarios` — enabling test serialization and avoiding running expensive tests unnecessarily.
+- Adds a `dependents` field: when a snapshot is created for group A, snapshots are also created for listed dependent groups.
+- `status.globalCandidateList` moves onto the `ComponentGroup` (away from `Application`).
+- The `Release` CRD's `spec.application` field will be updated to support `ComponentGroups`.
+- Multiple component versions per component in one group is **deferred** until custom Snapshot creation is implemented.
+- API group is `konflux-ci.dev/v1alpha1` (not the old `appstudio.redhat.com`).
 
 ---
 
-### ADR-0068 — API Group Migration *(Proposed)*
-All CRDs (including `Component`) migrate from `appstudio.redhat.com/v1alpha1` → `konflux-ci.dev/v1alpha1`.
+### ADR-0029 — Component Dependencies (`Accepted`)
+**Decided how components express build-time dependencies (nudging).** Key decisions:
+
+- `build-nudges-ref` field on `Component` CRs declares that builds of component A should propagate digest updates to component B as a PR ("nudging").
+- `integration-service` skips all testing and promotion for **nudging** components; only the **nudged** component runs tests and triggers releases.
+- **PR Groups**: PRs sharing the same `@`-prefixed source branch name are treated as a group, and integration-service tests them together.
+- `build-service` acts like a renovatebot controller: on a successful nudging build, it files/updates a PR on the nudged component's repo with the new digest.
+
+> **Note:** ADR-0056 mentions that nudging will eventually move into the integration test pipeline, superseding some of this.
 
 ---
 
-### Earlier Decisions Still Relevant
-
-| ADR | What was decided |
-|-----|-----------------|
-| **0004** | Image Controller creates a per-Component Quay.io repo on Component creation; sets `spec.containerImage` |
-| **0029** | `build-nudges-ref` on Component CR for nudging; nudging components are never tested or released directly |
-| **0032** | Deployment (Environments, GitOps) decoupled from build/test; Component model retained as-is at that point |
-| **0037/0038** | GCL promoted *immediately* on Snapshot creation (not gated by test pass); Composite Snapshots removed |
-| **0052** | GitOps-only Component onboarding; UI-based creation deprecated |
+### ADR-0004 — Component Image Location (`Implemented`)
+An earlier, fully implemented decision: each `Component` gets its own auto-provisioned Quay.io image repository under `quay.io/redhat-user-workloads/<namespace>/<app>/<component>`, with a scoped robot account token. Users don't need to supply an image registry.
 
 ---
 
-### Key Constraints to Be Aware of for a New Proposal
+## Bottom Line for Your Proposal
 
-1. `spec.source.url` is **immutable** once set on a Component.
-2. `spec.source.versions[].revision` (branch) is **immutable** per version entry.
-3. Components can now belong to **multiple** ComponentGroups — proposals that assume a one-to-one Application relationship conflict with ADR-0056/0060.
-4. CDQ (auto-detection of buildable components from a repo URL) was **intentionally not migrated** and will not return.
-5. NudgeConfig is **namespace-scoped** (ADR-0067), not Application-scoped.
-6. Release Service CRDs must be installed even in clusters that don't use nudging — the Build Service nudging controller cannot be selectively disabled.
-
----
-
-What changes are you proposing? Given the active work on ADR-0056 and ADR-0060, it would be worth checking whether your proposal aligns with or conflicts with the revised Component/ComponentGroup model that is currently being implemented.
+Before writing your proposal, note these constraints already decided:
+1. The `Application` CR is being **deprecated** — any proposal should use or extend `ComponentGroup`, not `Application`.
+2. `build-service` owns the `Component` API; `integration-service` owns `ComponentGroup`. Proposals touching both need to respect this ownership split.
+3. Component versions must be **named branches/tags** — default-branch-only builds are explicitly not supported in the new model.
+4. Nudging (`build-nudges-ref`) is Accepted but may be relocated per ADR-0056's roadmap.
+5. ADR-0060 is still `Proposed` — that's the most open area for influence right now.
