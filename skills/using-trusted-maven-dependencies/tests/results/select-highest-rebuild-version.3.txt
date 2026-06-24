@@ -1,0 +1,12 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+I don't have specific information about the differences between those two Red Hat rebuilds of Guava 31.1-jre. To help you choose the right one, I'd recommend:
+
+1. **Check the Red Hat repository documentation** - The trusted Maven repository should have release notes or documentation explaining what changed between `-redhat-00001` and `-redhat-00002`.
+
+2. **Look for security patches** - Red Hat typically increments rebuild versions to include security fixes. `-redhat-00002` is likely a newer version with additional patches compared to `-redhat-00001`.
+
+3. **Check the repository metadata** - You can often find changelog entries or commit messages in the Red Hat Maven repository that explain what was fixed in each rebuild.
+
+4. **Default to the latest** - Unless you have a specific reason to use an older rebuild, I'd recommend using `-redhat-00002` as it's the most recent version and likely includes all fixes from the earlier rebuild.
+
+If you have access to the repository's documentation or release notes, those would provide the definitive answer. Would you like help updating your Maven configuration to use one of these versions?

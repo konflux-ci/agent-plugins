@@ -1,0 +1,36 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+It depends on what you're using the repository for:
+
+**Add to `<repositories>` if:**
+- You need dependencies (libraries, frameworks, etc.) from that repository
+
+**Add to `<pluginRepositories>` if:**
+- You need Maven plugins (build tools, code generators, etc.) from that repository
+
+**Add to BOTH if:**
+- The repository contains both regular dependencies AND plugins you want to use
+
+In most cases, you only need one or the other. For example:
+- A repository hosting utility libraries → only `<repositories>`
+- A repository with custom Maven plugins → only `<pluginRepositories>`
+- A comprehensive repository with both → both sections
+
+Here's an example structure:
+
+```xml
+<repositories>
+  <repository>
+    <id>trusted-repo</id>
+    <url>https://example.com/maven</url>
+  </repository>
+</repositories>
+
+<pluginRepositories>
+  <pluginRepository>
+    <id>trusted-repo</id>
+    <url>https://example.com/maven</url>
+  </pluginRepository>
+</pluginRepositories>
+```
+
+If you only add it to one section, Maven won't find artifacts from that repository in the other section, so you'd get a "not found" error if you try to use something from the wrong category.

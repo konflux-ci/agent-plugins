@@ -1,0 +1,24 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+There are no `pom.xml` files in the current directory, and `mvn` is not available. However, I can still answer your question directly.
+
+---
+
+**Yes, you can use that trusted rebuild — but with one important caveat.**
+
+The rebuild version `5.3.21-redhat-00001` has a **different base version** (`5.3.21`) than your declared dependency (`5.3.20`). The skill's rules require that the base version match exactly — you cannot upgrade (or downgrade) the base version during a trusted rebuild substitution.
+
+This means:
+
+- `5.3.20` → `5.3.20-redhat-XXXXX` would be **allowed** (same base version with a rebuild suffix)
+- `5.3.20` → `5.3.21-redhat-00001` is **not allowed** (base version changed from `5.3.20` to `5.3.21`)
+
+Even though the rebuild is from a trusted source, substituting it would be a version **upgrade** (`5.3.20` → `5.3.21`), not just a rebuild of the same artifact. This could introduce unintended behavioral or API changes.
+
+**What you should do:**
+
+1. Check the `redhat-ga` repository's `maven-metadata.xml` for a rebuild of the exact base version `5.3.20`:
+   ```
+   https://maven.repository.redhat.com/ga/org/springframework/spring-core/maven-metadata.xml
+   ```
+2. Look for a version matching `5.3.20-redhat-[\d]+`. If one exists, use that instead.
+3. If no `5.3.20` rebuild exists, you would need to make a deliberate decision to **upgrade** to `5.3.21-redhat-00001` as a separate version bump, not as part of a trusted rebuild substitution.

@@ -1,0 +1,8 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+To update your Maven project to use a trusted repository, I need to collect some information from you. Please provide:
+
+1. **Repository ID**: A single kebab-case identifier for the Maven repository (e.g., `my-trusted-repo`)
+2. **Repository URL**: A valid HTTPS URL to the root of the Maven repository (e.g., `https://repo.example.com/maven`)
+3. **Rebuild Version Suffix**: A regex pattern for the rebuild suffix (e.g., `rebuild-[\d]+` or `myorg-[\d]*`)
+
+You can provide these values directly in your next message, and I'll update your Maven project accordingly.

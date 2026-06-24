@@ -1,0 +1,15 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+Not necessarily. You only need to add it to both sections if you need dependencies from that repository in **both** places:
+
+- **`<repositories>`** — for regular project dependencies (libraries your code uses)
+- **`<pluginRepositories>`** — for Maven plugins (build tools, code generators, etc.)
+
+**Common scenarios:**
+
+1. **Only regular dependencies**: Add to `<repositories>` only
+2. **Only plugins**: Add to `<pluginRepositories>` only
+3. **Both dependencies and plugins from the same repo**: Add to both sections
+
+If you're unsure, a safe approach is to add it to both sections — it doesn't hurt to have it in both, and it ensures the repository is available for whatever you need from it.
+
+If you're working with a specific trusted Maven repository and want guidance on the exact setup, feel free to share your `pom.xml` or the repository details and I can help you configure it correctly.

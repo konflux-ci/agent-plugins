@@ -1,0 +1,8 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+To update your Maven project to use a trusted repository instead of Maven Central, I need three pieces of information from you:
+
+1. **Repository ID**: A kebab-case identifier for the repository (e.g., `trusted-repo`, `internal-maven`)
+2. **Repository URL**: The HTTPS URL to the root of the Maven repository (e.g., `https://repo.example.com/maven`)
+3. **Rebuild Version Suffix**: A regex pattern that matches the suffix applied to rebuilt dependencies (e.g., `rebuild-[\d]+`, `redhat-[\d]+`)
+
+Please provide these three values, and I'll proceed with updating your Maven configuration.

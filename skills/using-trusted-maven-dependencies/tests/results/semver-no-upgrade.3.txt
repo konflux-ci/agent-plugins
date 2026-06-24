@@ -1,0 +1,17 @@
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+The metadata endpoint returned a 404, meaning `org.springframework:spring-core` may not be present in the redhat-ga repository at that path. However, I can answer your question definitively based on the version information you've provided.
+
+---
+
+**No, you cannot use `5.3.21-redhat-00001` as a trusted rebuild of `5.3.20`.**
+
+The version `5.3.21-redhat-00001` has a base version of `5.3.21`, which does **not** match your dependency's base version of `5.3.20`. The PATCH component differs (`21` vs `20`).
+
+Per the trusted rebuild replacement rules, the base version (all components before the rebuild suffix) must match **exactly**. Using `5.3.21-redhat-00001` would constitute an **upgrade** of the base version, which is not permitted — it could introduce unintended behavioral changes beyond what a trusted rebuild guarantees.
+
+A valid trusted rebuild for `org.springframework:spring-core:5.3.20` would need to look like:
+- `5.3.20-redhat-00001`
+- `5.3.20.redhat-00001`
+- `5.3.20+redhat-00001`
+
+If no such `5.3.20` rebuild exists in the redhat-ga repository, then this dependency **cannot** be replaced with a trusted rebuild from that repository.

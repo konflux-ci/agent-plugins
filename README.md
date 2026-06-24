@@ -48,6 +48,15 @@ Trace Konflux builds from container images back to source:
 
 Navigate the two canonical sources of Konflux design information (service specs, ADRs, user guides, API references) with a progressive discovery strategy for evaluating and critiquing feature proposals.
 
+### using-trusted-maven-dependencies
+
+Update a Maven project to use dependencies from a trusted repository:
+
+- Replace Maven Central dependencies with security-patched rebuilds
+- Add trusted repository configuration to `pom.xml` (`<repositories>` and `<pluginRepositories>`)
+- Enforce semantic version equivalence (no upgrades or downgrades)
+- Handle property-based versions by updating `<properties>` entries
+
 ### component-build-status
 
 Trigger build of Konflux Component:
