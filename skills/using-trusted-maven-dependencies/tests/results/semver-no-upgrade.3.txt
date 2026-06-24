@@ -1,31 +1,17 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-Looking at your request, I need to point out an important constraint with using trusted Maven rebuilds:
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+The metadata endpoint returned a 404, meaning `org.springframework:spring-core` may not be present in the redhat-ga repository at that path. However, I can answer your question definitively based on the version information you've provided.
 
-**The rebuild version you mentioned cannot be used** because it represents a semantic version upgrade, not just a rebuild of the same version.
+---
 
-Here's why:
+**No, you cannot use `5.3.21-redhat-00001` as a trusted rebuild of `5.3.20`.**
 
-- **Current version**: 5.3.20
-- **Rebuild version**: 5.3.21-redhat-00001
+The version `5.3.21-redhat-00001` has a base version of `5.3.21`, which does **not** match your dependency's base version of `5.3.20`. The PATCH component differs (`21` vs `20`).
 
-The rebuild has a different semantic version (5.3.**21** vs 5.3.**20**). According to the trusted Maven dependencies process, replacements must maintain the **same semantic version** (MAJOR.MINOR.PATCH) with only a rebuild suffix added.
+Per the trusted rebuild replacement rules, the base version (all components before the rebuild suffix) must match **exactly**. Using `5.3.21-redhat-00001` would constitute an **upgrade** of the base version, which is not permitted — it could introduce unintended behavioral changes beyond what a trusted rebuild guarantees.
 
-## Valid vs Invalid Replacements
-
-✅ **Valid** (same semantic version):
-- `5.3.20` → `5.3.20-redhat-00001` *(adds suffix only)*
-- `5.3.20` → `5.3.20.redhat-00001` *(adds suffix only)*
-
-❌ **Invalid** (semantic version change):
-- `5.3.20` → `5.3.21-redhat-00001` *(upgrades PATCH version)*
-
-## What you need
-
-To use a trusted rebuild of `spring-core:5.3.20`, you would need to find a rebuild that maintains version `5.3.20` with a Red Hat suffix, such as:
+A valid trusted rebuild for `org.springframework:spring-core:5.3.20` would need to look like:
 - `5.3.20-redhat-00001`
 - `5.3.20.redhat-00001`
+- `5.3.20+redhat-00001`
 
-**Would you like me to:**
-1. Help you check if a `5.3.20-redhat-*` rebuild exists in the Red Hat GA repository?
-2. Proceed with a standard version upgrade to 5.3.21 (without using the trusted rebuild process)?
-3. Look for a different approach?
+If no such `5.3.20` rebuild exists in the redhat-ga repository, then this dependency **cannot** be replaced with a trusted rebuild from that repository.

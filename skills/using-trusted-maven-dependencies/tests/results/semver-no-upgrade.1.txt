@@ -1,28 +1,31 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-I need to address an important concern about the version you mentioned.
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+I have the skill loaded. Let me confirm the input variables before proceeding:
 
-**You cannot use version 5.3.21-redhat-00001 as a replacement for 5.3.20.**
+- **Repository ID** (`repository.id`): `redhat-ga` (as you mentioned)
+- **Repository URL** (`repository.url`): `https://maven.repository.redhat.com/ga`
+- **Rebuild Version Suffix** (`rebuild.suffix`): Based on the version `5.3.21-redhat-00001`, the suffix pattern would be `redhat-[\d]+`
 
-According to the skill's requirements, when replacing versions with trusted rebuilds, I must ensure that the replaced version has an **equivalent semantic version** (MAJOR.MINOR.PATCH). The process explicitly prohibits semantic version upgrades or downgrades.
+However, before going further, I need to flag an important issue with the rebuild you've identified.
 
-Your situation:
-- **Current version**: 5.3.20
-- **Proposed version**: 5.3.21-redhat-00001
+---
 
-This represents a **PATCH version upgrade** (from 5.3.20 to 5.3.21), which is not allowed during this process.
+**The rebuild version `5.3.21-redhat-00001` cannot be used for `org.springframework:spring-core:5.3.20`.**
 
-## What you need instead:
+The skill requires that the **base version must match exactly**. For SemVer artifacts, `MAJOR.MINOR.PATCH` must be identical:
 
-You would need a trusted rebuild of the **exact same version** 5.3.20, such as:
-- `5.3.20-redhat-00001`
-- `5.3.20.redhat-00001`
-- `5.3.20+redhat-00001`
+| | Value |
+|---|---|
+| Your dependency version | `5.3.20` |
+| Rebuild base version | `5.3.21` |
+| Match? | **No** — patch version differs (`20` vs `21`) |
 
-## Your options:
+Using `5.3.21-redhat-00001` would be a **base version upgrade** from `5.3.20` to `5.3.21`, which is not permitted. The trusted rebuild process is designed to be a drop-in replacement at the same version — not a version upgrade — to avoid unintended behavior changes or regressions.
 
-1. **Check if a 5.3.20 rebuild exists** on the RedHat GA repository at:
-   `https://maven.repository.redhat.com/ga/org/springframework/spring-core/`
+---
 
-2. **Separately upgrade to 5.3.21** first (as a normal dependency update), then apply the trusted rebuild process to replace 5.3.21 with 5.3.21-redhat-00001
+**What you can do instead:**
 
-Would you like me to help you check if a rebuild of 5.3.20 exists, or would you prefer to first upgrade your dependency to 5.3.21?
+1. **Find a rebuild of `5.3.20` specifically** — check if `5.3.20-redhat-XXXXX` exists in the RedHat GA repository. I can fetch `https://maven.repository.redhat.com/ga/org/springframework/spring-core/maven-metadata.xml` to check if one exists.
+2. **Upgrade your dependency to `5.3.21` first** (as a deliberate version upgrade), and then apply the trusted rebuild `5.3.21-redhat-00001`.
+
+Would you like me to check if a `5.3.20` rebuild exists in the repository, or would you like to proceed with option 2?

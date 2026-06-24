@@ -1,27 +1,36 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-No, it depends on what you need from the repository:
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+It depends on what you're using the repository for:
 
-- **`<repositories>` only** — if you only use regular project dependencies from it
-- **`<pluginRepositories>` only** — if you only use Maven plugins from it  
-- **Both sections** — if you need both project dependencies and plugins from the same repository
+**Add to `<repositories>` if:**
+- You need dependencies (libraries, frameworks, etc.) from that repository
 
-In practice, if you're adding a trusted Maven repository, it's safest to add it to both sections. This ensures that whether Maven needs to resolve a plugin or a dependency from that repository, it can find it. The extra entry is minimal and prevents issues if you later add a plugin or dependency from the same repository.
+**Add to `<pluginRepositories>` if:**
+- You need Maven plugins (build tools, code generators, etc.) from that repository
 
-**Example:**
+**Add to BOTH if:**
+- The repository contains both regular dependencies AND plugins you want to use
+
+In most cases, you only need one or the other. For example:
+- A repository hosting utility libraries → only `<repositories>`
+- A repository with custom Maven plugins → only `<pluginRepositories>`
+- A comprehensive repository with both → both sections
+
+Here's an example structure:
+
 ```xml
 <repositories>
   <repository>
-    <id>my-trusted-repo</id>
-    <url>https://repo.example.com/maven</url>
+    <id>trusted-repo</id>
+    <url>https://example.com/maven</url>
   </repository>
 </repositories>
 
 <pluginRepositories>
   <pluginRepository>
-    <id>my-trusted-repo</id>
-    <url>https://repo.example.com/maven</url>
+    <id>trusted-repo</id>
+    <url>https://example.com/maven</url>
   </pluginRepository>
 </pluginRepositories>
 ```
 
-If you're actively adding a trusted repository to your pom.xml right now, the `/using-trusted-maven-dependencies` skill can help walk through the full setup.
+If you only add it to one section, Maven won't find artifacts from that repository in the other section, so you'd get a "not found" error if you try to use something from the wrong category.

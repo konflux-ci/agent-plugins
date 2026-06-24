@@ -1,31 +1,15 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-It depends on what you're sourcing from the trusted repository:
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+Not necessarily. You only need to add it to both sections if you need dependencies from that repository in **both** places:
 
-- **`<repositories>`** — where Maven looks for project dependencies (libraries your code depends on)
-- **`<pluginRepositories>`** — where Maven looks for Maven plugins (build tools and extensions)
+- **`<repositories>`** — for regular project dependencies (libraries your code uses)
+- **`<pluginRepositories>`** — for Maven plugins (build tools, code generators, etc.)
 
-Add the repository to:
-- **Just `<repositories>`** if you're only sourcing project dependencies
-- **Just `<pluginRepositories>`** if you're only sourcing Maven plugins
-- **Both sections** if you're sourcing both types of artifacts from the same repository
+**Common scenarios:**
 
-In practice, if you're setting up a trusted internal repository, it often makes sense to add it to both sections since it typically serves as a complete replacement for Maven Central and hosts both types of artifacts.
+1. **Only regular dependencies**: Add to `<repositories>` only
+2. **Only plugins**: Add to `<pluginRepositories>` only
+3. **Both dependencies and plugins from the same repo**: Add to both sections
 
-Example structure:
-```xml
-<repositories>
-  <repository>
-    <id>trusted-repo</id>
-    <url>https://your-repo-url</url>
-  </repository>
-</repositories>
+If you're unsure, a safe approach is to add it to both sections — it doesn't hurt to have it in both, and it ensures the repository is available for whatever you need from it.
 
-<pluginRepositories>
-  <pluginRepository>
-    <id>trusted-repo</id>
-    <url>https://your-repo-url</url>
-  </pluginRepository>
-</pluginRepositories>
-```
-
-If you're updating your pom.xml to use a trusted Maven repository, I can help with that—use the `/using-trusted-maven-dependencies` skill if you'd like guidance on configuration.
+If you're working with a specific trusted Maven repository and want guidance on the exact setup, feel free to share your `pom.xml` or the repository details and I can help you configure it correctly.

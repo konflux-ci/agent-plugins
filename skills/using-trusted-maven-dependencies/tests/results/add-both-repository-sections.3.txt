@@ -1,29 +1,19 @@
-# skill_digest: 2e6cf11f3a656f698e71d6d762603d30cd68ab6ef5b208accd8739e6a495de6a
-No, it depends on what you need from that repository:
+# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
+No, you don't necessarily need to add it to both sections, but it depends on your use case:
 
-- **`repositories`** — for project dependencies (JARs your code imports)
-- **`pluginRepositories`** — for Maven plugins (tools used during the build)
+**`<repositories>`** section:
+- Used for project dependencies (libraries your code uses)
+- Required if the trusted repository contains your project's dependencies
 
-Add to only the section that applies:
-- If the repository only hosts dependencies: just `repositories`
-- If the repository only hosts plugins: just `pluginRepositories`
-- If it hosts both: add to both sections
+**`<pluginRepositories>`** section:
+- Used for Maven plugins (build tools)
+- Required if the trusted repository contains Maven plugins you need
 
-**Example:**
-```xml
-<repositories>
-  <repository>
-    <id>trusted-repo</id>
-    <url>https://your-trusted-repo.com/maven</url>
-  </repository>
-</repositories>
+**In practice:**
+- If your repository only hosts library dependencies, add it to `<repositories>`
+- If it only hosts plugins, add it to `<pluginRepositories>`
+- If it hosts both, add it to both sections
 
-<pluginRepositories>
-  <pluginRepository>
-    <id>trusted-repo</id>
-    <url>https://your-trusted-repo.com/maven</url>
-  </pluginRepository>
-</pluginRepositories>
-```
+Most commonly, you'll only need the `<repositories>` section. You'd only need `<pluginRepositories>` if you're using custom build plugins from that repository.
 
-If you're updating a Maven project to use a trusted repository and want help applying this, I can assist with the `using-trusted-maven-dependencies` skill.
+If you're working on updating a Maven project to use a trusted repository, I can help you with the specific configuration. Just let me know what you're trying to set up!
