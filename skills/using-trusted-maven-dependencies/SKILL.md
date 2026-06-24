@@ -1,13 +1,13 @@
 ---
 name: using-trusted-maven-dependencies
 description: Use when updating a Maven project to source its dependencies from a trusted Maven repository instead of Maven Central.
-allowed-tools: Bash(grep*), Read(/tmp/use-trusted-maven-dependencies/**), Bash(rm /tmp/use-trusted-maven-dependencies/*), Bash(mvn help:effective-pom*), WebFetch
+allowed-tools: Bash(grep*), Read(/tmp/use-trusted-maven-dependencies/**), Bash(mkdir -p /tmp/use-trusted-maven-dependencies*), Bash(rm /tmp/use-trusted-maven-dependencies/*), Bash(mvn help:effective-pom*), WebFetch
 ---
 
 # Use Trusted Maven Dependencies
 
 Update a Maven project to use dependencies from a trusted Maven repository.
-These repositories may published rebuilds of publicly available dependencies in a secured environment,
+These repositories may publish rebuilds of publicly available dependencies in a secured environment,
 and may include security patches absent from public repositories like Maven Central.
 
 This skill will add the provided Maven repository as a source for code dependencies as well as 
@@ -70,6 +70,7 @@ Print "Checking if the trusted repository is enabled..."
 
 Run:
 ```
+mkdir -p /tmp/use-trusted-maven-dependencies
 mvn help:effective-pom -Doutput=/tmp/use-trusted-maven-dependencies/effective-pom.xml -q
 ```
 
@@ -95,9 +96,10 @@ Scan all project `pom.xml` files (excluding those under `src/` or `target/`) for
 - `<dependency>` elements (both inside `<dependencyManagement>` and standalone `<dependencies>`)
 - `<plugin>` elements (including nested `<dependency>` elements within plugins)
 
-For each artifact, check the trusted repository for a rebuild at:
+For each artifact, use `WebFetch` to check the trusted repository for a rebuild. Fetch the
+`maven-metadata.xml` at:
 ```
-${repository.url}<groupId/as/path>/<artifactId>/
+${repository.url}<groupId/as/path>/<artifactId>/maven-metadata.xml
 ```
 
 Rebuilds share the same `groupId`, `artifactId`, and base `<version>`. Trusted rebuilds will have a
@@ -121,9 +123,10 @@ If multiple rebuilds exist, select the highest version as reported in the reposi
 <my.lib.version>1.2.3-redhat-00001</my.lib.version>
 ```
 
-When replacing versions, you MUST ensure that the replaced version has an equivalent semantic version
-(`MAJOR.MINOR.PATCH`), in accordance with [SemVer v2](https://semver.org/spec/v2.0.0.html). DO NOT
-semantically upgrade or downgrade versions during this process.
+When replacing versions, you MUST ensure that the replaced version has an equivalent base version. DO NOT
+upgrade or downgrade the base version during this process. For SemVer artifacts this means `MAJOR.MINOR.PATCH`
+must match exactly. For non-SemVer artifacts (e.g., `31.1-jre`), the entire base version string before the
+rebuild suffix must match.
 
 **Allowed replacement**
 
@@ -177,3 +180,9 @@ For each replaced version, print:
 ```
 Replaced <groupId>:<artifactId>:<version> with trusted version <trustedVersion>
 ```
+
+## Keywords
+
+Maven, pom.xml, trusted repository, Maven Central, dependency management, pluginRepositories,
+security patches, artifact rebuilds, supply chain security, version replacement, effective POM,
+maven-metadata.xml, rebuild suffix, semver, Konflux, Java, build dependencies
