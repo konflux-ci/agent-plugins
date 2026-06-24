@@ -378,16 +378,12 @@ Use debug logs to diagnose:
    - Extract cluster, namespace, and PipelineRun details using gh CLI
    - Parse PipelineRun URLs for kubectl debugging
 
-4. **self-test-skill-invocation**
-   - Self-test skill to verify the test framework correctly loads and invokes skills
-   - Not for production use
-
-5. **understanding-konflux-resources** (v1.0.1)
+4. **understanding-konflux-resources** (v1.0.1)
    - Reference for Konflux Custom Resources
    - Addresses Application vs Component confusion
    - Covers namespace placement and resource lifecycle
 
-6. **working-with-provenance** (v1.0.0)
+5. **working-with-provenance** (v1.0.0)
    - Trace Konflux builds from image references
    - Find build logs from artifacts and verify source commits
    - Extract provenance attestations to navigate from images to builds and source
