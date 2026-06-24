@@ -1,0 +1,7 @@
+# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
+The Build Service owns **two CRDs**, as listed in the `key_crds` field of `build-service.md`:
+
+1. **Component** — The primary input for the Build Service; monitored by the Component Build Controller to create PipelineRun definitions for Pipelines as Code.
+2. **Repository** — Also owned by the Build Service (a Pipelines as Code `Repository` CR used to configure webhook-driven builds).
+
+Additionally, the file notes that the Build Service *reads* (but does not own) `ReleasePlanAdmission` CRDs from the Release Service for the component nudging/dependency update feature.

@@ -1,0 +1,65 @@
+# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
+Here is a summary of what was decided across the relevant ADRs:
+
+---
+
+## Prior ADRs on the Konflux Component Model
+
+### ADR-0056 — Revised Component Model (`status: Implementable`)
+
+This is the primary, active ADR for the component model redesign. Key decisions:
+
+**Problem:** The old model required a new `Component` CR per use case even when the same code was used in multiple release scenarios, and API ownership was unclear (originally HAS, now deprecated).
+
+**Decisions:**
+- **Replace "Application" with "ComponentGroup"** as the grouping primitive.
+- **Introduce Component Versions** (`spec.source.versions[]`): a single `Component` CR now lists multiple named branches/tags (versions) instead of requiring a separate CR per branch. Each version has its own `revision`, `context`, `dockerfileUri`, and optionally a custom build pipeline.
+- **`build-service` owns the `Component` API** going forwards (including the new versions spec).
+- **`integration-service` owns the new `ComponentGroup` API** and will decommission the old `Application` API.
+- Default branch tracking is explicitly **not supported** — all versions must declare an explicit `revision`.
+- Phased rollout: build team first, then integration, then release, then full migration and decommission of old model.
+
+---
+
+### ADR-0060 — ComponentGroups (`status: Proposed`)
+
+Companion to ADR-0056, owned by integration-service. Key decisions:
+
+**Decisions:**
+- `ComponentGroup` replaces `Application`. The relationship is now **top-down** (ComponentGroup lists its components), not bottom-up (Component declaring its parent Application). This allows a Component to belong to **multiple ComponentGroups**.
+- `spec.components[]` lists component name + componentVersion name pairs.
+- `spec.testGraph` (optional) defines a **DAG of IntegrationTestScenarios** for ordered test execution — upstream prerequisites must pass before dependent tests run.
+- `spec.dependents` (optional) allows a snapshot on one ComponentGroup to **cascade and trigger snapshot creation** on listed child ComponentGroups.
+- `status.globalCandidateList` (GCL) moves onto the ComponentGroup itself.
+- **Multiple versions of the same component per group** are deferred — requires custom snapshot creation, not yet supported (workaround: list the same component twice with different versions).
+- `release-service` will need to update its `Release`, `ReleasePlan`, and `ReleasePlanAdmission` CRDs to reference `ComponentGroup` instead of `Application`.
+
+---
+
+### ADR-0029 — Component Dependencies (`status: Accepted`)
+
+Decided the **nudging model** for inter-component build propagation:
+
+- `build-nudges-ref` field on a Component names other Components whose git repos should receive digest-update PRs after a successful build.
+- **Nudging** components (those that nudge others) skip integration testing and do not trigger releases directly.
+- **Nudged** components are tested and released normally.
+- PR Groups (using `@`-prefixed source branch names) group related cross-component PRs for coordinated pre-merge testing.
+- **Note:** ADR-0056 mentions nudging is being **moved to the integration test pipeline** as part of the new model.
+
+---
+
+### ADR-0004 — Component Image Location (`status: Implemented`)
+
+Early, foundational decision: provision a **per-component Quay.io image repository** automatically (under `quay.io/redhat-user-workloads`) via the image-controller. This remains in effect.
+
+---
+
+## Bottom Line
+
+If you're proposing changes to the component model, the key constraints to be aware of are:
+
+1. **ADR-0056 is Implementable** — the new model (Component versions + ComponentGroups) is the committed direction. Any proposal needs to fit within or explicitly revise it.
+2. **API ownership is settled:** `build-service` → Component, `integration-service` → ComponentGroup.
+3. **The old Application CR is being deprecated** — proposals that depend on it will face headwinds.
+4. **Custom snapshot creation and multi-version-per-component are deferred** future enhancements.
+5. **Nudging is moving** from `build-nudges-ref` on Component CRs to integration test pipelines.

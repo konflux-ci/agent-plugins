@@ -1,0 +1,4 @@
+# skill_digest: 63a9c2f2293945d73cd7e25d09d1c32129fcbf7c31b6d70033a3606c804929fa
+According to the Konflux docs (`modules/testing/pages/integration/creating.adoc:188`), you set **`Spec.ResolverRef.ResourceKind`** to **`pipelinerun`** (lowercase `r`) in your integration test scenario definition.
+
+This is needed when you want to customize things like pipeline timeouts, service accounts, or workspaces — since the default `ResourceKind` is `pipeline`, but `pipelinerun` allows you to define those additional configurations directly in the referenced resource.
