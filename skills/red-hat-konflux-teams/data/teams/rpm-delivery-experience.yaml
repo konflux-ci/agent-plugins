@@ -1,0 +1,6 @@
+name: RPM Delivery Experience
+jira_project: ROK
+jira_components:
+  - RPM Delivery
+description: >
+  RPM delivery pipeline development, pushing to CDN.

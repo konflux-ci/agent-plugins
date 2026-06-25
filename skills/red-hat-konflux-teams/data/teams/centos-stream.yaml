@@ -1,0 +1,6 @@
+name: CentOS Stream
+jira_project: CS
+jira_components:
+  - CentOS Stream
+description: >
+  Adoption of Konflux in CentOS Stream workflows.

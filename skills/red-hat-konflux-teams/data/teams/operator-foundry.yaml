@@ -1,0 +1,8 @@
+name: Operator Foundry
+jira_project: CLOUDDST
+jira_components:
+  - Operators
+description: >
+  OLM Operators (RH, Certified, Community), File Based Configs (FBC),
+  Operator Indexes/Catalogs, FIPS compliance testing, Traditional
+  Container/Operator Test Pipelines.

@@ -1,0 +1,5 @@
+name: Java Builds
+jira_project: STONEBLD
+jira_components: []
+description: >
+  Java builds on Konflux.

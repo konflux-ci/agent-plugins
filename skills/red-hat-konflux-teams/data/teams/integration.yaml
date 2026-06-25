@@ -1,0 +1,8 @@
+name: Integration
+jira_project: STONEINTG
+jira_components:
+  - Integration
+description: >
+  Integration tests against Snapshot, security tests from build-pipelines
+  (e.g. clair-scan, clamav-scan, deprecated-image-check), Snapshot
+  Garbage Collection.

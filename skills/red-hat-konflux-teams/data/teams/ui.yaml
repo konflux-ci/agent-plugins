@@ -1,0 +1,6 @@
+name: UI
+jira_project: KFLUXUI
+jira_components:
+  - UI
+description: >
+  UI elements, error messages, site reloads, loading times.

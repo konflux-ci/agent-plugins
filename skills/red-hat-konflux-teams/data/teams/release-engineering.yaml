@@ -1,0 +1,9 @@
+name: Release Engineering
+jira_project: RELDEV
+jira_components:
+  - ContainerReleng
+description: >
+  ReleasePlanAdmission (RPA) configuration, konflux-release-data MRs
+  (excluding tenants-config), quay.io/redhat-services-prod, eng-id
+  assistance, policy exceptions, macos or windows binary signing,
+  secret management for managed cluster.

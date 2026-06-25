@@ -1,0 +1,8 @@
+name: Release
+jira_project: RELEASE
+jira_components:
+  - Release
+description: >
+  Release admission, release pipelines, FBC, Signing, release monitoring,
+  release advisories, operators, collectors. Review PRs in
+  release-service-catalog.

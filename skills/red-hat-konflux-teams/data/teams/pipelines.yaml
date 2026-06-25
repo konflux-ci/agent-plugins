@@ -1,0 +1,9 @@
+name: Pipelines
+jira_project: SRVKP
+jira_components:
+  - Pipelines
+description: >
+  Install and upgrade pipeline components across Konflux environments,
+  Pipelines-as-Code component queries, troubleshoot customer PipelineRun
+  failures using splunk and results logs, respond to Pipeline component
+  alerts.

@@ -1,0 +1,6 @@
+name: UXD
+jira_project: DTUX
+jira_components:
+  - UXD
+description: >
+  UX Design and Research.

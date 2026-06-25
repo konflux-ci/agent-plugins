@@ -1,0 +1,8 @@
+name: Developer Productivity
+jira_project: KFLUXDP
+jira_components:
+  - DevProd
+description: >
+  Devlake, Devlake MCP, engineering metrics, team weekly updates,
+  Tekton-integration-catalog, konflux component CI. FinOps:
+  cost-saving initiatives, right-sizing resources, cloud accounts.

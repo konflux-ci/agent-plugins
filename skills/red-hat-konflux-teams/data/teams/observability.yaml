@@ -1,0 +1,8 @@
+name: Observability
+jira_project: PVO11Y
+jira_components:
+  - O11Y
+description: >
+  Design and implement observability solutions for Konflux both on the
+  global and tenant level, maintaining and expanding the observability
+  toolset. Includes cost management to support business processes.

@@ -1,0 +1,7 @@
+name: RPM Storage Mechanism
+jira_project: ROK
+jira_components:
+  - RPM Storage
+description: >
+  Implementation of RPM Artifact Storage, embargoed content
+  classification.

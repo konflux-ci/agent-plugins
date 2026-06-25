@@ -1,0 +1,7 @@
+name: Kubearchive
+jira_project: KAR
+jira_components:
+  - Kubearchive
+description: >
+  Store Snapshots, Releases, PipelineRuns, TaskRuns and Pods in an
+  external DB. Has a REST API compatible with Kubernetes clients.

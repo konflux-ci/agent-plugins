@@ -1,0 +1,8 @@
+name: Vanguard
+jira_project: KFLUXVNGD
+jira_components:
+  - Vanguard
+description: >
+  Konflux-CI Upstream, Caching, Project Controller (multi-version),
+  Environment as a Service (EaaS), PipelineRun Results Notifier,
+  Internal Cluster Tooling.

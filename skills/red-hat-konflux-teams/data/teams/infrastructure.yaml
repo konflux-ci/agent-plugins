@@ -1,0 +1,8 @@
+name: Infrastructure
+jira_project: KFLUXINFRA
+jira_components:
+  - Infrastructure
+description: >
+  Infrastructure compute, network, storage, authentication, authorization,
+  ArgoCD for Konflux deployment, multi-arch builds (MPC), Kyverno,
+  namespace-lister, kueue, etcd-shield.

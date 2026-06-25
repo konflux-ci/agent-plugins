@@ -1,0 +1,9 @@
+name: Build
+jira_project: STONEBLD
+jira_components:
+  - Build
+description: >
+  Build pipelines, .tekton/ yaml files, SBOMs (partially),
+  pipeline-migration-tool, prefetching and hermetic builds using Hermeto.
+  Component nudging. Review PRs in build-definitions, build-service,
+  image-controller.
