@@ -67,6 +67,15 @@
       "author": {
         "name": "Konflux CI Team"
       }
+    },
+    {
+      "name": "red-hat-konflux-teams",
+      "source": "./skills/red-hat-konflux-teams",
+      "description": "Use when needing to know which Red Hat team owns a Konflux-related repository (konflux-ci, hermetoproject, conforma orgs), which JIRA project or component to file issues against, or how the Red Hat Konflux engineering organization maps to the codebase.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Konflux CI Team"
+      }
     }
   ]
 }
