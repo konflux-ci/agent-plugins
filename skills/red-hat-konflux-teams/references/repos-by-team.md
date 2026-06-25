@@ -13,6 +13,7 @@ Build pipelines, .tekton/ yaml files, SBOMs (partially), pipeline-migration-tool
 | Repository | Clarification |
 |---|---|
 | hermetoproject/hermeto | Hermetic build tool (Hermeto) |
+| hermetoproject/pybuild-deps | Python build dependency resolution for Hermeto |
 | konflux-ci/build-definitions | Build pipeline definitions and task bundles |
 | konflux-ci/build-pipeline-tasks | Individual build pipeline tasks |
 | konflux-ci/build-service | Build service controller |
@@ -20,7 +21,10 @@ Build pipelines, .tekton/ yaml files, SBOMs (partially), pipeline-migration-tool
 | konflux-ci/build-trusted-artifacts | Trusted artifacts for build pipelines |
 | konflux-ci/buildah-container | Buildah container image for builds |
 | konflux-ci/image-controller | Image repository management controller |
+| konflux-ci/konflux-build-cli | Konflux build CLI tool |
 | konflux-ci/pipeline-migration-tool | Tool for migrating pipeline configurations |
+| konflux-ci/task-repo-shared-ci | Shared CI configuration for task repos |
+| konflux-ci/task-runner | Tekton task runner |
 
 ## Builds for OpenShift
 
@@ -48,7 +52,10 @@ Adoption of Konflux in CentOS Stream workflows.
 
 Pyxis, container, and product metadata visible at catalog.redhat.com. Container signature storage. Signing-related issues (Radas). SBOM generation, processing, and quality.
 
-*No repositories currently mapped to this team.*
+| Repository | Clarification |
+|---|---|
+| konflux-ci/capo | Cluster API Provider OpenStack |
+| konflux-ci/mobster | Mobster team collaboration tool |
 
 ## Conforma
 
@@ -60,7 +67,30 @@ Anything related to Conforma/EC, policies.
 
 | Repository | Clarification |
 |---|---|
+| conforma/.fullsend | Fullsend configuration for Conforma |
+| conforma/.github | GitHub org-level configuration |
+| conforma/action-validate-image | GitHub Action for image validation |
+| conforma/claude-skills | Claude Code skills for Conforma |
+| conforma/cli | Conforma CLI tool |
 | conforma/conforma | Enterprise Contract / Conforma policy engine |
+| conforma/conforma.github.io | Conforma website |
+| conforma/crds | Custom Resource Definitions |
+| conforma/demos | Demo configurations and examples |
+| conforma/e2e-tests | End-to-end test suite |
+| conforma/go-containerregistry | Go container registry library fork |
+| conforma/go-gather | Go gather utility library |
+| conforma/golden-container | Golden container image for testing |
+| conforma/golden-rpm | Golden RPM package for testing |
+| conforma/hacks | Development hacks and utilities |
+| conforma/infra-deployments-ci | Infrastructure deployment CI configuration |
+| conforma/knative-service | Knative service configuration |
+| conforma/policy | Conforma policy definitions |
+| conforma/pr-size-label-action | GitHub Action for PR size labeling |
+| conforma/review-rot | Code review rotation tool |
+| conforma/rhtap-ec-policy | RHTAP Enterprise Contract policy |
+| conforma/step-actions | Tekton step actions |
+| conforma/tekton-catalog | Tekton task and pipeline catalog |
+| conforma/user-guide | Conforma user guide documentation |
 
 ## Container Health
 
@@ -108,12 +138,22 @@ Devlake, Devlake MCP, engineering metrics, team weekly updates, Tekton-integrati
 | Repository | Clarification |
 |---|---|
 | konflux-ci/agent-plugins | Claude Code plugins and skills for Konflux |
+| konflux-ci/agentready-scores | Agent readiness scoring |
 | konflux-ci/coverage-dashboard | Code coverage dashboard |
+| konflux-ci/coverport | Code coverage reporting |
 | konflux-ci/devlake | DevLake deployment for engineering metrics |
+| konflux-ci/kargo | Kargo deployment pipeline promotion |
 | konflux-ci/konflux-devlake-dashboards | Grafana dashboards for DevLake metrics |
 | konflux-ci/konflux-devlake-mcp | MCP server for DevLake data |
 | konflux-ci/konflux-lightspeed | AI assistant integration for Konflux |
+| konflux-ci/multi-arch-konflux-sample | Multi-arch Konflux sample application |
+| konflux-ci/qe-tools | QE testing tools |
+| konflux-ci/quality-dashboard | Quality metrics dashboard |
+| konflux-ci/sample-component-golang | Sample Go component for testing |
+| konflux-ci/sample-component-golang-updater | Updater for sample Go component |
 | konflux-ci/tekton-integration-catalog | Tekton task and pipeline catalog for CI |
+| konflux-ci/testrepo | Test repository for CI verification |
+| konflux-ci/testrepo-updater | Updater for test repository |
 
 ## Fullsend
 
@@ -124,6 +164,7 @@ Fullsend platform.
 | Repository | Clarification |
 |---|---|
 | konflux-ci/.fullsend | Fullsend platform configuration |
+| konflux-ci/refinement | Backlog refinement tooling |
 
 ## Infrastructure
 
@@ -135,6 +176,8 @@ Infrastructure compute, network, storage, authentication, authorization, ArgoCD 
 
 | Repository | Clarification |
 |---|---|
+| konflux-ci/ci-terraform-runner | Terraform runner for CI infrastructure |
+| konflux-ci/deptriage | Dependency triage tool |
 | konflux-ci/etcd-shield | etcd protection tooling |
 | konflux-ci/kueue-external-admission | Kueue external admission webhook |
 | konflux-ci/kyverno | Kyverno policy engine deployment |
@@ -157,6 +200,11 @@ Integration tests against Snapshot, security tests from build-pipelines (e.g. cl
 | konflux-ci/integration-examples | Example integration test configurations |
 | konflux-ci/integration-service | Integration service controller |
 | konflux-ci/integration-service-utils | Shared utilities for integration service |
+| konflux-ci/konflux-clamav | ClamAV antivirus scanning |
+| konflux-ci/konflux-sast-tasks | SAST scanning pipeline tasks |
+| konflux-ci/konflux-test | Konflux test framework |
+| konflux-ci/konflux-test-tasks | Konflux test pipeline tasks |
+| konflux-ci/test-data-sast | Test data for SAST scanning |
 
 ## Java Builds
 
@@ -207,6 +255,7 @@ OLM Operators (RH, Certified, Community), File Based Configs (FBC), Operator Ind
 
 | Repository | Clarification |
 |---|---|
+| konflux-ci/community-operators-prod | OLM operators production catalog |
 | konflux-ci/konflux-operator-tasks | Tekton tasks for operator pipelines |
 | konflux-ci/konflux-operator-trusted-sources | Trusted source configuration for operators |
 | konflux-ci/olm-operator-konflux-sample | Sample OLM operator for Konflux |
@@ -250,6 +299,7 @@ Release admission, release pipelines, FBC, Signing, release monitoring, release 
 
 | Repository | Clarification |
 |---|---|
+| konflux-ci/community-catalog | Community pipeline catalog |
 | konflux-ci/internal-services | Internal services for release workflows |
 | konflux-ci/release-service | Release service controller |
 | konflux-ci/release-service-automations | Release automation scripts |
@@ -268,7 +318,9 @@ Release admission, release pipelines, FBC, Signing, release monitoring, release 
 
 ReleasePlanAdmission (RPA) configuration, konflux-release-data MRs (excluding tenants-config), quay.io/redhat-services-prod, eng-id assistance, policy exceptions, macos or windows binary signing, secret management for managed cluster.
 
-*No repositories currently mapped to this team.*
+| Repository | Clarification |
+|---|---|
+| conforma/rhtap-ec-policy | Release engineering policy integration |
 
 ## RHEL on Konflux
 
@@ -385,7 +437,9 @@ Konflux incident/outage response.
 
 Ideas on how to improve user support for Konflux.
 
-*No repositories currently mapped to this team.*
+| Repository | Clarification |
+|---|---|
+| konflux-ci/support | User support repository |
 
 ## UI
 
@@ -422,8 +476,23 @@ Konflux-CI Upstream, Caching, Project Controller (multi-version), Environment as
 | konflux-ci/application-api | Application and Component API definitions |
 | konflux-ci/architecture | Architecture decision records and design docs |
 | konflux-ci/caching | Caching infrastructure |
+| konflux-ci/cluster-template-charts | Cluster template Helm charts |
+| konflux-ci/community | Community governance and guidelines |
+| konflux-ci/crossplane-components | Crossplane managed resource components |
+| konflux-ci/crossplane-control-plane | Crossplane control plane configuration |
+| konflux-ci/dex | Dex identity provider deployment |
 | konflux-ci/docs | User-facing Konflux documentation |
+| konflux-ci/external-secrets-operator | External Secrets Operator deployment |
+| konflux-ci/image-rbac-proxy | RBAC proxy for image access |
 | konflux-ci/konflux-ci | Upstream Konflux CI deployment |
+| konflux-ci/konflux-ci.github.io | Konflux CI website |
 | konflux-ci/notification-service | PipelineRun results notifier |
+| konflux-ci/oauth2-proxy | OAuth2 proxy deployment |
+| konflux-ci/pr-review-webhook | PR review webhook service |
 | konflux-ci/project-controller | Multi-version project controller |
+| konflux-ci/reverse-proxy | Reverse proxy deployment |
+| konflux-ci/smee-sidecar | Smee webhook relay sidecar |
+| konflux-ci/tekton-tools | Tekton utility tools |
+| konflux-ci/tools | General-purpose platform tools |
+| konflux-ci/zot | Zot container registry deployment |
 

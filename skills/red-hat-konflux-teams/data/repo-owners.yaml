@@ -283,14 +283,276 @@ konflux-ci/.fullsend:
   - team: fullsend
     clarification: Fullsend platform configuration
 
+konflux-ci/agentready-scores:
+  - team: developer-productivity
+    clarification: Agent readiness scoring
+
+konflux-ci/capo:
+  - team: collective
+    clarification: Cluster API Provider OpenStack
+
+konflux-ci/ci-terraform-runner:
+  - team: infrastructure
+    clarification: Terraform runner for CI infrastructure
+
+konflux-ci/cluster-template-charts:
+  - team: vanguard
+    clarification: Cluster template Helm charts
+
+konflux-ci/community:
+  - team: vanguard
+    clarification: Community governance and guidelines
+
+konflux-ci/community-catalog:
+  - team: release
+    clarification: Community pipeline catalog
+
+konflux-ci/community-operators-prod:
+  - team: operator-foundry
+    clarification: OLM operators production catalog
+
+konflux-ci/coverport:
+  - team: developer-productivity
+    clarification: Code coverage reporting
+
+konflux-ci/crossplane-components:
+  - team: vanguard
+    clarification: Crossplane managed resource components
+
+konflux-ci/crossplane-control-plane:
+  - team: vanguard
+    clarification: Crossplane control plane configuration
+
+konflux-ci/deptriage:
+  - team: infrastructure
+    clarification: Dependency triage tool
+
+konflux-ci/dex:
+  - team: vanguard
+    clarification: Dex identity provider deployment
+
+konflux-ci/external-secrets-operator:
+  - team: vanguard
+    clarification: External Secrets Operator deployment
+
+konflux-ci/image-rbac-proxy:
+  - team: vanguard
+    clarification: RBAC proxy for image access
+
+konflux-ci/kargo:
+  - team: developer-productivity
+    clarification: Kargo deployment pipeline promotion
+
+konflux-ci/konflux-build-cli:
+  - team: build
+    clarification: Konflux build CLI tool
+
+konflux-ci/konflux-ci.github.io:
+  - team: vanguard
+    clarification: Konflux CI website
+
+konflux-ci/konflux-clamav:
+  - team: integration
+    clarification: ClamAV antivirus scanning
+
+konflux-ci/konflux-sast-tasks:
+  - team: integration
+    clarification: SAST scanning pipeline tasks
+
+konflux-ci/konflux-test:
+  - team: integration
+    clarification: Konflux test framework
+
+konflux-ci/konflux-test-tasks:
+  - team: integration
+    clarification: Konflux test pipeline tasks
+
+konflux-ci/mobster:
+  - team: collective
+    clarification: Mobster team collaboration tool
+
+konflux-ci/multi-arch-konflux-sample:
+  - team: developer-productivity
+    clarification: Multi-arch Konflux sample application
+
+konflux-ci/oauth2-proxy:
+  - team: vanguard
+    clarification: OAuth2 proxy deployment
+
+konflux-ci/pr-review-webhook:
+  - team: vanguard
+    clarification: PR review webhook service
+
+konflux-ci/qe-tools:
+  - team: developer-productivity
+    clarification: QE testing tools
+
+konflux-ci/quality-dashboard:
+  - team: developer-productivity
+    clarification: Quality metrics dashboard
+
+konflux-ci/refinement:
+  - team: fullsend
+    clarification: Backlog refinement tooling
+
+konflux-ci/reverse-proxy:
+  - team: vanguard
+    clarification: Reverse proxy deployment
+
+konflux-ci/sample-component-golang:
+  - team: developer-productivity
+    clarification: Sample Go component for testing
+
+konflux-ci/sample-component-golang-updater:
+  - team: developer-productivity
+    clarification: Updater for sample Go component
+
+konflux-ci/smee-sidecar:
+  - team: vanguard
+    clarification: Smee webhook relay sidecar
+
+konflux-ci/support:
+  - team: support-ops
+    clarification: User support repository
+
+konflux-ci/task-repo-shared-ci:
+  - team: build
+    clarification: Shared CI configuration for task repos
+
+konflux-ci/task-runner:
+  - team: build
+    clarification: Tekton task runner
+
+konflux-ci/tekton-tools:
+  - team: vanguard
+    clarification: Tekton utility tools
+
+konflux-ci/test-data-sast:
+  - team: integration
+    clarification: Test data for SAST scanning
+
+konflux-ci/testrepo:
+  - team: developer-productivity
+    clarification: Test repository for CI verification
+
+konflux-ci/testrepo-updater:
+  - team: developer-productivity
+    clarification: Updater for test repository
+
+konflux-ci/tools:
+  - team: vanguard
+    clarification: General-purpose platform tools
+
+konflux-ci/zot:
+  - team: vanguard
+    clarification: Zot container registry deployment
+
 # --- hermetoproject org ---
 
 hermetoproject/hermeto:
   - team: build
     clarification: Hermetic build tool (Hermeto)
 
+hermetoproject/pybuild-deps:
+  - team: build
+    clarification: Python build dependency resolution for Hermeto
+
 # --- conforma org ---
 
 conforma/conforma:
   - team: conforma
     clarification: Enterprise Contract / Conforma policy engine
+
+conforma/.fullsend:
+  - team: conforma
+    clarification: Fullsend configuration for Conforma
+
+conforma/.github:
+  - team: conforma
+    clarification: GitHub org-level configuration
+
+conforma/action-validate-image:
+  - team: conforma
+    clarification: GitHub Action for image validation
+
+conforma/claude-skills:
+  - team: conforma
+    clarification: Claude Code skills for Conforma
+
+conforma/cli:
+  - team: conforma
+    clarification: Conforma CLI tool
+
+conforma/conforma.github.io:
+  - team: conforma
+    clarification: Conforma website
+
+conforma/crds:
+  - team: conforma
+    clarification: Custom Resource Definitions
+
+conforma/demos:
+  - team: conforma
+    clarification: Demo configurations and examples
+
+conforma/e2e-tests:
+  - team: conforma
+    clarification: End-to-end test suite
+
+conforma/go-containerregistry:
+  - team: conforma
+    clarification: Go container registry library fork
+
+conforma/go-gather:
+  - team: conforma
+    clarification: Go gather utility library
+
+conforma/golden-container:
+  - team: conforma
+    clarification: Golden container image for testing
+
+conforma/golden-rpm:
+  - team: conforma
+    clarification: Golden RPM package for testing
+
+conforma/hacks:
+  - team: conforma
+    clarification: Development hacks and utilities
+
+conforma/infra-deployments-ci:
+  - team: conforma
+    clarification: Infrastructure deployment CI configuration
+
+conforma/knative-service:
+  - team: conforma
+    clarification: Knative service configuration
+
+conforma/policy:
+  - team: conforma
+    clarification: Conforma policy definitions
+
+conforma/pr-size-label-action:
+  - team: conforma
+    clarification: GitHub Action for PR size labeling
+
+conforma/review-rot:
+  - team: conforma
+    clarification: Code review rotation tool
+
+conforma/rhtap-ec-policy:
+  - team: conforma
+    clarification: RHTAP Enterprise Contract policy
+  - team: release-engineering
+    clarification: Release engineering policy integration
+
+conforma/step-actions:
+  - team: conforma
+    clarification: Tekton step actions
+
+conforma/tekton-catalog:
+  - team: conforma
+    clarification: Tekton task and pipeline catalog
+
+conforma/user-guide:
+  - team: conforma
+    clarification: Conforma user guide documentation
