@@ -1,0 +1,6 @@
+name: RoK Migration
+jira_project: KFLUXMIG
+jira_components:
+  - RoK Migration
+description: >
+  Driving the onboarding of RHEL engineering to Konflux RPM pipeline.

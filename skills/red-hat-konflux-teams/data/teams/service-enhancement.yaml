@@ -1,0 +1,6 @@
+name: Service Enhancement
+jira_project: KFLUXSE
+jira_components: []
+description: >
+  Cross-service Konflux feature development, user-feedback-driven
+  enhancements, platform-wide repo health and adoption.

@@ -1,0 +1,6 @@
+name: Spre
+jira_project: SPRE
+jira_components:
+  - Spre
+description: >
+  Konflux incident/outage response.

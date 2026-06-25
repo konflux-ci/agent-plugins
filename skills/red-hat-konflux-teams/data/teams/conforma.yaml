@@ -1,0 +1,6 @@
+name: Conforma
+jira_project: EC
+jira_components:
+  - Conforma
+description: >
+  Anything related to Conforma/EC, policies.

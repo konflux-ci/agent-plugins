@@ -1,0 +1,6 @@
+name: RHEL on Konflux
+jira_project: ROK
+jira_components:
+  - RoK
+description: >
+  Everything RHEL on Konflux. Umbrella team for ROK sub-teams.

@@ -1,0 +1,6 @@
+name: RPM Build Process
+jira_project: RHELBLD
+jira_components:
+  - RPM Build
+description: >
+  RPM Build pipeline, issues with SBOM, Mock.

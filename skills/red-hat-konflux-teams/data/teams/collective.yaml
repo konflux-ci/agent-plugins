@@ -1,0 +1,10 @@
+name: Collective
+jira_project: ISV
+jira_components:
+  - Pyxis
+  - Radas
+  - Sbom
+description: >
+  Pyxis, container, and product metadata visible at catalog.redhat.com.
+  Container signature storage. Signing-related issues (Radas).
+  SBOM generation, processing, and quality.

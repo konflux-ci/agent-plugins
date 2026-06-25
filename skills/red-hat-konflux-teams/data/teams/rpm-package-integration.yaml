@@ -1,0 +1,6 @@
+name: RPM Package Integration
+jira_project: ROK
+jira_components:
+  - RPM Package Integration
+description: >
+  Integration of RPM packages to composite artifacts.

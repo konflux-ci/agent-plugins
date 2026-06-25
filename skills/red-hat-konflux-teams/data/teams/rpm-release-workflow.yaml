@@ -1,0 +1,7 @@
+name: RPM Release Workflow
+jira_project: ROK
+jira_components:
+  - RPM Release
+description: >
+  RHEL release configuration setup, Release Plans,
+  Package Collections, Conforma.

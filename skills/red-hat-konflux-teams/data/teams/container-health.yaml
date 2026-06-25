@@ -1,0 +1,9 @@
+name: Container Health
+jira_project: CWFHEALTH
+jira_components:
+  - Mintmaker
+  - Diffused
+description: >
+  MintMaker and Renovate: issues and functionality with Renovate PRs
+  opened against repositories. Automatic detection of CVEs fixed by release
+  (Diffused).

@@ -1,0 +1,7 @@
+name: RHEL Product Engineering Workflows
+jira_project: ROK
+jira_components:
+  - RHEL Process
+description: >
+  Integration of Konflux with RHEL Engineering development process,
+  RHEL on Gitlab, RHEL package testing workflows.

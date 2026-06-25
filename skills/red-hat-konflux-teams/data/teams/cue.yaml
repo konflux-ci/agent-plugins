@@ -1,0 +1,5 @@
+name: CUE
+jira_project: KFLUXUI
+jira_components: []
+description: >
+  Konflux UI + UX integration.

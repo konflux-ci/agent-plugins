@@ -1,0 +1,6 @@
+name: Support Ops
+jira_project: KFLUXSPRT
+jira_components:
+  - SupportOps
+description: >
+  Ideas on how to improve user support for Konflux.

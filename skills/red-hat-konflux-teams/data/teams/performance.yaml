@@ -1,0 +1,6 @@
+name: Performance
+jira_project: KONFLUX
+jira_components:
+  - Performance
+description: >
+  Konflux perf and scale issues, Load Test Probe run issues.
