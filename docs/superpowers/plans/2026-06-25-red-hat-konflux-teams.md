@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Create a skill that maps konflux-ci GitHub repos to Red Hat teams and their JIRA metadata, with maintenance scripts to detect new repos.
+**Goal:** Create a skill that maps repos across Konflux-related GitHub orgs (`konflux-ci`, `hermetoproject`, `conforma`) to Red Hat teams and their JIRA metadata, with maintenance scripts to detect new repos.
 
-**Architecture:** YAML source files (per-team + repo-owners mapping) feed a Python generator that produces markdown reference docs. A bash wrapper calls `gh` to fetch the live repo list, then invokes the generator.
+**Architecture:** YAML source files (per-team + repo-owners mapping) feed a Python generator that produces markdown reference docs. A bash wrapper calls `gh` to fetch the live repo list from all tracked orgs, then invokes the generator. Repos are keyed as `org/repo` throughout.
 
 **Tech Stack:** Python 3 (PyYAML), Bash, `gh` CLI
 
@@ -473,288 +473,302 @@ Seed with mappings where the repo name clearly maps to a team. Leave the rest fo
 - [ ] **Step 1: Create repo-owners.yaml with obvious mappings**
 
 ```yaml
-# Repo ownership mapping for konflux-ci GitHub org.
-# Each repo maps to a list of {team, clarification} entries.
+# Repo ownership mapping for Konflux-related GitHub orgs.
+# Keys use org/repo format. Each maps to a list of {team, clarification} entries.
 # The team value must match a filename (without .yaml) in data/teams/.
 # Repos not listed here will appear in references/unassociated-repos.md.
 
-application-api:
+# --- konflux-ci org ---
+
+konflux-ci/application-api:
   - team: vanguard
     clarification: Application and Component API definitions
 
-build-definitions:
+konflux-ci/build-definitions:
   - team: build
     clarification: Build pipeline definitions and task bundles
 
-build-service:
+konflux-ci/build-service:
   - team: build
     clarification: Build service controller
 
-build-trusted-artifacts:
+konflux-ci/build-trusted-artifacts:
   - team: build
     clarification: Trusted artifacts for build pipelines
 
-build-pipeline-tasks:
+konflux-ci/build-pipeline-tasks:
   - team: build
     clarification: Individual build pipeline tasks
 
-build-tasks-dockerfiles:
+konflux-ci/build-tasks-dockerfiles:
   - team: build
     clarification: Dockerfiles for build task images
 
-buildah-container:
+konflux-ci/buildah-container:
   - team: build
     clarification: Buildah container image for builds
 
-caching:
+konflux-ci/caching:
   - team: vanguard
     clarification: Caching infrastructure
 
-clair-in-ci-db:
+konflux-ci/clair-in-ci-db:
   - team: integration
     clarification: Clair vulnerability database for CI scanning
 
-diffused:
+konflux-ci/diffused:
   - team: container-health
     clarification: Automatic CVE detection for releases
 
-e2e-tests:
+konflux-ci/e2e-tests:
   - team: integration
     clarification: End-to-end test suite
 
-etcd-shield:
+konflux-ci/etcd-shield:
   - team: infrastructure
     clarification: etcd protection tooling
 
-image-controller:
+konflux-ci/image-controller:
   - team: build
     clarification: Image repository management controller
 
-integration-service:
+konflux-ci/integration-service:
   - team: integration
     clarification: Integration service controller
 
-integration-service-utils:
+konflux-ci/integration-service-utils:
   - team: integration
     clarification: Shared utilities for integration service
 
-integration-examples:
+konflux-ci/integration-examples:
   - team: integration
     clarification: Example integration test configurations
 
-konflux-ui:
+konflux-ci/konflux-ui:
   - team: ui
     clarification: Konflux web UI frontend
   - team: cue
     clarification: UX integration aspects
 
-konflux-ci:
+konflux-ci/konflux-ci:
   - team: vanguard
     clarification: Upstream Konflux CI deployment
 
-mintmaker:
+konflux-ci/mintmaker:
   - team: container-health
     clarification: MintMaker dependency update service
 
-mintmaker-renovate-image:
+konflux-ci/mintmaker-renovate-image:
   - team: container-health
     clarification: Renovate container image for MintMaker
 
-mintmaker-osv-database:
+konflux-ci/mintmaker-osv-database:
   - team: container-health
     clarification: OSV vulnerability database for MintMaker
 
-mintmaker-presets:
+konflux-ci/mintmaker-presets:
   - team: container-health
     clarification: Default configuration presets for MintMaker
 
-mintmaker-schedule-calculator:
+konflux-ci/mintmaker-schedule-calculator:
   - team: container-health
     clarification: Scheduling logic for MintMaker updates
 
-multi-platform-controller:
+konflux-ci/multi-platform-controller:
   - team: infrastructure
     clarification: Multi-architecture build controller
 
-multi-arch:
+konflux-ci/multi-arch:
   - team: infrastructure
     clarification: Multi-architecture build support
 
-namespace-lister:
+konflux-ci/namespace-lister:
   - team: infrastructure
     clarification: Namespace listing utility
 
-kyverno:
+konflux-ci/kyverno:
   - team: infrastructure
     clarification: Kyverno policy engine deployment
 
-kueue-external-admission:
+konflux-ci/kueue-external-admission:
   - team: infrastructure
     clarification: Kueue external admission webhook
 
-release-service:
+konflux-ci/release-service:
   - team: release
     clarification: Release service controller
 
-release-service-catalog:
+konflux-ci/release-service-catalog:
   - team: release
     clarification: Release pipeline catalog
 
-release-service-utils:
+konflux-ci/release-service-utils:
   - team: release
     clarification: Shared utilities for release service
 
-release-service-automations:
+konflux-ci/release-service-automations:
   - team: release
     clarification: Release automation scripts
 
-release-service-collectors:
+konflux-ci/release-service-collectors:
   - team: release
     clarification: Data collectors for release monitoring
 
-release-service-docs:
+konflux-ci/release-service-docs:
   - team: release
     clarification: Release service documentation
 
-release-service-monitor:
+konflux-ci/release-service-monitor:
   - team: release
     clarification: Release monitoring dashboards and alerts
 
-release-service-catalog-e2e-base:
+konflux-ci/release-service-catalog-e2e-base:
   - team: release
     clarification: Base images for release catalog e2e tests
 
-notification-service:
+konflux-ci/notification-service:
   - team: vanguard
     clarification: PipelineRun results notifier
 
-project-controller:
+konflux-ci/project-controller:
   - team: vanguard
     clarification: Multi-version project controller
 
-pipeline-migration-tool:
+konflux-ci/pipeline-migration-tool:
   - team: build
     clarification: Tool for migrating pipeline configurations
 
-tekton-integration-catalog:
+konflux-ci/tekton-integration-catalog:
   - team: developer-productivity
     clarification: Tekton task and pipeline catalog for CI
 
-devlake:
+konflux-ci/devlake:
   - team: developer-productivity
     clarification: DevLake deployment for engineering metrics
 
-konflux-devlake-dashboards:
+konflux-ci/konflux-devlake-dashboards:
   - team: developer-productivity
     clarification: Grafana dashboards for DevLake metrics
 
-konflux-devlake-mcp:
+konflux-ci/konflux-devlake-mcp:
   - team: developer-productivity
     clarification: MCP server for DevLake data
 
-coverage-dashboard:
+konflux-ci/coverage-dashboard:
   - team: developer-productivity
     clarification: Code coverage dashboard
 
-segment-bridge:
+konflux-ci/segment-bridge:
   - team: service-enhancement
     clarification: Segment analytics bridge
 
-operator-toolkit:
+konflux-ci/operator-toolkit:
   - team: operator-foundry
     clarification: Toolkit for operator development workflows
 
-operator-foundry:
+konflux-ci/operator-foundry:
   - team: operator-foundry
     clarification: Operator build and test infrastructure
 
-konflux-operator-tasks:
+konflux-ci/konflux-operator-tasks:
   - team: operator-foundry
     clarification: Tekton tasks for operator pipelines
 
-konflux-operator-trusted-sources:
+konflux-ci/konflux-operator-trusted-sources:
   - team: operator-foundry
     clarification: Trusted source configuration for operators
 
-olm-operator-konflux-sample:
+konflux-ci/olm-operator-konflux-sample:
   - team: operator-foundry
     clarification: Sample OLM operator for Konflux
 
-loadtest:
+konflux-ci/loadtest:
   - team: performance
     clarification: Load testing framework
 
-perfscale:
+konflux-ci/perfscale:
   - team: performance
     clarification: Performance and scale testing tools
 
-rpmbuild-pipeline:
+konflux-ci/rpmbuild-pipeline:
   - team: rpm-build-process
     clarification: RPM build pipeline definitions
 
-rpmbuild-pipeline-environment-container:
+konflux-ci/rpmbuild-pipeline-environment-container:
   - team: rpm-build-process
     clarification: Container image for RPM build environment
 
-rpmbuild-pipeline-monorepo-mock-config-test:
+konflux-ci/rpmbuild-pipeline-monorepo-mock-config-test:
   - team: rpm-build-process
     clarification: Test configuration for RPM monorepo mock builds
 
-rpmbuild-pipeline-test-sources:
+konflux-ci/rpmbuild-pipeline-test-sources:
   - team: rpm-build-process
     clarification: Test source packages for RPM pipeline
 
-rpm-lockfile-prototype:
+konflux-ci/rpm-lockfile-prototype:
   - team: rpm-build-process
     clarification: RPM lockfile prototype tooling
 
-refresh-rpm-lockfiles:
+konflux-ci/refresh-rpm-lockfiles:
   - team: rpm-build-process
     clarification: Tool to refresh RPM lockfile data
 
-java-pipelines:
+konflux-ci/java-pipelines:
   - team: java-builds
     clarification: Java-specific pipeline definitions
 
-maven-lockfile:
+konflux-ci/maven-lockfile:
   - team: java-builds
     clarification: Maven dependency lockfile tooling
 
-architecture:
+konflux-ci/architecture:
   - team: vanguard
     clarification: Architecture decision records and design docs
 
-docs:
+konflux-ci/docs:
   - team: vanguard
     clarification: User-facing Konflux documentation
 
-internal-services:
+konflux-ci/internal-services:
   - team: release
     clarification: Internal services for release workflows
 
-sprayproxy:
+konflux-ci/sprayproxy:
   - team: pipelines
     clarification: Spray proxy for Pipelines-as-Code
 
-tekton-kueue:
+konflux-ci/tekton-kueue:
   - team: pipelines
     clarification: Kueue integration for Tekton pipelines
 
-pipeline-samples:
+konflux-ci/pipeline-samples:
   - team: pipelines
     clarification: Sample pipeline configurations
 
-agent-plugins:
+konflux-ci/agent-plugins:
   - team: developer-productivity
     clarification: Claude Code plugins and skills for Konflux
 
-konflux-lightspeed:
+konflux-ci/konflux-lightspeed:
   - team: developer-productivity
     clarification: AI assistant integration for Konflux
 
-.fullsend:
+konflux-ci/.fullsend:
   - team: fullsend
     clarification: Fullsend platform configuration
+
+# --- hermetoproject org ---
+
+hermetoproject/hermeto:
+  - team: build
+    clarification: Hermetic build tool (Hermeto)
+
+# --- conforma org ---
+
+conforma/conforma:
+  - team: conforma
+    clarification: Enterprise Contract / Conforma policy engine
 ```
 
 - [ ] **Step 2: Verify YAML parses correctly**
@@ -769,8 +783,9 @@ Expected: `Valid`
 git add skills/red-hat-konflux-teams/data/repo-owners.yaml
 git commit -s -S -m "feat(red-hat-konflux-teams): Add initial repo-owners.yaml
 
-Seed with ~70 obvious repo-to-team mappings. Remaining repos will
-appear as unassociated in generated references.
+Seed with obvious repo-to-team mappings across konflux-ci,
+hermetoproject, and conforma orgs. Keys use org/repo format.
+Remaining repos will appear as unassociated in generated references.
 
 Assisted-by: Claude Opus 4.6 <noreply@anthropic.com>
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
@@ -789,7 +804,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 #!/usr/bin/env python3
 """Generate markdown reference files from team YAML and repo-owners data.
 
-Reads repo names from stdin (one per line), team definitions from
+Reads org/repo names from stdin (one per line), team definitions from
 data/teams/*.yaml, and ownership from data/repo-owners.yaml.
 Writes three files to references/:
   - repos-by-team.md
@@ -893,7 +908,7 @@ def write_unassociated(all_repos, repo_owners):
         fh.write("# Unassociated Repositories\n\n")
         fh.write("*Generated file — do not edit. Run `scripts/sync-repos.sh` to regenerate.*\n\n")
         fh.write(
-            "These repositories in the `konflux-ci` GitHub org are not yet mapped to any team.\n"
+            "These repositories in the tracked GitHub orgs are not yet mapped to any team.\n"
             "To associate a repo, add it to `data/repo-owners.yaml` and re-run `scripts/sync-repos.sh`.\n\n"
         )
         if unassociated:
@@ -934,10 +949,10 @@ if __name__ == "__main__":
 
 Run from repo root:
 ```bash
-gh repo list konflux-ci --limit 500 --json name,isArchived --jq '.[] | select(.isArchived == false) | .name' | python3 skills/red-hat-konflux-teams/scripts/generate-references.py
+{ for org in konflux-ci hermetoproject conforma; do gh repo list "$org" --limit 500 --json name,isArchived --jq ".[] | select(.isArchived == false) | \"${org}/\" + .name"; done; } | python3 skills/red-hat-konflux-teams/scripts/generate-references.py
 ```
 
-Expected: Output like `Generated references: 70 owned repos, 72 unassociated repos` (numbers will vary). Check that `skills/red-hat-konflux-teams/references/` contains three `.md` files.
+Expected: Output like `Generated references: 72 owned repos, 80 unassociated repos` (numbers will vary). Check that `skills/red-hat-konflux-teams/references/` contains three `.md` files.
 
 - [ ] **Step 3: Spot-check generated files**
 
@@ -971,7 +986,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 ```bash
 #!/usr/bin/env bash
-# Fetch current konflux-ci repos from GitHub and regenerate reference docs.
+# Fetch repos from all tracked GitHub orgs and regenerate reference docs.
 #
 # Usage: ./scripts/sync-repos.sh
 #
@@ -980,10 +995,14 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ORGS=(konflux-ci hermetoproject conforma)
 
-gh repo list konflux-ci --limit 500 --json name,isArchived \
-    --jq '.[] | select(.isArchived == false) | .name' \
-  | python3 "$SCRIPT_DIR/generate-references.py"
+{
+  for org in "${ORGS[@]}"; do
+    gh repo list "$org" --limit 500 --json name,isArchived \
+      --jq ".[] | select(.isArchived == false) | \"${org}/\" + .name"
+  done
+} | python3 "$SCRIPT_DIR/generate-references.py"
 ```
 
 - [ ] **Step 2: Make it executable**
@@ -1002,8 +1021,9 @@ Expected: Same output as Task 3 Step 2. References regenerated.
 git add skills/red-hat-konflux-teams/scripts/sync-repos.sh skills/red-hat-konflux-teams/references/
 git commit -s -S -m "feat(red-hat-konflux-teams): Add sync script and initial generated references
 
-Bash wrapper fetches live repo list from GitHub, pipes to generator.
-Includes initial generated reference docs.
+Bash wrapper fetches live repo list from konflux-ci, hermetoproject,
+and conforma GitHub orgs, pipes to generator. Includes initial
+generated reference docs.
 
 Assisted-by: Claude Opus 4.6 <noreply@anthropic.com>
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
@@ -1021,12 +1041,12 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ```markdown
 ---
 name: red-hat-konflux-teams
-description: Use when needing to know which Red Hat team owns a konflux-ci repository, which JIRA project or component to file issues against, or how the Red Hat Konflux engineering organization maps to the codebase.
+description: Use when needing to know which Red Hat team owns a Konflux-related repository (konflux-ci, hermetoproject, conforma orgs), which JIRA project or component to file issues against, or how the Red Hat Konflux engineering organization maps to the codebase.
 ---
 
 # Red Hat Konflux Teams
 
-Maps repositories in the `konflux-ci` GitHub org to the Red Hat engineering teams that own them and their JIRA metadata.
+Maps repositories across Konflux-related GitHub orgs (`konflux-ci`, `hermetoproject`, `conforma`) to the Red Hat engineering teams that own them and their JIRA metadata.
 
 ## How to Answer Questions
 
@@ -1081,9 +1101,11 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ```markdown
 # red-hat-konflux-teams
 
-Maps repositories in the [konflux-ci](https://github.com/konflux-ci) GitHub
-org to the Red Hat engineering teams that own them and their JIRA metadata
-(project keys, components).
+Maps repositories across Konflux-related GitHub orgs
+([konflux-ci](https://github.com/konflux-ci),
+[hermetoproject](https://github.com/hermetoproject),
+[conforma](https://github.com/conforma)) to the Red Hat engineering teams
+that own them and their JIRA metadata (project keys, components).
 
 ## Source of truth
 
@@ -1095,7 +1117,7 @@ Red Hat teams work on which parts of Konflux.
 ## Maintenance
 
 To update the generated reference docs after repos are added or removed
-from the konflux-ci org:
+from the tracked GitHub orgs:
 
     ./scripts/sync-repos.sh
 
@@ -1148,7 +1170,7 @@ Add the following entry to the `plugins` array:
 {
   "name": "red-hat-konflux-teams",
   "source": "./skills/red-hat-konflux-teams",
-  "description": "Use when needing to know which Red Hat team owns a konflux-ci repository, which JIRA project or component to file issues against, or how the Red Hat Konflux engineering organization maps to the codebase.",
+  "description": "Use when needing to know which Red Hat team owns a Konflux-related repository (konflux-ci, hermetoproject, conforma orgs), which JIRA project or component to file issues against, or how the Red Hat Konflux engineering organization maps to the codebase.",
   "version": "1.0.0",
   "author": {
     "name": "Konflux CI Team"
