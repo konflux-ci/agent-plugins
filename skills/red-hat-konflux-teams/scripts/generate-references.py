@@ -121,13 +121,16 @@ def main():
     repo_owners = load_repo_owners()
 
     # Validate team references
+    unknown = []
     for repo, owners in repo_owners.items():
         for entry in owners:
             if entry["team"] not in teams:
-                print(
-                    f"Warning: repo '{repo}' references unknown team '{entry['team']}'",
-                    file=sys.stderr,
-                )
+                unknown.append(f"  repo '{repo}' references unknown team '{entry['team']}'")
+    if unknown:
+        print("Error: unknown team references in repo-owners.yaml:", file=sys.stderr)
+        for msg in unknown:
+            print(msg, file=sys.stderr)
+        sys.exit(1)
 
     write_repos_by_team(teams, repo_owners)
     write_teams_by_repo(teams, repo_owners)
