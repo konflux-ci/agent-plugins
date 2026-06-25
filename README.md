@@ -66,6 +66,15 @@ Trigger build of Konflux Component:
 - Instruct Claude to perform nudging
 - Get status of a Component or Application
 
+### red-hat-konflux-teams
+
+Map repositories to Red Hat engineering teams:
+
+- Look up which team owns a given Konflux repo
+- Find all repos owned by a specific team
+- Identify unassociated repos across konflux-ci, hermetoproject, and conforma orgs
+- Reference JIRA project keys and components per team
+
 ## Installation
 
 First, add the konflux-skills marketplace (one-time setup):
