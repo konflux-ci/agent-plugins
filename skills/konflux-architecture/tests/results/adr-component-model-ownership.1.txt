@@ -1,0 +1,83 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+Here's a comprehensive summary of what has been decided regarding the Konflux component model, drawn directly from the ADRs.
+
+---
+
+## Prior ADRs on the Konflux Component Model
+
+### The Core Decision: A New Component Model (ADR-0056, status: Implementable)
+
+The old `Application` + `Component` model (originally owned by HAS, now deprecated) has been formally redesigned. The key problems it solved:
+- A new component had to be registered for every use case, even when the same source code was used in multiple release scenarios.
+- API ownership was unclear and services were excessively coupled.
+
+**What was decided:**
+
+1. **`Component` CR is redesigned** — `build-service` owns it. A single Component CR now contains multiple **Component Versions** (branches/tags in `spec.source.versions[]`), instead of creating a new Component per branch. The `spec.application` field is gone. Components are now standalone.
+
+2. **`Application` CR is replaced by `ComponentGroup`** — `integration-service` owns the new `ComponentGroup` CR (ADR-0060). The relationship is now defined top-down (the group lists which component+version combinations it contains), allowing a component to belong to multiple groups.
+
+3. **Phased rollout** — old model stays while new model is built; automatic migration of existing users planned at the end.
+
+---
+
+### ComponentGroups (ADR-0060, status: Proposed)
+
+Companion ADR to ADR-0056. Key design points:
+- `ComponentGroup` holds a list of `{component, componentVersion}` pairs.
+- Has a `testGraph` field for **ordered test execution** (DAG of IntegrationTestScenarios).
+- Has a `dependents` field so a snapshot passing in one group can trigger snapshot creation in another group.
+- The `status.globalCandidateList` (GCL) moves to live on the ComponentGroup.
+- `apiVersion: konflux-ci.dev/v1alpha1` (new API group, per ADR-0068).
+- Only one `componentVersion` per component per group currently; multiple-version-per-component is a future enhancement requiring custom snapshot creation.
+
+---
+
+### Component Dependencies / Nudging (ADR-0029, status: Accepted → partially superseded by ADR-0067)
+
+The original nudging mechanism:
+- `build-nudges-ref` field on the `Component` CR declares which other components should receive a digest-update PR when this component builds.
+- `build-service` fires Renovate PRs immediately on a successful build.
+- PR Groups (via `@`-prefixed branch names) let related PRs be tested together.
+
+---
+
+### Nudging Relationship Moves to a New CRD (ADR-0067, status: Proposed)
+
+This partially supersedes ADR-0029 and builds on ADR-0056/0060:
+
+- **Problem:** `build-nudges-ref` on the Component CR violates ownership boundaries (build-service shouldn't own orchestration logic), causes redundant builds before tests pass, and can't express group-scoped nudge rules.
+- **Decision:** Introduce a new **`NudgeConfig`** singleton CRD (one per namespace, named `nudge-config`) owned by `integration-service`.
+- **Two nudge modes:**
+  - `immediate` — nudge fires as soon as the source build PipelineRun succeeds (same as today).
+  - `validated` — nudge fires only after the Snapshot for a named `gatingGroup` (ComponentGroup) passes integration tests. Eliminates wasted downstream builds.
+- **Migration:** Integration-service auto-migrates existing `build-nudges-ref` values to `NudgeConfig` with `mode: immediate`.
+- **Cycle detection, duplicate rejection, and self-nudge rejection** enforced via CEL in the CRD schema.
+- **Scope expands from Application-scoped to namespace-scoped** (since Application is being deprecated).
+
+---
+
+### Other Related Decisions
+
+| ADR | Decision |
+|---|---|
+| **ADR-0004** (Implemented) | Per-component Quay.io image repos, auto-provisioned by `image-controller`. |
+| **ADR-0038** (Accepted) | Composite snapshots removed; replaced by override snapshots to solve race conditions and GCL deadlock. |
+| **ADR-0068** | New `konflux-ci.dev` API group for new CRDs (ComponentGroup, NudgeConfig use this group vs. old `appstudio.redhat.com`). |
+
+---
+
+## Summary: What's Been Settled vs. Still in Motion
+
+| Topic | Status |
+|---|---|
+| Replacing Application with ComponentGroup | Decided (ADR-0056 Implementable, ADR-0060 Proposed) |
+| Component with multi-version support | Decided, being implemented |
+| build-service owns Component CR | Decided |
+| integration-service owns ComponentGroup CR | Decided |
+| Moving nudge config off Component to NudgeConfig CRD | Proposed (ADR-0067) |
+| Validated nudging (test-gated nudges) | Proposed (ADR-0067) |
+| Custom Snapshot creation logic | Future / explicitly deferred |
+| Multiple versions per component in one group | Future / deferred (needs custom snapshot) |
+
+When proposing your changes, pay particular attention to **ADR-0056** and **ADR-0060** — these are the canonical decisions for the component model redesign. If your proposal touches nudging/dependency relationships, **ADR-0067** is the active proposal that may conflict or complement what you have in mind. The Application CR is firmly on the deprecation path and should not be extended.

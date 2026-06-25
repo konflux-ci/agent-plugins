@@ -1,0 +1,19 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+Set `Spec.ResolverRef.ResourceKind` to **`pipelinerun`** (lowercase `r`).
+
+By default, it's set to `pipeline`, but if you need to customize pipeline timeouts, service accounts, or workspaces — attributes that can only be defined on a PipelineRun — you must set it to `pipelinerun`.
+
+From `modules/testing/pages/integration/creating.adoc:188-208`:
+
+```yaml
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+spec:
+  resolverRef:
+    resolver: git
+    resourceKind: pipelinerun   # <-- this is the key field
+    params:
+      - name: url
+        value: https://github.com/konflux-ci/integration-examples
+      ...
+```

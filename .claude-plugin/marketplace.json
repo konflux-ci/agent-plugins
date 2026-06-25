@@ -51,8 +51,8 @@
       }
     },
     {
-      "name": "architecture",
-      "source": "./skills/architecture",
+      "name": "konflux-architecture",
+      "source": "./skills/konflux-architecture",
       "description": "Use when needing to understand Konflux architecture, design decisions, service responsibilities, APIs, build/test/release workflows, or how Konflux components fit together.",
       "version": "1.0.0",
       "author": {

@@ -1,0 +1,35 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+Here's the exact annotation to set on a `Component` to reconfigure its build pipeline:
+
+---
+
+### Annotation key and value
+
+**To reset the build pipeline to the latest default:**
+
+```yaml
+metadata:
+  annotations:
+    build.appstudio.openshift.io/request: "configure-pac"
+```
+
+**To switch to a different template pipeline**, set both annotations together:
+
+```yaml
+metadata:
+  annotations:
+    build.appstudio.openshift.io/pipeline: '{"name":"<name-of-the-pipeline-to-use>","bundle":"latest"}'
+    build.appstudio.openshift.io/request: "configure-pac"
+```
+
+---
+
+### How it works
+
+1. Edit the component: `kubectl edit component <component-name>`
+2. Add the annotation(s) to `metadata.annotations`
+3. Save — Konflux will open a pull request in your git repo resetting the Tekton pipeline definition to the chosen template
+
+> **Warning:** The generated PR will not carry over any previous customizations. You'll need to re-apply those manually after merging.
+
+Source: [`modules/building/pages/reconfiguring-build-pipeline.adoc`](https://github.com/konflux-ci/docs/blob/main/modules/building/pages/reconfiguring-build-pipeline.adoc)

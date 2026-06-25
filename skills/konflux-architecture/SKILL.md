@@ -1,5 +1,5 @@
 ---
-name: architecture
+name: konflux-architecture
 description: Use when needing to understand Konflux architecture, design decisions, service responsibilities, APIs, build/test/release workflows, or how Konflux components fit together.
 allowed-tools: Bash(git clone:*), Bash(git pull:*), Bash(find:*), Bash(ls:*), Bash(grep:*), Bash(cat:*), Read, Glob, Grep
 ---

@@ -1,0 +1,64 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+Here is a summary of what was decided across the three most relevant ADRs.
+
+---
+
+## ADR Summary: Konflux Component Model
+
+### ADR-0029 — Component Dependencies (status: **Accepted**, 2023-08-15)
+
+This is the oldest of the three and addressed a narrower problem: how to build and test components that depend on each other by digest.
+
+**Key decisions:**
+- A `build-nudges-ref` field is added to the `Component` CR, declaring that a build of Component A should propagate its digest as a PR to Component B ("nudging" → "nudged").
+- **PR Groups**: PRs with a shared source-branch prefix (delimited by `@`) are treated as a related group and tested together by integration-service.
+- **nudging components** never trigger tests or releases — they only land on the global candidate list after merge. Testing happens downstream on the **nudged** component.
+- build-service automates the digest-propagation PRs; integration-service handles the combined snapshot for PR group testing.
+
+---
+
+### ADR-0056 — Revised Component Model (status: **Implementable**)
+
+This is the major structural redesign. The driver was that the old HAS-owned `Application`/`Component` model required re-registration per use case and had unclear service ownership.
+
+**Key decisions:**
+- **Application CR is replaced** by a **ComponentGroup** (owned by integration-service).
+- **Component CR gains a `versions` list** (owned by build-service): each version is a named branch/tag within the same source repo. One Component can now cover multiple release branches without creating separate Component CRs.
+- A single component version can be **referenced by multiple ComponentGroups**, enabling reuse without re-registration.
+- The ComponentGroups form a **DAG** representing the release structure.
+- **Nudging** is moved out of the component model and into integration test pipelines.
+- Migration is phased: build team first (new Component with versions), then integration team (new Group API), then release team, then decommission of old Application model.
+
+**API owner changes:**
+| Resource | Old owner | New owner |
+|---|---|---|
+| `Component` | HAS (deprecated) | build-service |
+| `Application` → `ComponentGroup` | HAS (deprecated) | integration-service |
+
+---
+
+### ADR-0060 — ComponentGroups (status: **Proposed**)
+
+Companion to ADR-0056; specifies the integration-service side of the new model.
+
+**Key decisions:**
+- `ComponentGroup` CR replaces `Application`. The relationship is **top-down**: the ComponentGroup names its Component/version members, rather than Components pointing at their parent Application. This is what enables a Component to belong to multiple groups.
+- Introduces an optional **`testGraph`** field — a dependency map for ordered IntegrationTestScenarios, so expensive tests only run after prerequisite tests pass.
+- Introduces an optional **`dependents`** list — creating a snapshot for group A can automatically trigger snapshot creation for other listed groups.
+- The `status.globalCandidateList` on the ComponentGroup tracks the last promoted image/commit per component (replacing the old GCL on Application).
+- Release-service will need minor changes: `Release.spec.application` must be extended or replaced to support ComponentGroups.
+- **Intentionally deferred**: multiple versions of the same component within one group (requires custom Snapshot creation logic, not yet designed).
+
+---
+
+## What This Means for Your Proposal
+
+Before drafting your proposed changes, the key constraints to be aware of are:
+
+1. **The new model is already decided** at the Implementable level (ADR-0056) with the companion still Proposed (ADR-0060). Any proposal should work within or explicitly justify deviating from that direction.
+2. **Ownership is settled**: build-service owns `Component`, integration-service owns `ComponentGroup`.
+3. **Nudging is moving** out of the Component spec into integration test pipelines.
+4. **The default branch is gone** — all versions must now declare an explicit `revision`.
+5. **Custom Snapshot creation and multiple versions per component** are explicitly deferred to future work.
+
+Would you like to draft your proposal with these constraints in mind, or dig further into any specific aspect?

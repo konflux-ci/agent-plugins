@@ -1,0 +1,67 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+Here's a summary of the prior ADRs directly relevant to the Konflux component model:
+
+---
+
+## Relevant ADRs on the Konflux Component Model
+
+### ADR-0004 — Component Image Location (status: **Implemented**)
+Established that each `Component` gets a dedicated Quay.io image repository automatically provisioned by the image-controller (`quay.io/redhat-user-workloads/<namespace>/<app>/<component>`). This is foundational and settled.
+
+---
+
+### ADR-0029 — Component Dependencies (status: **Accepted**)
+Introduced the `build-nudges-ref` field on `Component` CRs and the **PR Groups** convention. Key decisions:
+- A component declares which other components it "nudges" (i.e., its builds trigger digest-update PRs into those downstream components).
+- Nudging relationships are Application-scoped.
+- build-service fires the Renovate nudge after a push build succeeds; integration-service skips testing nudging components entirely.
+
+---
+
+### ADR-0056 — Revised Component Model (status: **Implementable** — the major active ADR)
+The most significant reform. Key decisions:
+- **Application CR is deprecated.** Replaced by a new `ComponentGroup` CR.
+- **Component Versions**: A single `Component` CR now carries `spec.source.versions[]`, each with a `name` and `revision` (branch/tag). The default-branch model is removed; all versions must be explicit.
+- **build-service** owns the `Component` API going forward.
+- **integration-service** owns the new `ComponentGroup` API and will decommission the old `Application` API.
+- **Nudging** moves to integration test pipelines (away from build-service).
+- Implementation is **phased**: build team first, then integration, then release, then migration and decommissioning of the old model.
+- The `Snapshot` resource remains shared between integration-service and release-service (partial decoupling only).
+
+---
+
+### ADR-0060 — ComponentGroups (status: **Proposed**)
+Companion to ADR-0056, specifying the `ComponentGroup` CRD. Key decisions:
+- Replaces `Application` with `ComponentGroup`, owned by integration-service.
+- Relationship is now **top-down**: the `ComponentGroup` lists which `Component`/version pairs it contains (instead of each `Component` pointing up to its `Application`). This allows a component to belong to **multiple** groups.
+- Adds `testGraph` field for ordered/serialized IntegrationTestScenario execution (a DAG).
+- Adds `dependents` field: creating a Snapshot for a group can cascade to creating Snapshots for listed dependent groups.
+- `status.globalCandidateList` on the `ComponentGroup` tracks the last promoted image per component.
+- Only one `componentVersion` per component per group is supported initially; multiple versions require custom Snapshot creation (deferred).
+- Release-service must update `spec.application` → support `ComponentGroup` references.
+
+---
+
+### ADR-0067 — Nudging Relationship Singleton CRD (status: **Proposed**, dated 2026-05-11)
+The most recent ADR. Partially supersedes ADR-0029 on nudging storage. Key decisions:
+- Introduces a new **`NudgeConfig`** CRD — a **singleton per namespace** (name must be `nudge-config`).
+- Moves nudging relationship storage from `build-nudges-ref` on `Component` → `NudgeConfig`, owned by **integration-service** (not build-service).
+- Adds a `mode` field per nudge edge: `immediate` (fires after build succeeds, current behavior) or `validated` (fires only after the gating `ComponentGroup`'s Snapshot passes integration tests — eliminates wasted downstream builds).
+- Scope broadens from Application-scoped to **namespace-scoped**.
+- Migration: integration-service performs a one-time migration of existing `build-nudges-ref` values into `NudgeConfig` with `mode: immediate`.
+- Cycle detection, self-nudge rejection, and duplicate-pair rejection enforced via CEL in the CRD schema.
+- Group-to-group nudging, batched nudging, and component-to-group nudging are explicitly **deferred to Phase 2**.
+
+---
+
+## Bottom Line
+
+The community has already made sweeping decisions here. Before drafting your proposal, the key constraints to be aware of are:
+
+1. The `Application` CR is being **deprecated** — don't build on it.
+2. **build-service owns `Component`**; **integration-service owns `ComponentGroup`** and `NudgeConfig`. Service ownership boundaries are intentional and protected.
+3. Component versions are now **first-class** (`spec.source.versions[]`), not separate Component CRs per branch.
+4. Nudging has been **moved to integration-service** and is migrating to the `NudgeConfig` singleton CRD.
+5. The `Snapshot` resource remains a shared contract — proposals that break it will face pushback.
+
+What aspect of the component model are you looking to change?

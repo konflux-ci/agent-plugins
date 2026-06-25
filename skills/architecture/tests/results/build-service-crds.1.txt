@@ -1,6 +1,0 @@
-# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
-The Konflux build service owns **two CRDs**, as listed in the `key_crds` field of the document's front matter:
-
-1. **`Component`** — The primary input for the Build Service. Controllers monitor Component CRs to create and configure build pipelines. The Component Build Controller watches for Component CR creation/updates and sets up PipelineRun definitions via Pipelines as Code. It also carries build configuration via annotations (e.g., `build.appstudio.openshift.io/request`, `build.appstudio.openshift.io/pipeline`).
-
-2. **`Repository`** — A Pipelines as Code (PaC) CR that the Component Build Controller creates or reuses during PaC provisioning. The Component CR is set as the owner of the Repository CR.

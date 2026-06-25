@@ -1,6 +1,0 @@
-# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
-The Konflux build service owns the following CRDs, as listed in the `key_crds` field of `build-service.md`:
-
-1. **`Component`** — The primary input to the Build Service. Controllers monitor Component CRs to create and configure build pipelines (PipelineRun definitions via Pipelines as Code).
-
-2. **`Repository`** — A PaC (Pipelines as Code) CR created or reused during PaC provisioning. The Component CR is set as the owner of the Repository CR.

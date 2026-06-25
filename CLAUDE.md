@@ -282,6 +282,8 @@ Minimum 3 scenarios, recommended 6+ for comprehensive skills.
 - `make test` - Validate results against expectations
 - Results stored in `<skill-name>/tests/results/`
 - Debug logs stored as `<scenario-name>-<sample-num>.debug.txt` (gitignored)
+- **From inside a Claude Code session**, prefix with `CLAUDECODE=` to unset the nesting guard:
+  `CLAUDECODE= make generate SKILL=<name>`
 
 **Debug logs:**
 Debug logs are invaluable for understanding skill invocation behavior. Each test generates a `.debug.txt` file containing:
