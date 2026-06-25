@@ -146,7 +146,7 @@ Before committing a new skill, verify:
   - [ ] SKILL.md created with proper frontmatter
   - [ ] README.md created documenting the skill
   - [ ] Entry added to `.claude-plugin/marketplace.json`
-  - [ ] Version and author match `plugin.json` if skill already has one; otherwise start at 1.0.0
+  - [ ] Version and author match `plugin.json` if skill already has one; otherwise start at 1.0.0 (follow semver)
 
 - [ ] **Git Commit**
   - [ ] Commit message describes what problem the skill solves
@@ -169,6 +169,10 @@ When adding a new skill, update `.claude-plugin/marketplace.json`:
   }
 }
 ```
+
+> **Note:** The example above is for **new skills**. For existing skills that
+> already have a `plugin.json`, copy `version` and `author` from that file
+> instead of using the defaults shown here.
 
 **Existing skill metadata — `plugin.json` is the source of truth:**
 When adding a marketplace entry for an existing skill that already has a
