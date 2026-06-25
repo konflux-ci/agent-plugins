@@ -1,7 +1,7 @@
 # Test scenarios for architecture skill
 # Validates that agents actually clone and read from the canonical repos
 
-skill_name: architecture
+skill_name: konflux-architecture
 description: Tests that agents retrieve real content from konflux-ci/architecture and konflux-ci/docs
 
 test_scenarios:

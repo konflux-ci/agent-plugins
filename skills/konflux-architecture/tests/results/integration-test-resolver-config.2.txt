@@ -1,0 +1,28 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+Set `Spec.ResolverRef.ResourceKind` to **`pipelinerun`** (lowercase `r`).
+
+By default, it is set to `pipeline`. But certain attributes — including **pipeline timeouts**, service accounts, and workspaces — can only be defined on a `PipelineRun`, not a `Pipeline`. So when you need to customize timeouts, you must point your `IntegrationTestScenario` at a `PipelineRun` resource instead.
+
+Here's the relevant snippet from `modules/testing/pages/integration/creating.adoc`:
+
+```yaml
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: example-pass
+  namespace: default
+spec:
+  application: application-sample
+  resolverRef:
+    resolver: git
+    resourceKind: pipelinerun   # <-- set this to "pipelinerun" (lowercase r)
+    params:
+      - name: url
+        value: https://github.com/konflux-ci/integration-examples
+      - name: revision
+        value: main
+      - name: pathInRepo
+        value: pipelineruns/integration_pipelinerun_pass.yaml
+```
+
+The `pathInRepo` should then point to a `PipelineRun` YAML file (rather than a `Pipeline` YAML), where you can set the `spec.timeouts` field as needed.

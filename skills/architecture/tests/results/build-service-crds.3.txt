@@ -1,6 +1,0 @@
-# skill_digest: d5917088d4337bd6b8decad5872092d32a516531a7cfbc2ce2cfd29eae70ae69
-The build service owns these two CRDs, as listed in the `key_crds` field of the frontmatter:
-
-1. **`Component`** — The primary input for the Build Service. Controllers monitor Component CRs to create and configure build pipelines, service accounts, and PaC (Pipelines as Code) provisioning.
-
-2. **`Repository`** — Created (or reused) during PaC provisioning, with the Component CR set as its owner. It represents the PaC repository configuration for a component's source repository.

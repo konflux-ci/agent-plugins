@@ -1,0 +1,12 @@
+# skill_digest: 97edff2455fc66ff47ec8cf2cb8c25155a14938624eee3c81460ea4c50705e3c
+The Integration Service is made up of **5 controllers**, documented in the `Sub-components/Controllers` section (lines 176–184):
+
+1. **Build Pipeline Controller** - Monitors completed Component build PipelineRuns, creates Snapshot CRs representing the collection of components to be tested, and updates Component status to promote images to the Global Candidate List (GCL).
+
+2. **Snapshot Controller** - Watches for new Snapshot CRs and creates PipelineRuns based on IntegrationTestScenarios to test them. Updates Snapshot status based on test results and creates Release CRs when all required tests pass and auto-release is enabled.
+
+3. **Component Controller** - Handles Component CR deletions by regenerating a fresh Snapshot that omits the deleted component.
+
+4. **Scenario Controller** - Manages IntegrationTestScenario CRs, validates their configurations, and ensures they are properly set up before use.
+
+5. **StatusReport Controller** - Manages Snapshot CRs and their testing status, creating and updating status based on PipelineRun test results to provide status reporting for integration test execution.

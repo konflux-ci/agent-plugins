@@ -1,4 +1,4 @@
-# architecture
+# konflux-architecture
 
 ## Purpose
 
