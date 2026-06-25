@@ -1,0 +1,296 @@
+# Repo ownership mapping for Konflux-related GitHub orgs.
+# Keys use org/repo format. Each maps to a list of {team, clarification} entries.
+# The team value must match a filename (without .yaml) in data/teams/.
+# Repos not listed here will appear in references/unassociated-repos.md.
+
+# --- konflux-ci org ---
+
+konflux-ci/application-api:
+  - team: vanguard
+    clarification: Application and Component API definitions
+
+konflux-ci/build-definitions:
+  - team: build
+    clarification: Build pipeline definitions and task bundles
+
+konflux-ci/build-service:
+  - team: build
+    clarification: Build service controller
+
+konflux-ci/build-trusted-artifacts:
+  - team: build
+    clarification: Trusted artifacts for build pipelines
+
+konflux-ci/build-pipeline-tasks:
+  - team: build
+    clarification: Individual build pipeline tasks
+
+konflux-ci/build-tasks-dockerfiles:
+  - team: build
+    clarification: Dockerfiles for build task images
+
+konflux-ci/buildah-container:
+  - team: build
+    clarification: Buildah container image for builds
+
+konflux-ci/caching:
+  - team: vanguard
+    clarification: Caching infrastructure
+
+konflux-ci/clair-in-ci-db:
+  - team: integration
+    clarification: Clair vulnerability database for CI scanning
+
+konflux-ci/diffused:
+  - team: container-health
+    clarification: Automatic CVE detection for releases
+
+konflux-ci/e2e-tests:
+  - team: integration
+    clarification: End-to-end test suite
+
+konflux-ci/etcd-shield:
+  - team: infrastructure
+    clarification: etcd protection tooling
+
+konflux-ci/image-controller:
+  - team: build
+    clarification: Image repository management controller
+
+konflux-ci/integration-service:
+  - team: integration
+    clarification: Integration service controller
+
+konflux-ci/integration-service-utils:
+  - team: integration
+    clarification: Shared utilities for integration service
+
+konflux-ci/integration-examples:
+  - team: integration
+    clarification: Example integration test configurations
+
+konflux-ci/konflux-ui:
+  - team: ui
+    clarification: Konflux web UI frontend
+  - team: cue
+    clarification: UX integration aspects
+
+konflux-ci/konflux-ci:
+  - team: vanguard
+    clarification: Upstream Konflux CI deployment
+
+konflux-ci/mintmaker:
+  - team: container-health
+    clarification: MintMaker dependency update service
+
+konflux-ci/mintmaker-renovate-image:
+  - team: container-health
+    clarification: Renovate container image for MintMaker
+
+konflux-ci/mintmaker-osv-database:
+  - team: container-health
+    clarification: OSV vulnerability database for MintMaker
+
+konflux-ci/mintmaker-presets:
+  - team: container-health
+    clarification: Default configuration presets for MintMaker
+
+konflux-ci/mintmaker-schedule-calculator:
+  - team: container-health
+    clarification: Scheduling logic for MintMaker updates
+
+konflux-ci/multi-platform-controller:
+  - team: infrastructure
+    clarification: Multi-architecture build controller
+
+konflux-ci/multi-arch:
+  - team: infrastructure
+    clarification: Multi-architecture build support
+
+konflux-ci/namespace-lister:
+  - team: infrastructure
+    clarification: Namespace listing utility
+
+konflux-ci/kyverno:
+  - team: infrastructure
+    clarification: Kyverno policy engine deployment
+
+konflux-ci/kueue-external-admission:
+  - team: infrastructure
+    clarification: Kueue external admission webhook
+
+konflux-ci/release-service:
+  - team: release
+    clarification: Release service controller
+
+konflux-ci/release-service-catalog:
+  - team: release
+    clarification: Release pipeline catalog
+
+konflux-ci/release-service-utils:
+  - team: release
+    clarification: Shared utilities for release service
+
+konflux-ci/release-service-automations:
+  - team: release
+    clarification: Release automation scripts
+
+konflux-ci/release-service-collectors:
+  - team: release
+    clarification: Data collectors for release monitoring
+
+konflux-ci/release-service-docs:
+  - team: release
+    clarification: Release service documentation
+
+konflux-ci/release-service-monitor:
+  - team: release
+    clarification: Release monitoring dashboards and alerts
+
+konflux-ci/release-service-catalog-e2e-base:
+  - team: release
+    clarification: Base images for release catalog e2e tests
+
+konflux-ci/notification-service:
+  - team: vanguard
+    clarification: PipelineRun results notifier
+
+konflux-ci/project-controller:
+  - team: vanguard
+    clarification: Multi-version project controller
+
+konflux-ci/pipeline-migration-tool:
+  - team: build
+    clarification: Tool for migrating pipeline configurations
+
+konflux-ci/tekton-integration-catalog:
+  - team: developer-productivity
+    clarification: Tekton task and pipeline catalog for CI
+
+konflux-ci/devlake:
+  - team: developer-productivity
+    clarification: DevLake deployment for engineering metrics
+
+konflux-ci/konflux-devlake-dashboards:
+  - team: developer-productivity
+    clarification: Grafana dashboards for DevLake metrics
+
+konflux-ci/konflux-devlake-mcp:
+  - team: developer-productivity
+    clarification: MCP server for DevLake data
+
+konflux-ci/coverage-dashboard:
+  - team: developer-productivity
+    clarification: Code coverage dashboard
+
+konflux-ci/segment-bridge:
+  - team: service-enhancement
+    clarification: Segment analytics bridge
+
+konflux-ci/operator-toolkit:
+  - team: operator-foundry
+    clarification: Toolkit for operator development workflows
+
+konflux-ci/operator-foundry:
+  - team: operator-foundry
+    clarification: Operator build and test infrastructure
+
+konflux-ci/konflux-operator-tasks:
+  - team: operator-foundry
+    clarification: Tekton tasks for operator pipelines
+
+konflux-ci/konflux-operator-trusted-sources:
+  - team: operator-foundry
+    clarification: Trusted source configuration for operators
+
+konflux-ci/olm-operator-konflux-sample:
+  - team: operator-foundry
+    clarification: Sample OLM operator for Konflux
+
+konflux-ci/loadtest:
+  - team: performance
+    clarification: Load testing framework
+
+konflux-ci/perfscale:
+  - team: performance
+    clarification: Performance and scale testing tools
+
+konflux-ci/rpmbuild-pipeline:
+  - team: rpm-build-process
+    clarification: RPM build pipeline definitions
+
+konflux-ci/rpmbuild-pipeline-environment-container:
+  - team: rpm-build-process
+    clarification: Container image for RPM build environment
+
+konflux-ci/rpmbuild-pipeline-monorepo-mock-config-test:
+  - team: rpm-build-process
+    clarification: Test configuration for RPM monorepo mock builds
+
+konflux-ci/rpmbuild-pipeline-test-sources:
+  - team: rpm-build-process
+    clarification: Test source packages for RPM pipeline
+
+konflux-ci/rpm-lockfile-prototype:
+  - team: rpm-build-process
+    clarification: RPM lockfile prototype tooling
+
+konflux-ci/refresh-rpm-lockfiles:
+  - team: rpm-build-process
+    clarification: Tool to refresh RPM lockfile data
+
+konflux-ci/java-pipelines:
+  - team: java-builds
+    clarification: Java-specific pipeline definitions
+
+konflux-ci/maven-lockfile:
+  - team: java-builds
+    clarification: Maven dependency lockfile tooling
+
+konflux-ci/architecture:
+  - team: vanguard
+    clarification: Architecture decision records and design docs
+
+konflux-ci/docs:
+  - team: vanguard
+    clarification: User-facing Konflux documentation
+
+konflux-ci/internal-services:
+  - team: release
+    clarification: Internal services for release workflows
+
+konflux-ci/sprayproxy:
+  - team: pipelines
+    clarification: Spray proxy for Pipelines-as-Code
+
+konflux-ci/tekton-kueue:
+  - team: pipelines
+    clarification: Kueue integration for Tekton pipelines
+
+konflux-ci/pipeline-samples:
+  - team: pipelines
+    clarification: Sample pipeline configurations
+
+konflux-ci/agent-plugins:
+  - team: developer-productivity
+    clarification: Claude Code plugins and skills for Konflux
+
+konflux-ci/konflux-lightspeed:
+  - team: developer-productivity
+    clarification: AI assistant integration for Konflux
+
+konflux-ci/.fullsend:
+  - team: fullsend
+    clarification: Fullsend platform configuration
+
+# --- hermetoproject org ---
+
+hermetoproject/hermeto:
+  - team: build
+    clarification: Hermetic build tool (Hermeto)
+
+# --- conforma org ---
+
+conforma/conforma:
+  - team: conforma
+    clarification: Enterprise Contract / Conforma policy engine
