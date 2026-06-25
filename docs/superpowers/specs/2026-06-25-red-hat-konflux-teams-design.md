@@ -2,11 +2,11 @@
 
 ## Problem
 
-The Red Hat Konflux engineering organization spans ~30 teams and ~140 repositories in the `konflux-ci` GitHub org. Developers working in or around Konflux need to know which team owns a given repo, what JIRA project to file issues against, and which JIRA components are relevant. This information lives in a Google Spreadsheet that isn't easily queryable by tooling.
+The Red Hat Konflux engineering organization spans ~30 teams and repositories across multiple GitHub orgs — primarily `konflux-ci`, but also `hermetoproject` and `conforma`. Developers working in or around Konflux need to know which team owns a given repo, what JIRA project to file issues against, and which JIRA components are relevant. This information lives in a Google Spreadsheet that isn't easily queryable by tooling.
 
 ## Goal
 
-Create a skill that maps konflux-ci repositories to Red Hat teams and their JIRA metadata (project keys, components). The skill should be programmatically maintainable so that new repos are detected and flagged for ownership assignment.
+Create a skill that maps repositories across the Konflux-related GitHub orgs (`konflux-ci`, `hermetoproject`, `conforma`) to Red Hat teams and their JIRA metadata (project keys, components). The skill should be programmatically maintainable so that new repos are detected and flagged for ownership assignment.
 
 ## Non-goals
 
@@ -89,17 +89,23 @@ Teams like Collective that own multiple JIRA components (Pyxis, Radas, Sbom) lis
 
 ### Repo ownership (`data/repo-owners.yaml`)
 
-Flat map keyed by repo name. Each value is a list of ownership entries:
+Flat map keyed by `org/repo`. Each value is a list of ownership entries:
 
 ```yaml
-build-definitions:
+konflux-ci/build-definitions:
   - team: build
     clarification: Primary owners of build pipeline definitions
   - team: java-builds
     clarification: Java-specific build pipeline definitions
-integration-service:
+konflux-ci/integration-service:
   - team: integration
     clarification: Primary owners
+hermetoproject/hermeto:
+  - team: build
+    clarification: Hermetic build tool (Hermeto)
+conforma/conforma:
+  - team: conforma
+    clarification: Enterprise Contract / Conforma policy engine
 ```
 
 - `team`: Matches the filename (without `.yaml`) in `data/teams/`
@@ -112,8 +118,8 @@ Repos absent from this file are considered unassociated.
 ### `scripts/sync-repos.sh`
 
 Bash wrapper that:
-1. Runs `gh repo list konflux-ci --limit 500 --json name,isArchived --jq '.[] | select(.isArchived == false) | .name'`
-2. Passes the repo list to `generate-references.py` via stdin
+1. Runs `gh repo list` for each tracked org (`konflux-ci`, `hermetoproject`, `conforma`), prefixing each repo name with `org/`
+2. Passes the combined repo list to `generate-references.py` via stdin
 
 ### `scripts/generate-references.py`
 
@@ -127,7 +133,7 @@ Python script that:
 
 **`references/teams-by-repo.md`**: Single alphabetical table. Columns: Repo, Team(s), JIRA Project(s), Clarification.
 
-**`references/unassociated-repos.md`**: Simple list of repo names found on GitHub but absent from `repo-owners.yaml`.
+**`references/unassociated-repos.md`**: Simple list of `org/repo` names found on GitHub but absent from `repo-owners.yaml`.
 
 ## SKILL.md
 
@@ -148,7 +154,7 @@ Body directs Claude to read the appropriate reference file:
 
 ## Initial data population
 
-Team YAML files will be populated from the "Konflux Team Structure" sheet (gid 698174757) of the source spreadsheet. The repo-owners.yaml will be seeded with known mappings based on repo names that clearly correspond to teams (e.g., `build-service` → build, `integration-service` → integration, `release-service` → release). Remaining repos start as unassociated.
+Team YAML files will be populated from the "Konflux Team Structure" sheet (gid 698174757) of the source spreadsheet. The repo-owners.yaml will be seeded with known mappings (keyed as `org/repo`) based on repo names that clearly correspond to teams (e.g., `konflux-ci/build-service` → build, `konflux-ci/integration-service` → integration, `hermetoproject/hermeto` → build). Remaining repos start as unassociated.
 
 ## README notes
 
