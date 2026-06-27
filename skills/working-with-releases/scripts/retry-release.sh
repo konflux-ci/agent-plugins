@@ -80,6 +80,7 @@ else
 fi
 
 # Strip any existing -retry-NNN suffix from the base
+# shellcheck disable=SC2001 # regex quantifier not supported in bash patterns
 BASE_NAME=$(echo "$BASE_NAME" | sed 's/-retry-[0-9]\{1,\}$//')
 
 # Find existing retries to determine the next number

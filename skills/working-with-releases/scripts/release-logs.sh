@@ -143,6 +143,7 @@ get_archived_logs() {
             }
 
             if [[ -n "$log" ]]; then
+                # shellcheck disable=SC2001 # sed needed for per-line prefix
                 echo "$log" | sed 's/^/      /'
             fi
         done <<< "$steps"
