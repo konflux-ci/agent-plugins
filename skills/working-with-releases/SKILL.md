@@ -110,6 +110,37 @@ The script outputs:
 3. Managed Pipeline logs (runs in the target/managed namespace)
 4. Final Pipeline logs (or "Skipped" if not applicable)
 
+## Konflux UI URLs
+
+When sharing release status with the user, provide direct links to the Konflux UI. The base URL uses the cluster domain from the current kubeconfig context.
+
+**URL pattern for a Release:**
+```
+https://konflux-ui.apps.{cluster-domain}/ns/{namespace}/applications/{application}/releases/{release-name}
+```
+
+**URL pattern for PipelineRun logs:**
+```
+https://konflux-ui.apps.{cluster-domain}/ns/{pr-namespace}/applications/{application}/pipelineruns/{pr-name}/logs
+```
+
+### Constructing URLs
+
+The `list-releases.sh` output includes `clusterDomain`, `namespace`, `name`, `application`, `target`, and `managedPipelineRun` (in `namespace/name` format). Split the pipelineRun reference on `/` to get the namespace and name separately.
+
+Example — build a release URL and managed pipeline logs URL:
+```bash
+SCRIPT=~/.claude/skills/working-with-releases/scripts/list-releases.sh
+$SCRIPT --limit 1 | jq -r '
+  .[0] |
+  "Release:  https://konflux-ui.apps.\(.clusterDomain)/ns/\(.namespace)/applications/\(.application)/releases/\(.name)",
+  if .managedPipelineRun then
+    (.managedPipelineRun | split("/")) as [$prNs, $prName] |
+    "Managed:  https://konflux-ui.apps.\(.clusterDomain)/ns/\($prNs)/applications/\(.application)/pipelineruns/\($prName)/logs"
+  else empty end
+'
+```
+
 ## Release Pipeline Stages
 
 A release progresses through up to three pipeline stages:

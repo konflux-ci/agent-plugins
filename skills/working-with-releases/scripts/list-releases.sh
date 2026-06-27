@@ -36,8 +36,11 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-kubectl get releases "${NAMESPACE_ARGS[@]}" --sort-by=.metadata.creationTimestamp -o json | jq --arg limit "${LIMIT:-0}" '
+CLUSTER_DOMAIN=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}' | sed 's|https://api\.||; s|:.*||')
+
+kubectl get releases "${NAMESPACE_ARGS[@]}" --sort-by=.metadata.creationTimestamp -o json | jq --arg limit "${LIMIT:-0}" --arg cluster "$CLUSTER_DOMAIN" '
 [.items[] | {
+    clusterDomain: $cluster,
     name: .metadata.name,
     namespace: .metadata.namespace,
     created: .metadata.creationTimestamp,
@@ -50,6 +53,7 @@ kubectl get releases "${NAMESPACE_ARGS[@]}" --sort-by=.metadata.creationTimestam
     ),
     status: ([.status.conditions[]? | select(.type == "Released") | .reason] | first // null),
     statusMessage: ([.status.conditions[]? | select(.type == "Released") | .message // ""] | first // null),
+    application: (.metadata.labels["appstudio.openshift.io/application"] // null),
     snapshot: .spec.snapshot,
     releasePlan: .spec.releasePlan,
     author: .status.attribution.author,
