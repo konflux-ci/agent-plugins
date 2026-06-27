@@ -18,17 +18,18 @@
 set -euo pipefail
 
 RELEASE_NAME=""
-NAMESPACE_FLAG=""
-FOLLOW=""
+NAMESPACE_ARGS=()
+FOLLOW_ARGS=()
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --namespace|-n)
-            NAMESPACE_FLAG="--namespace $2"
+            [[ $# -lt 2 ]] && { echo "Error: --namespace requires an argument" >&2; exit 1; }
+            NAMESPACE_ARGS=(--namespace "$2")
             shift 2
             ;;
         --follow|-f)
-            FOLLOW="-f"
+            FOLLOW_ARGS=(-f)
             shift
             ;;
         -*)
@@ -102,6 +103,7 @@ get_archived_logs() {
         return 1
     fi
 
+    local tr_name task_name
     while IFS=$'\t' read -r tr_name task_name; do
         echo "  [task: $task_name]"
 
@@ -124,6 +126,7 @@ get_archived_logs() {
         local steps
         steps=$(echo "$tr_json" | jq -r '.status.steps[]? | "\(.name)\t\(.terminated.exitCode // "?")\t\(.terminated.reason // "?")"')
 
+        local step_name exit_code reason
         while IFS=$'\t' read -r step_name exit_code reason; do
             local prefix="    "
             if [[ "$exit_code" != "0" ]]; then
@@ -148,11 +151,10 @@ get_archived_logs() {
 }
 
 # Fetch the release JSON once
-# shellcheck disable=SC2086
-RELEASE_JSON=$(kubectl get release "$RELEASE_NAME" $NAMESPACE_FLAG -o json)
+RELEASE_JSON=$(kubectl get release "$RELEASE_NAME" "${NAMESPACE_ARGS[@]}" -o json)
 
 echo "=== Release: $RELEASE_NAME ==="
-echo "$RELEASE_JSON" | jq -r '"Status: \(.status.conditions[]? | select(.type == "Released") | "\(.reason) - \(.message // "")")"'
+echo "$RELEASE_JSON" | jq -r '[.status.conditions[]? | select(.type == "Released")] | first // {} | "Status: \(.reason // "Unknown") - \(.message // "")"'
 echo ""
 
 # Extract pipelinerun references (format: "namespace/name")
@@ -160,7 +162,6 @@ TENANT_PR=$(echo "$RELEASE_JSON" | jq -r '.status.tenantProcessing.pipelineRun /
 MANAGED_PR=$(echo "$RELEASE_JSON" | jq -r '.status.managedProcessing.pipelineRun // empty')
 FINAL_PR=$(echo "$RELEASE_JSON" | jq -r '.status.finalProcessing.pipelineRun // empty')
 
-# Helper to extract namespace and name from "namespace/name" format
 get_logs() {
     local label="$1"
     local ref="$2"
@@ -169,7 +170,7 @@ get_logs() {
     if [[ -z "$ref" ]]; then
         local reason
         reason=$(echo "$RELEASE_JSON" | jq -r --arg t "$condition_type" '
-            .status.conditions[]? | select(.type == $t) | .reason // "Unknown"
+            [.status.conditions[]? | select(.type == $t) | .reason] | first // "Unknown"
         ')
         echo "--- $label: $reason (no PipelineRun) ---"
         echo ""
@@ -184,14 +185,13 @@ get_logs() {
 
     local status
     status=$(echo "$RELEASE_JSON" | jq -r --arg t "$condition_type" '
-        .status.conditions[]? | select(.type == $t) | "\(.reason) - \(.message // "")"
+        [.status.conditions[]? | select(.type == $t)] | first // {} | "\(.reason // "Unknown") - \(.message // "")"
     ')
     echo "Condition: $status"
     echo ""
 
     # Try live logs first, fall back to kubearchive if GC'd
-    # shellcheck disable=SC2086
-    tkn pipelinerun logs --namespace "$pr_namespace" $FOLLOW "$pr_name" 2>/dev/null || {
+    tkn pipelinerun logs --namespace "$pr_namespace" "${FOLLOW_ARGS[@]}" "$pr_name" 2>/dev/null || {
         echo "(PipelineRun not found on cluster — trying kubearchive...)" >&2
         get_archived_logs "$pr_namespace" "$pr_name" || {
             echo "Error: could not retrieve logs for $pr_name from cluster or kubearchive" >&2

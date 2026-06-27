@@ -5,6 +5,7 @@
 #   list-releases.sh [--namespace <ns>] [--limit <n>]
 #
 # Outputs JSON to stdout. Pipe through jq to filter.
+# --limit returns the N most recent releases.
 #
 # Examples:
 #   list-releases.sh | jq '.[].name'
@@ -13,16 +14,18 @@
 
 set -euo pipefail
 
-NAMESPACE_FLAG=""
+NAMESPACE_ARGS=()
 LIMIT=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --namespace|-n)
-            NAMESPACE_FLAG="--namespace $2"
+            [[ $# -lt 2 ]] && { echo "Error: --namespace requires an argument" >&2; exit 1; }
+            NAMESPACE_ARGS=(--namespace "$2")
             shift 2
             ;;
         --limit|-l)
+            [[ $# -lt 2 ]] && { echo "Error: --limit requires an argument" >&2; exit 1; }
             LIMIT="$2"
             shift 2
             ;;
@@ -33,8 +36,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# shellcheck disable=SC2086
-kubectl get releases $NAMESPACE_FLAG --sort-by=.metadata.creationTimestamp -o json | jq --arg limit "${LIMIT:-0}" '
+kubectl get releases "${NAMESPACE_ARGS[@]}" --sort-by=.metadata.creationTimestamp -o json | jq --arg limit "${LIMIT:-0}" '
 [.items[] | {
     name: .metadata.name,
     namespace: .metadata.namespace,
@@ -46,16 +48,8 @@ kubectl get releases $NAMESPACE_FLAG --sort-by=.metadata.creationTimestamp -o js
         else "\(. / 86400 | floor)d"
         end
     ),
-    status: (
-        .status.conditions[]? |
-        select(.type == "Released") |
-        .reason
-    ),
-    statusMessage: (
-        .status.conditions[]? |
-        select(.type == "Released") |
-        .message // ""
-    ),
+    status: ([.status.conditions[]? | select(.type == "Released") | .reason] | first // null),
+    statusMessage: ([.status.conditions[]? | select(.type == "Released") | .message // ""] | first // null),
     snapshot: .spec.snapshot,
     releasePlan: .spec.releasePlan,
     author: .status.attribution.author,
@@ -63,21 +57,9 @@ kubectl get releases $NAMESPACE_FLAG --sort-by=.metadata.creationTimestamp -o js
     tenantPipelineRun: .status.tenantProcessing.pipelineRun,
     managedPipelineRun: .status.managedProcessing.pipelineRun,
     finalPipelineRun: .status.finalProcessing.pipelineRun,
-    tenantPipelineStatus: (
-        .status.conditions[]? |
-        select(.type == "TenantPipelineProcessed") |
-        .reason
-    ),
-    managedPipelineStatus: (
-        .status.conditions[]? |
-        select(.type == "ManagedPipelineProcessed") |
-        .reason
-    ),
-    finalPipelineStatus: (
-        .status.conditions[]? |
-        select(.type == "FinalPipelineProcessed") |
-        .reason
-    )
+    tenantPipelineStatus: ([.status.conditions[]? | select(.type == "TenantPipelineProcessed") | .reason] | first // null),
+    managedPipelineStatus: ([.status.conditions[]? | select(.type == "ManagedPipelineProcessed") | .reason] | first // null),
+    finalPipelineStatus: ([.status.conditions[]? | select(.type == "FinalPipelineProcessed") | .reason] | first // null)
 }] |
 if ($limit | tonumber) > 0 then .[-($limit | tonumber):]
 else .

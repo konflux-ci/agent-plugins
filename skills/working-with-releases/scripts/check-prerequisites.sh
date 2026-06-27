@@ -4,14 +4,14 @@
 # Usage:
 #   check-prerequisites.sh
 #
-# Checks for kubectl, tkn, jq, and active cluster connection.
+# Checks for kubectl, tkn, jq, oc, curl and active cluster connection.
 # Exits 0 if all checks pass, 1 otherwise.
 
 set -euo pipefail
 
 FAILED=0
 
-for tool in kubectl tkn jq; do
+for tool in kubectl tkn jq oc curl; do
     if command -v "$tool" >/dev/null 2>&1; then
         echo "OK: $tool"
     else
@@ -27,8 +27,9 @@ if [[ $FAILED -eq 1 ]]; then
 fi
 
 echo ""
-if kubectl cluster-info --request-timeout=5s 2>&1 | head -1 | grep -q "running"; then
-    kubectl cluster-info --request-timeout=5s 2>&1 | head -1
+cluster_output=$(kubectl cluster-info --request-timeout=5s 2>&1 || true)
+if echo "$cluster_output" | grep -q "running"; then
+    echo "$cluster_output" | head -1
 else
     echo "NOT CONNECTED: kubectl cannot reach a cluster"
     echo "Use the selecting-konflux-cluster or connecting-to-konflux-cluster skill to connect."
