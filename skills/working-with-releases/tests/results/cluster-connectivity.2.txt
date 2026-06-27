@@ -1,0 +1,12 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+You're actually already connected — the prerequisites check found an active cluster at `https://api.test-cluster.example.com:6443`. Here are your 10 most recent releases:
+
+| Name | Status | Age |
+|------|--------|-----|
+| `my-app-prod-abc123` | Failed | 4h |
+| `my-app-staging-xyz` | Succeeded | 3h |
+
+One release has **Failed** (`my-app-prod-abc123`). Would you like me to:
+- **Investigate** the failure (fetch logs for that release)?
+- **Retry** the failed release?
+- **Filter** releases differently (e.g., by namespace or application)?

@@ -1,0 +1,27 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+Here's what went wrong with **`my-app-prod-abc123`**:
+
+**Root cause: Quay.io 503 — Service Temporarily Unavailable**
+
+The managed pipeline (`managed-tenant/managed-xyz789`) failed at the **`publish`** task when trying to push to `quay.io/repository/my-org/my-app`. The registry returned a `503 Service Temporarily Unavailable` error, indicating a transient outage on Quay's side.
+
+**Pipeline stage summary:**
+
+| Stage | Status | Notes |
+|-------|--------|-------|
+| Tenant | Skipped | No tenant pipeline defined |
+| Managed | **Failed** | `publish` task — Quay 503 |
+| Final | Skipped | Never reached |
+
+Earlier steps all passed cleanly:
+- `collect-data` — OK
+- `verify-conforma` (Enterprise Contract) — All policies passed
+- `sign` — Signing completed successfully
+
+**This looks like a transient infrastructure failure**, not a problem with your code or config. Since Quay was temporarily unavailable, a retry is likely to succeed.
+
+You can view it in the Konflux UI:
+- **Release:** `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-prod-abc123`
+- **Managed pipeline logs:** `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-xyz789/logs`
+
+Would you like me to retry the release?

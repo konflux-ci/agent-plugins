@@ -1,0 +1,19 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+To view recent Konflux releases, you'll first need to connect to a cluster. Here are your options:
+
+**1. Log in with `oc login`:**
+```bash
+oc login --token=<your-token> --server=<api-url>
+```
+
+**2. Use an existing kubeconfig:**
+```bash
+export KUBECONFIG=/path/to/your/kubeconfig
+```
+
+**3. Verify your connection:**
+```bash
+oc whoami
+```
+
+Once connected, let me know and I can use the **working-with-releases** skill to list recent releases, check their status, and inspect pipeline logs.

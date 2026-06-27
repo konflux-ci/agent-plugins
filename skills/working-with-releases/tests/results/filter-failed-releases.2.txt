@@ -1,0 +1,10 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+From the last 20 releases, **1 failed release** was found:
+
+| Name | Status | Age | Reason |
+|------|--------|-----|--------|
+| `my-app-prod-abc123` | Failed | 4h | Release processing failed on managed pipelineRun |
+
+Would you like me to:
+- **View logs** for this release to investigate the failure?
+- **Retry** the release?

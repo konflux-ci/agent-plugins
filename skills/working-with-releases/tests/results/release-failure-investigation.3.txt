@@ -1,0 +1,38 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+Here's what happened with **my-app-prod-abc123**:
+
+---
+
+**Root cause: Quay.io service unavailability (HTTP 503)**
+
+The release failed in the **managed pipeline** (`managed-tenant/managed-xyz789`) at the `publish` task. Earlier stages all passed:
+
+| Stage | Status | Notes |
+|---|---|---|
+| Tenant Pipeline | Skipped | Not configured in ReleasePlan |
+| Managed Pipeline | **Failed** | Failed at `publish` step |
+| Final Pipeline | Skipped | Never reached |
+
+**Failed task — `publish : run`:**
+```
+Error: Push failed (503) for 'https://quay.io/repository/my-org/my-app'
+Service temporarily unavailable
+```
+
+The Enterprise Contract (`verify-conforma`) and signing steps both succeeded — this was a transient Quay.io outage, not a policy or code issue.
+
+---
+
+**Useful links:**
+- Release: `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-prod-abc123`
+- Managed PipelineRun logs: `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-xyz789/logs`
+
+---
+
+**Recommended next step:** Since this was a transient 503 from Quay.io, a retry should succeed. Run a dry run first:
+
+```bash
+~/.claude/skills/working-with-releases/scripts/retry-release.sh my-app-prod-abc123 --namespace my-tenant --dry-run
+```
+
+Then drop `--dry-run` to create the retry release. Would you like me to do that?

@@ -1,0 +1,26 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+Great news — the release has already completed successfully. Here's a summary:
+
+**Release: `my-app-staging-xyz`**
+
+| Field | Value |
+|---|---|
+| Status | **Succeeded** |
+| Age | 3h |
+| Application | `my-app` |
+| Snapshot | `my-app-snapshot-002` |
+| Release Plan | `my-app-staging` |
+| Author | `testuser` |
+| Target | `managed-tenant` |
+
+**Pipeline Stages:**
+| Stage | Status |
+|---|---|
+| Tenant | Succeeded |
+| Managed | Succeeded |
+| Final | Succeeded |
+
+All three pipeline stages passed. You can view it in the Konflux UI:
+
+- **Release:** `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-staging-xyz`
+- **Managed Pipeline Logs:** `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-bbb222/logs`

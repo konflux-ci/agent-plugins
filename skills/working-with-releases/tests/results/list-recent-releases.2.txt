@@ -1,0 +1,13 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+Here's a summary of your 2 recent releases:
+
+| Name | Application | Status | Age |
+|------|-------------|--------|-----|
+| `my-app-prod-abc123` | my-app | **Failed** | 4h ago |
+| `my-app-staging-xyz` | my-app | Succeeded | 3h ago |
+
+One release failed (`my-app-prod-abc123`) with the message: *"Release processing failed on managed pipelineRun"*.
+
+Would you like me to:
+- **View the logs** for the failed release to investigate the cause?
+- **Retry** the failed release?

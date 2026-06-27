@@ -66,6 +66,15 @@ Trigger build of Konflux Component:
 - Instruct Claude to perform nudging
 - Get status of a Component or Application
 
+### working-with-releases
+
+Investigate and manage Konflux Releases:
+
+- List recent releases with structured JSON output, filterable with jq
+- View pipeline logs for tenant, managed, and final stages
+- Fall back to kubearchive for garbage-collected PipelineRuns
+- Retry failed releases with auto-incremented naming
+
 ### red-hat-konflux-teams
 
 Map repositories to Red Hat engineering teams:

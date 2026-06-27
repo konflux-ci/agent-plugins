@@ -1,8 +1,8 @@
 skill_name: working-with-releases
 description: Validates that Claude uses wrapper scripts for Konflux Release operations instead of raw kubectl/tkn
 
-copy_to_home:
-  - .kube
+# Mock CLI tools so tests don't depend on cluster access or create real resources
+mock_bin: mocks/bin
 
 test_scenarios:
   - name: list-recent-releases
@@ -44,16 +44,14 @@ test_scenarios:
     baseline_failure: "Without skill, Claude runs raw kubectl and doesn't filter output efficiently"
 
   - name: check-prerequisites
-    description: Validates that Claude checks for required CLI tools before running commands
+    description: Validates that Claude runs check-prerequisites.sh before other commands
     prompt: "I want to check the status of my releases but I'm not sure if I have the right tools installed"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - ["command -v", "which"]
-        - kubectl
-        - tkn
-    baseline_failure: "Without skill, Claude doesn't verify CLI tool availability before running commands"
+        - check-prerequisites.sh
+    baseline_failure: "Without skill, Claude doesn't run the prerequisites check script"
 
   - name: follow-release-progress
     description: Validates that Claude uses --follow flag for in-progress releases
@@ -74,5 +72,5 @@ test_scenarios:
     expected:
       contains_keywords:
         - ["cluster", "connect", "login"]
-        - ["selecting-konflux-cluster", "connecting-to-konflux-cluster", "kubectl cluster-info"]
+        - ["selecting-konflux-cluster", "connecting-to-konflux-cluster", "check-prerequisites"]
     baseline_failure: "Without skill, Claude doesn't guide user through cluster connection before attempting release queries"

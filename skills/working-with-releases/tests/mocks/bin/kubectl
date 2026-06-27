@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# Mock kubectl for testing working-with-releases skill
+# Returns canned responses for release-related commands
+
+case "$*" in
+    *"cluster-info"*)
+        echo "Kubernetes control plane is running at https://api.test-cluster.example.com:6443"
+        ;;
+    *"get releases"*"-o json"*)
+        # List of releases (for list-releases.sh)
+        cat <<'JSON'
+{"apiVersion":"v1","kind":"List","items":[
+  {
+    "apiVersion":"appstudio.redhat.com/v1alpha1","kind":"Release",
+    "metadata":{
+      "name":"my-app-prod-abc123","namespace":"my-tenant",
+      "creationTimestamp":"2026-06-27T10:00:00Z",
+      "generateName":"my-app-prod-",
+      "labels":{
+        "appstudio.openshift.io/application":"my-app",
+        "appstudio.openshift.io/component":"my-component",
+        "release.appstudio.openshift.io/author":"testuser",
+        "release.appstudio.openshift.io/releasePlan":"my-app-prod",
+        "release.appstudio.openshift.io/snapshot":"my-app-snapshot-001"
+      }
+    },
+    "spec":{"releasePlan":"my-app-prod","snapshot":"my-app-snapshot-001","gracePeriodDays":7},
+    "status":{
+      "attribution":{"author":"testuser"},
+      "target":"managed-tenant",
+      "startTime":"2026-06-27T10:00:00Z",
+      "completionTime":"2026-06-27T10:05:00Z",
+      "conditions":[
+        {"type":"Released","status":"False","reason":"Failed","message":"Release processing failed on managed pipelineRun"},
+        {"type":"Validated","status":"True","reason":"Succeeded","message":""},
+        {"type":"TenantPipelineProcessed","status":"True","reason":"Skipped","message":""},
+        {"type":"ManagedPipelineProcessed","status":"False","reason":"Failed","message":"task publish failed: step-run exited with code 1"},
+        {"type":"FinalPipelineProcessed","status":"True","reason":"Skipped","message":""}
+      ],
+      "tenantProcessing":{},
+      "managedProcessing":{"pipelineRun":"managed-tenant/managed-xyz789","startTime":"2026-06-27T10:00:10Z","completionTime":"2026-06-27T10:05:00Z"},
+      "managedPipelineAttempts":[{"pipelineRun":"managed-tenant/managed-xyz789","status":"Failed","failureReason":"Error","lastTask":"publish","lastStep":"run","successfulTasks":5}]
+    }
+  },
+  {
+    "apiVersion":"appstudio.redhat.com/v1alpha1","kind":"Release",
+    "metadata":{
+      "name":"my-app-staging-xyz","namespace":"my-tenant",
+      "creationTimestamp":"2026-06-27T11:00:00Z",
+      "generateName":"my-app-staging-",
+      "labels":{
+        "appstudio.openshift.io/application":"my-app",
+        "release.appstudio.openshift.io/releasePlan":"my-app-staging"
+      }
+    },
+    "spec":{"releasePlan":"my-app-staging","snapshot":"my-app-snapshot-002","gracePeriodDays":7},
+    "status":{
+      "attribution":{"author":"testuser"},
+      "target":"managed-tenant",
+      "startTime":"2026-06-27T11:00:00Z",
+      "completionTime":"2026-06-27T11:10:00Z",
+      "conditions":[
+        {"type":"Released","status":"True","reason":"Succeeded","message":""},
+        {"type":"Validated","status":"True","reason":"Succeeded","message":""},
+        {"type":"TenantPipelineProcessed","status":"True","reason":"Succeeded","message":""},
+        {"type":"ManagedPipelineProcessed","status":"True","reason":"Succeeded","message":""},
+        {"type":"FinalPipelineProcessed","status":"True","reason":"Succeeded","message":""}
+      ],
+      "tenantProcessing":{"pipelineRun":"my-tenant/tenant-aaa111"},
+      "managedProcessing":{"pipelineRun":"managed-tenant/managed-bbb222"},
+      "finalProcessing":{"pipelineRun":"managed-tenant/final-ccc333"}
+    }
+  }
+]}
+JSON
+        ;;
+    *"get release"*"-o json"*)
+        # Single release (for release-logs.sh and retry-release.sh)
+        cat <<'JSON'
+{
+  "apiVersion":"appstudio.redhat.com/v1alpha1","kind":"Release",
+  "metadata":{
+    "name":"my-app-prod-abc123","namespace":"my-tenant",
+    "creationTimestamp":"2026-06-27T10:00:00Z",
+    "generateName":"my-app-prod-",
+    "finalizers":["appstudio.redhat.com/release-finalizer"],
+    "labels":{
+      "appstudio.openshift.io/application":"my-app",
+      "appstudio.openshift.io/component":"my-component",
+      "release.appstudio.openshift.io/author":"testuser",
+      "release.appstudio.openshift.io/releasePlan":"my-app-prod",
+      "release.appstudio.openshift.io/snapshot":"my-app-snapshot-001"
+    }
+  },
+  "spec":{"releasePlan":"my-app-prod","snapshot":"my-app-snapshot-001","gracePeriodDays":7},
+  "status":{
+    "attribution":{"author":"testuser"},
+    "target":"managed-tenant",
+    "startTime":"2026-06-27T10:00:00Z",
+    "completionTime":"2026-06-27T10:05:00Z",
+    "conditions":[
+      {"type":"Released","status":"False","reason":"Failed","message":"Release processing failed on managed pipelineRun"},
+      {"type":"Validated","status":"True","reason":"Succeeded","message":""},
+      {"type":"TenantPipelineProcessed","status":"True","reason":"Skipped","message":""},
+      {"type":"ManagedPipelineProcessed","status":"False","reason":"Failed","message":"task publish failed: step-run exited with code 1"},
+      {"type":"FinalPipelineProcessed","status":"True","reason":"Skipped","message":""}
+    ],
+    "tenantProcessing":{},
+    "managedProcessing":{"pipelineRun":"managed-tenant/managed-xyz789","startTime":"2026-06-27T10:00:10Z","completionTime":"2026-06-27T10:05:00Z"},
+    "managedPipelineAttempts":[{"pipelineRun":"managed-tenant/managed-xyz789","status":"Failed","failureReason":"Error","lastTask":"publish","lastStep":"run","successfulTasks":5}]
+  }
+}
+JSON
+        ;;
+    *"get configmap"*"kubearchive-api-url"*)
+        echo "https://kubearchive.test-cluster.example.com"
+        ;;
+    *"config view"*)
+        echo "https://api.test-cluster.example.com:6443"
+        ;;
+    *"create"*)
+        echo "release.appstudio.redhat.com/my-app-prod-retry-001 created"
+        ;;
+    *)
+        echo "mock-kubectl: unhandled args: $*" >&2
+        exit 1
+        ;;
+esac

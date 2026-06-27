@@ -1,0 +1,12 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+Here's a summary of your 10 most recent releases:
+
+| Name | Status | Age | Notes |
+|------|--------|-----|-------|
+| `my-app-prod-abc123` | **Failed** | 4h | Release processing failed on managed pipelineRun |
+| `my-app-staging-xyz` | Succeeded | 3h | — |
+
+You have one failed release (`my-app-prod-abc123`) that may need attention. Would you like me to:
+- **View logs** for the failed release to diagnose what went wrong?
+- **Retry** the failed release?
+- **See more details** on any specific release?

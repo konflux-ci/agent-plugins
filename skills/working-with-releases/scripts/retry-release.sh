@@ -72,8 +72,8 @@ fi
 # Extract the base name: strip the random generateName suffix and any existing -retry-NNN
 GENERATE_NAME=$(echo "$RELEASE_JSON" | jq -r '.metadata.generateName // empty')
 if [[ -n "$GENERATE_NAME" ]]; then
-    # generateName is the prefix, the rest is random suffix — use generateName as base
-    BASE_NAME="$GENERATE_NAME"
+    # generateName is the prefix (often with trailing dash), the rest is random suffix
+    BASE_NAME="${GENERATE_NAME%-}"
 else
     # No generateName, use the full name as base
     BASE_NAME="$RELEASE_NAME"

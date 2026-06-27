@@ -1,0 +1,10 @@
+# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+All tools are installed. Though there's a cluster URL configured (`https://api.test-cluster.example.com:6443`), you've said you're not connected yet. The working-with-releases skill recommends using the **connecting-to-konflux-cluster** or **selecting-konflux-cluster** skill to establish a connection first.
+
+Do you want me to invoke one of those skills to get you connected? Or if you'd like to try connecting manually, you can run:
+
+```bash
+oc login https://<your-cluster-api-url>:6443
+```
+
+Let me know which cluster you'd like to connect to, or if you want me to invoke the cluster-selection skill.
