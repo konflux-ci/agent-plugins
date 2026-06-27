@@ -122,6 +122,31 @@ A release progresses through up to three pipeline stages:
 
 Any stage may be **Skipped** if the ReleasePlan doesn't define a pipeline for it.
 
+## Retrying a Failed Release
+
+Use the `retry-release.sh` script to create a new Release with the same snapshot and releasePlan. **Namespace is required.**
+
+```bash
+SCRIPT=~/.claude/skills/working-with-releases/scripts/retry-release.sh
+```
+
+### Dry run first (always recommended):
+```bash
+$SCRIPT my-release-abc123 --namespace my-tenant --dry-run
+```
+
+### Create the retry:
+```bash
+$SCRIPT my-release-abc123 --namespace my-tenant
+```
+
+The script:
+- Strips the random `generateName` suffix and any previous `-retry-NNN`
+- Appends `-retry-NNN` (auto-incremented from existing retries)
+- Preserves all labels, the snapshot, releasePlan, and gracePeriodDays
+- Drops Kubernetes-managed metadata (uid, resourceVersion, finalizers, status)
+- Warns if the original release isn't actually in `Failed` status
+
 ## Common Failure Patterns
 
 <!-- TODO: Add conforma (Enterprise Contract) failures — likely warrants its own skill -->
@@ -133,8 +158,9 @@ Any stage may be **Skipped** if the ReleasePlan doesn't define a pipeline for it
 
 - Do NOT run `kubectl get releases ...` directly. Use `list-releases.sh`.
 - Do NOT run `tkn pr logs ...` directly. Use `release-logs.sh`.
+- Do NOT manually construct Release YAML to retry. Use `retry-release.sh`.
 - The scripts produce structured, filterable output and handle the namespace/name splitting for pipelineRun references automatically.
 
 ## Keywords for Search
 
-Konflux release, release status, release pipeline, release logs, managed pipeline, tenant pipeline, final pipeline, post-actions, release failed, ReleasePlan, PipelineRun logs, tkn logs, release debugging
+Konflux release, release status, release pipeline, release logs, managed pipeline, tenant pipeline, final pipeline, post-actions, release failed, ReleasePlan, PipelineRun logs, tkn logs, release debugging, retry release, rerun release
