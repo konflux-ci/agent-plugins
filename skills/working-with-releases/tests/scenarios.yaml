@@ -6,71 +6,74 @@ mock_bin: mocks/bin
 
 test_scenarios:
   - name: list-recent-releases
-    description: Validates that Claude uses list-releases.sh script instead of raw kubectl
+    description: Validates that Claude lists releases and shows mock data
     prompt: "What releases have happened recently in my namespace?"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - list-releases.sh
-        - jq
-      does_not_contain:
-        - kubectl get releases
-    baseline_failure: "Without skill, Claude runs raw kubectl get releases instead of using the wrapper script"
+        - my-app-prod-abc123
+        - my-app-staging-xyz
+        - Failed
+        - Succeeded
+    baseline_failure: "Without skill, Claude cannot list releases or show structured status"
 
   - name: release-failure-investigation
-    description: Validates that Claude uses release-logs.sh to investigate a failed release
+    description: Validates that Claude investigates a failed release and surfaces the root cause from mock logs
     prompt: "Release my-app-prod-abc123 failed. Can you show me what went wrong?"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - release-logs.sh
-      does_not_contain:
-        - tkn pipelinerun logs
-        - tkn pr logs
-    baseline_failure: "Without skill, Claude runs raw tkn pr logs or kubectl describe instead of using the wrapper script"
+        - publish
+        - ["503", "quay.io", "Service temporarily unavailable"]
+        - managed
+    baseline_failure: "Without skill, Claude cannot fetch release logs or identify the failed task"
 
   - name: filter-failed-releases
-    description: Validates that Claude filters list-releases.sh output with jq for token efficiency
+    description: Validates that Claude filters to show only failed releases
     prompt: "Show me only the failed releases from the last 20"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - list-releases.sh
-        - jq
+        - my-app-prod-abc123
         - Failed
-    baseline_failure: "Without skill, Claude runs raw kubectl and doesn't filter output efficiently"
+      does_not_contain:
+        - my-app-staging-xyz
+    baseline_failure: "Without skill, Claude cannot filter releases by status"
 
   - name: check-prerequisites
-    description: Validates that Claude runs check-prerequisites.sh before other commands
+    description: Validates that Claude checks for required tools and cluster connectivity
     prompt: "I want to check the status of my releases but I'm not sure if I have the right tools installed"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - check-prerequisites.sh
-    baseline_failure: "Without skill, Claude doesn't run the prerequisites check script"
+        - kubectl
+        - tkn
+        - jq
+        - test-cluster.example.com
+    baseline_failure: "Without skill, Claude doesn't verify CLI tool availability or cluster connectivity"
 
   - name: follow-release-progress
-    description: Validates that Claude uses --follow flag for in-progress releases
+    description: Validates that Claude shows pipeline stage statuses for an in-progress release
     prompt: "I just kicked off a release called my-app-staging-xyz. Can you watch it and tell me how it's going?"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - release-logs.sh
-        - ["--follow", "-f"]
-    baseline_failure: "Without skill, Claude doesn't know about the --follow flag or the release-logs.sh script"
+        - my-app-staging-xyz
+        - Succeeded
+        - ["tenant", "managed", "final"]
+    baseline_failure: "Without skill, Claude cannot show pipeline stage statuses for a release"
 
   - name: cluster-connectivity
-    description: Validates that Claude checks cluster connectivity or suggests connecting
+    description: Validates that Claude addresses cluster connectivity when user says they're not connected
     prompt: "I need to see recent releases but I'm not connected to a cluster yet"
     model: sonnet
     samples: 3
     expected:
       contains_keywords:
-        - ["cluster", "connect", "login"]
-        - ["selecting-konflux-cluster", "connecting-to-konflux-cluster", "check-prerequisites"]
+        - ["connect", "login", "cluster", "oc login"]
     baseline_failure: "Without skill, Claude doesn't guide user through cluster connection before attempting release queries"
