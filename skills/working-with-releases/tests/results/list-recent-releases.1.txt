@@ -1,12 +1,16 @@
-# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
-Here's a summary of your 10 most recent releases:
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Here are the 10 most recent releases in your namespace:
 
-| Name | Status | Age | Notes |
-|------|--------|-----|-------|
-| `my-app-prod-abc123` | **Failed** | 4h | Release processing failed on managed pipelineRun |
+| Name | Status | Age | Message |
+|------|--------|-----|---------|
+| `my-app-prod-abc123` | Failed | 4h | Release processing failed on managed pipelineRun |
 | `my-app-staging-xyz` | Succeeded | 3h | — |
 
-You have one failed release (`my-app-prod-abc123`) that may need attention. Would you like me to:
-- **View logs** for the failed release to diagnose what went wrong?
-- **Retry** the failed release?
-- **See more details** on any specific release?
+**Summary:**
+- 1 failed release: `my-app-prod-abc123` (4 hours ago) — the managed pipeline failed
+- 1 succeeded release: `my-app-staging-xyz` (3 hours ago)
+
+Would you like me to:
+- **Investigate the failure** — show logs for `my-app-prod-abc123`?
+- **Retry the failed release**?
+- **Show more releases** (increase the limit)?

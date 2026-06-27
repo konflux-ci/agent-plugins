@@ -1,11 +1,15 @@
-# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
-You're all set. All required tools are installed and you have an active cluster connection:
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+All prerequisites are in place:
 
-- **kubectl** - OK
-- **tkn** - OK
-- **jq** - OK
-- **oc** - OK
-- **curl** - OK
-- **Cluster** - Connected to `https://api.test-cluster.example.com:6443`
+- **kubectl** - installed
+- **tkn** (Tekton CLI) - installed
+- **jq** - installed
+- **curl** - installed
+- **Cluster connection** - active (`https://api.test-cluster.example.com:6443`)
 
-Would you like me to list your recent releases, check the status of a specific release, or view logs for a failed one?
+You're all set to work with releases. What would you like to do? For example:
+
+- **List recent releases** — see status of your latest releases
+- **Check a specific release** — get details on a named release
+- **View logs** — inspect pipeline logs for a release
+- **Retry a failed release** — re-run a release that failed

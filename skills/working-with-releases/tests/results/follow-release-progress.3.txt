@@ -1,27 +1,20 @@
-# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
-Good news — **`my-app-staging-xyz` has completed successfully!** Here's the summary:
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Great news — **`my-app-staging-xyz` has fully succeeded!** Here's a summary:
 
-| Field | Value |
-|---|---|
-| **Status** | ✅ Succeeded |
-| **Application** | `my-app` |
-| **Snapshot** | `my-app-snapshot-002` |
-| **Release Plan** | `my-app-staging` |
-| **Author** | `testuser` |
-| **Age** | 3h |
+| Stage | Pipeline | Status |
+|-------|----------|--------|
+| Tenant | `tenant-aaa111` | Succeeded |
+| Managed | `managed-bbb222` | Succeeded |
+| Final | `final-ccc333` | Succeeded |
 
-**Pipeline stages — all passed:**
-
-| Stage | Status |
-|---|---|
-| Tenant (`tenant-aaa111`) | ✅ Succeeded |
-| Managed (`managed-bbb222`) | ✅ Succeeded |
-| Final (`final-ccc333`) | ✅ Succeeded |
+**Details:**
+- **Snapshot:** `my-app-snapshot-002`
+- **Release Plan:** `my-app-staging`
+- **Triggered by:** `testuser`
+- **Age:** ~3 hours old
 
 **Konflux UI links:**
-- [Release](https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-staging-xyz)
-- [Tenant pipeline logs](https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/pipelineruns/tenant-aaa111/logs)
-- [Managed pipeline logs](https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-bbb222/logs)
-- [Final pipeline logs](https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/final-ccc333/logs)
+- Release: `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-staging-xyz`
+- Managed pipeline logs: `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-bbb222/logs`
 
-All three pipeline stages succeeded. The release is done!
+All three pipeline stages (tenant → managed → final) completed successfully. The release is done!

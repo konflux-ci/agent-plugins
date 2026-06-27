@@ -4,14 +4,14 @@
 # Usage:
 #   check-prerequisites.sh
 #
-# Checks for kubectl, tkn, jq, oc, curl and active cluster connection.
+# Checks for kubectl, tkn, jq, curl and active cluster connection.
 # Exits 0 if all checks pass, 1 otherwise.
 
 set -euo pipefail
 
 FAILED=0
 
-for tool in kubectl tkn jq oc curl; do
+for tool in kubectl tkn jq curl; do
     if command -v "$tool" >/dev/null 2>&1; then
         echo "OK: $tool"
     else

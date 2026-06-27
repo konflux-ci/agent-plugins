@@ -75,7 +75,7 @@ get_archived_logs() {
     fi
 
     local token
-    token=$(oc whoami -t 2>/dev/null || true)
+    token=$(kubectl config view --raw -o jsonpath='{.users[0].user.token}' 2>/dev/null || true)
     if [[ -z "$token" ]]; then
         echo "(no auth token — cannot query kubearchive)" >&2
         return 1

@@ -1,19 +1,11 @@
-# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
-To view recent Konflux releases, you'll first need to connect to a cluster. Here are your options:
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Here are the 10 most recent releases:
 
-**1. Log in with `oc login`:**
-```bash
-oc login --token=<your-token> --server=<api-url>
-```
+| Name | Status | Age |
+|------|--------|-----|
+| `my-app-prod-abc123` | Failed | 4h |
+| `my-app-staging-xyz` | Succeeded | 3h |
 
-**2. Use an existing kubeconfig:**
-```bash
-export KUBECONFIG=/path/to/your/kubeconfig
-```
+You actually **are** connected to a cluster — `https://api.test-cluster.example.com:6443` — so no login was needed.
 
-**3. Verify your connection:**
-```bash
-oc whoami
-```
-
-Once connected, let me know and I can use the **working-with-releases** skill to list recent releases, check their status, and inspect pipeline logs.
+Notable: `my-app-prod-abc123` is in **Failed** status. Would you like me to pull the logs for it to investigate the failure?

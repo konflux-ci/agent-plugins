@@ -115,6 +115,9 @@ JSON
     *"get configmap"*"kubearchive-api-url"*)
         echo "https://kubearchive.test-cluster.example.com"
         ;;
+    *"config view"*"token"*)
+        echo -n "sha256~mock-test-token-for-kubearchive"
+        ;;
     *"config view"*)
         echo "https://api.test-cluster.example.com:6443"
         ;;

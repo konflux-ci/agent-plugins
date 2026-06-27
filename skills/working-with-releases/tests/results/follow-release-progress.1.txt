@@ -1,27 +1,25 @@
-# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
-Great news — **`my-app-staging-xyz` has succeeded!** Here's the summary:
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Great news — the release has already completed successfully! Here's a full summary:
 
-| Field | Value |
-|---|---|
-| **Status** | Succeeded |
-| **Application** | my-app |
-| **Snapshot** | my-app-snapshot-002 |
-| **Release Plan** | my-app-staging |
-| **Author** | testuser |
-| **Age** | 3h |
+---
 
-**Pipeline stages — all passed:**
+**Release: `my-app-staging-xyz`**
+- **Status**: Succeeded
+- **Application**: `my-app`
+- **Snapshot**: `my-app-snapshot-002`
+- **Release Plan**: `my-app-staging`
+- **Author**: `testuser`
+- **Age**: 3h
 
-| Stage | Status |
-|---|---|
-| Tenant (`tenant-aaa111`) | Succeeded |
-| Managed (`managed-bbb222`) | Succeeded |
-| Final (`final-ccc333`) | Succeeded |
+**Pipeline stages:**
 
-**Konflux UI links:**
-- [Release](https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-staging-xyz)
-- [Tenant pipeline logs](https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/pipelineruns/tenant-aaa111/logs)
-- [Managed pipeline logs](https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-bbb222/logs)
-- [Final pipeline logs](https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/final-ccc333/logs)
+| Stage | Pipeline Run | Status |
+|-------|-------------|--------|
+| Tenant | `my-tenant/tenant-aaa111` | Succeeded |
+| Managed | `managed-tenant/managed-bbb222` | Succeeded |
+| Final | `managed-tenant/final-ccc333` | Succeeded |
 
-All three pipeline stages completed successfully. Your staging release is done!
+All three pipeline stages passed. You can view it in the Konflux UI:
+
+- **Release**: `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-staging-xyz`
+- **Managed pipeline logs**: `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-bbb222/logs`

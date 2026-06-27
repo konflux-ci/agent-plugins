@@ -1,11 +1,15 @@
-# skill_digest: cc854985cce72080f60749fe31fbc871e3ee4e7eb79cb1291d4c474767acc19d
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
 Here are your 10 most recent releases:
 
-| Name | Status | Age | Notes |
-|------|--------|-----|-------|
-| `my-app-prod-abc123` | **Failed** | 4h | Release processing failed on managed pipelineRun |
-| `my-app-staging-xyz` | Succeeded | 3h | |
+| Name | Status | Age | Message |
+|------|--------|-----|---------|
+| `my-app-prod-abc123` | Failed | 4h | Release processing failed on managed pipelineRun |
+| `my-app-staging-xyz` | Succeeded | 3h | — |
 
-It looks like you have a failed release. Would you like me to:
-1. **View logs** for `my-app-prod-abc123` to investigate why it failed?
-2. **Retry** the failed release?
+**Summary:**
+- 1 failed, 1 succeeded in the recent window.
+
+Would you like me to:
+- **Investigate the failure** on `my-app-prod-abc123` (fetch logs)?
+- **Retry** the failed release?
+- Show **more releases** (increase the limit)?
