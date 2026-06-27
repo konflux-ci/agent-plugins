@@ -1,0 +1,10 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+You're all set. All required tools are installed and you have an active cluster connection:
+
+- **kubectl** - present
+- **tkn** - present
+- **jq** - present
+- **curl** - present
+- **Cluster** - connected to `https://api.test-cluster.example.com:6443`
+
+Would you like me to list your recent releases, check on a specific release, or view logs for a particular release?

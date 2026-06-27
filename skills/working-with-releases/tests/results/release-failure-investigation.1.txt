@@ -1,0 +1,53 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Here's what went wrong with **`my-app-prod-abc123`**:
+
+---
+
+## Release Failure Summary
+
+**Status:** Failed  
+**Stage:** Managed Pipeline (`managed-tenant/managed-xyz789`)  
+**Root Cause:** Transient quay.io push failure (HTTP 503)
+
+### Pipeline Stage Breakdown
+
+| Stage | Status | Detail |
+|-------|--------|--------|
+| Tenant | Skipped | No tenant pipeline configured |
+| **Managed** | **Failed** | `publish` task failed — quay.io returned 503 |
+| Final | Skipped | Never reached |
+
+### What Failed
+
+The `publish` task failed with:
+```
+Error: Push failed (503) for 'https://quay.io/repository/my-org/my-app'
+Service temporarily unavailable
+```
+
+Everything before it succeeded:
+- `collect-data` — passed
+- `verify-conforma` (Enterprise Contract) — all policies passed
+- `sign` — signing completed successfully
+
+This is a **transient quay.io service outage**, not a code or policy issue.
+
+---
+
+## Recommended Action
+
+Since this is a flaky infrastructure failure, a retry should resolve it:
+
+```bash
+# Dry run first
+~/.claude/skills/working-with-releases/scripts/retry-release.sh my-app-prod-abc123 --namespace my-tenant --dry-run
+
+# Then create the retry
+~/.claude/skills/working-with-releases/scripts/retry-release.sh my-app-prod-abc123 --namespace my-tenant
+```
+
+**Konflux UI links:**
+- Release: `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-prod-abc123`
+- Managed pipeline logs: `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-xyz789/logs`
+
+Would you like me to go ahead and run the retry?

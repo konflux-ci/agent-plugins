@@ -1,0 +1,79 @@
+skill_name: working-with-releases
+description: Validates that Claude uses wrapper scripts for Konflux Release operations instead of raw kubectl/tkn
+
+# Mock CLI tools so tests don't depend on cluster access or create real resources
+mock_bin: mocks/bin
+
+test_scenarios:
+  - name: list-recent-releases
+    description: Validates that Claude lists releases and shows mock data
+    prompt: "What releases have happened recently in my namespace?"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - my-app-prod-abc123
+        - my-app-staging-xyz
+        - Failed
+        - Succeeded
+    baseline_failure: "Without skill, Claude cannot list releases or show structured status"
+
+  - name: release-failure-investigation
+    description: Validates that Claude investigates a failed release and surfaces the root cause from mock logs
+    prompt: "Release my-app-prod-abc123 failed. Can you show me what went wrong?"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - publish
+        - ["503", "quay.io", "Service temporarily unavailable"]
+        - managed
+    baseline_failure: "Without skill, Claude cannot fetch release logs or identify the failed task"
+
+  - name: filter-failed-releases
+    description: Validates that Claude filters to show only failed releases
+    prompt: "Show me only the failed releases from the last 20"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - my-app-prod-abc123
+        - Failed
+      does_not_contain:
+        - my-app-staging-xyz
+    baseline_failure: "Without skill, Claude cannot filter releases by status"
+
+  - name: check-prerequisites
+    description: Validates that Claude checks for required tools and cluster connectivity
+    prompt: "I want to check the status of my releases but I'm not sure if I have the right tools installed"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - kubectl
+        - tkn
+        - jq
+        - test-cluster.example.com
+    baseline_failure: "Without skill, Claude doesn't verify CLI tool availability or cluster connectivity"
+
+  - name: follow-release-progress
+    description: Validates that Claude shows pipeline stage statuses for an in-progress release
+    prompt: "I just kicked off a release called my-app-staging-xyz. Can you watch it and tell me how it's going?"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - my-app-staging-xyz
+        - Succeeded
+        - ["tenant", "managed", "final"]
+    baseline_failure: "Without skill, Claude cannot show pipeline stage statuses for a release"
+
+  - name: cluster-connectivity
+    description: Validates that Claude addresses cluster connectivity when user says they're not connected
+    prompt: "I need to see recent releases but I'm not connected to a cluster yet"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["connect", "login", "cluster", "oc login"]
+    baseline_failure: "Without skill, Claude doesn't guide user through cluster connection before attempting release queries"

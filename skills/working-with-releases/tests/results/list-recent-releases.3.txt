@@ -1,0 +1,15 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Here are your 10 most recent releases:
+
+| Name | Status | Age | Message |
+|------|--------|-----|---------|
+| `my-app-prod-abc123` | Failed | 4h | Release processing failed on managed pipelineRun |
+| `my-app-staging-xyz` | Succeeded | 3h | — |
+
+**Summary:**
+- 1 failed, 1 succeeded in the recent window.
+
+Would you like me to:
+- **Investigate the failure** on `my-app-prod-abc123` (fetch logs)?
+- **Retry** the failed release?
+- Show **more releases** (increase the limit)?
