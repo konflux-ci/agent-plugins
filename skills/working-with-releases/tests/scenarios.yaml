@@ -1,0 +1,78 @@
+skill_name: working-with-releases
+description: Validates that Claude uses wrapper scripts for Konflux Release operations instead of raw kubectl/tkn
+
+copy_to_home:
+  - .kube
+
+test_scenarios:
+  - name: list-recent-releases
+    description: Validates that Claude uses list-releases.sh script instead of raw kubectl
+    prompt: "What releases have happened recently in my namespace?"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - list-releases.sh
+        - jq
+      does_not_contain:
+        - kubectl get releases
+    baseline_failure: "Without skill, Claude runs raw kubectl get releases instead of using the wrapper script"
+
+  - name: release-failure-investigation
+    description: Validates that Claude uses release-logs.sh to investigate a failed release
+    prompt: "Release my-app-prod-abc123 failed. Can you show me what went wrong?"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - release-logs.sh
+      does_not_contain:
+        - tkn pipelinerun logs
+        - tkn pr logs
+    baseline_failure: "Without skill, Claude runs raw tkn pr logs or kubectl describe instead of using the wrapper script"
+
+  - name: filter-failed-releases
+    description: Validates that Claude filters list-releases.sh output with jq for token efficiency
+    prompt: "Show me only the failed releases from the last 20"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - list-releases.sh
+        - jq
+        - Failed
+    baseline_failure: "Without skill, Claude runs raw kubectl and doesn't filter output efficiently"
+
+  - name: check-prerequisites
+    description: Validates that Claude checks for required CLI tools before running commands
+    prompt: "I want to check the status of my releases but I'm not sure if I have the right tools installed"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["command -v", "which"]
+        - kubectl
+        - tkn
+    baseline_failure: "Without skill, Claude doesn't verify CLI tool availability before running commands"
+
+  - name: follow-release-progress
+    description: Validates that Claude uses --follow flag for in-progress releases
+    prompt: "I just kicked off a release called my-app-staging-xyz. Can you watch it and tell me how it's going?"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - release-logs.sh
+        - ["--follow", "-f"]
+    baseline_failure: "Without skill, Claude doesn't know about the --follow flag or the release-logs.sh script"
+
+  - name: cluster-connectivity
+    description: Validates that Claude checks cluster connectivity or suggests connecting
+    prompt: "I need to see recent releases but I'm not connected to a cluster yet"
+    model: sonnet
+    samples: 3
+    expected:
+      contains_keywords:
+        - ["cluster", "connect", "login"]
+        - ["selecting-konflux-cluster", "connecting-to-konflux-cluster", "kubectl cluster-info"]
+    baseline_failure: "Without skill, Claude doesn't guide user through cluster connection before attempting release queries"

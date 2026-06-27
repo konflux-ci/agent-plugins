@@ -76,6 +76,15 @@
       "author": {
         "name": "Konflux CI Team"
       }
+    },
+    {
+      "name": "working-with-releases",
+      "source": "./skills/working-with-releases",
+      "description": "Use when investigating Konflux Release status, listing recent releases, viewing release pipeline logs, or debugging release failures. Covers tenant, managed, and final PipelineRuns associated with a Release resource.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Konflux CI Team"
+      }
     }
   ]
 }
