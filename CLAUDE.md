@@ -365,20 +365,38 @@ Use debug logs to diagnose:
 
 ## Current Skills
 
-1. **understanding-konflux-resources** (v1.0.0)
+1. **component-build-status**
+   - Query Konflux objects (application, component, pipelinerun, taskrun, snapshot, release) from the Kubernetes cluster
+   - Trigger component builds and releases, or get component/application status
+   - Query logs from failed or removed pipelines and pods
+
+2. **debugging-pipeline-failures** (v1.0.0)
+   - Systematic debugging of Konflux Tekton pipeline failures
+   - Covers PipelineRun failures, TaskRun issues, build errors
+   - Uses kubectl and logs for root cause analysis
+
+3. **navigating-github-to-konflux-pipelines** (v1.0.0)
+   - Navigate from GitHub PR failing checks to Konflux pipeline information
+   - Extract cluster, namespace, and PipelineRun details using gh CLI
+   - Parse PipelineRun URLs for kubectl debugging
+
+4. **understanding-konflux-resources** (v1.0.1)
    - Reference for Konflux Custom Resources
    - Addresses Application vs Component confusion
    - Covers namespace placement and resource lifecycle
-   - 6/6 test scenarios passing
+
+5. **working-with-provenance** (v1.0.0)
+   - Trace Konflux builds from image references
+   - Find build logs from artifacts and verify source commits
+   - Extract provenance attestations to navigate from images to builds and source
 
 ## Planned Skills
 
 Based on Konflux user pain points:
 
-1. **debugging-pipeline-failures** - Systematic approach to trace pipeline failures
-2. **configuring-integration-tests** - Setup and debug IntegrationTestScenarios
-3. **securing-supply-chain** - SBOM, provenance, artifact scanning patterns
-4. **multi-architecture-builds** - Configure and debug multi-arch component builds
+1. **configuring-integration-tests** - Setup and debug IntegrationTestScenarios
+2. **securing-supply-chain** - SBOM, provenance, artifact scanning patterns
+3. **multi-architecture-builds** - Configure and debug multi-arch component builds
 
 ## Questions or Issues?
 
