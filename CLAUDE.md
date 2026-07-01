@@ -178,7 +178,8 @@ When adding a new skill, update `.claude-plugin/marketplace.json`:
 ### Skill Naming Conventions
 
 **Use gerunds (verbs ending in -ing) for techniques:**
-- ✅ `debugging-pipeline-failures`
+- ✅ `investigating-failed-plrs`
+- ✅ `investigating-slow-builds`
 - ✅ `configuring-integration-tests`
 - ✅ `securing-supply-chain`
 
@@ -375,7 +376,8 @@ Use debug logs to diagnose:
 
 Based on Konflux user pain points:
 
-1. **debugging-pipeline-failures** - Systematic approach to trace pipeline failures
+1. **investigating-failed-plrs** - Investigate why a specific Konflux PipelineRun failed via KubeArchive
+2. **investigating-slow-builds** - Investigate why Konflux builds/pipeline runs are slow
 2. **configuring-integration-tests** - Setup and debug IntegrationTestScenarios
 3. **securing-supply-chain** - SBOM, provenance, artifact scanning patterns
 4. **multi-architecture-builds** - Configure and debug multi-arch component builds

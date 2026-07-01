@@ -15,12 +15,21 @@
       }
     },
     {
-      "name": "debugging-pipeline-failures",
-      "source": "./skills/debugging-pipeline-failures",
-      "description": "Use when investigating Konflux Tekton pipeline failures, PipelineRun/TaskRun issues, build failures, or CI/CD workflow problems. Provides systematic debugging methodology using standard kubectl commands for comprehensive root cause analysis in Konflux environments.",
+      "name": "investigating-failed-plrs",
+      "source": "./skills/investigating-failed-plrs",
+      "description": "Investigate why a specific Konflux PipelineRun failed. Drills through PLR conditions, failed TaskRuns, pod status, container exit codes, and timing via KubeArchive.",
       "version": "1.0.0",
       "author": {
-        "name": "Gjorgji Georgievski"
+        "name": "Konflux CI Team"
+      }
+    },
+    {
+      "name": "investigating-slow-builds",
+      "source": "./skills/investigating-slow-builds",
+      "description": "Investigate why Konflux builds/pipeline runs are slow. Analyzes kueue queue time, task durations, quota pressure, and Prometheus metrics.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Konflux CI Team"
       }
     },
     {
