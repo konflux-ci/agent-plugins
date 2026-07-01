@@ -26,7 +26,7 @@ Use this skill when:
 - User asks about failing checks and mentions a PR number or branch name
 
 **DO NOT use for**:
-- Debugging the actual pipeline failure (use `debugging-pipeline-failures` skill)
+- Debugging the actual pipeline failure (use `investigating-failed-plrs` skill)
 - GitLab pipelines (separate twin skill coming later)
 
 ## Critical Rules: NO EXCUSES - RUN COMMANDS IMMEDIATELY
@@ -231,7 +231,7 @@ url="<extracted-url>"
 namespace=$(echo "$url" | sed 's|.*/ns/\([^/]*\).*|\1|')
 pipelinerun=$(echo "$url" | sed 's|.*/pipelinerun/\([^/?]*\).*|\1|')
 
-# Ready for debugging-pipeline-failures skill
+# Ready for investigating-failed-plrs skill
 ```
 
 ### Example 2: Build Failing on Main Branch
@@ -315,7 +315,7 @@ Once you have extracted:
 - Namespace
 - PipelineRun name
 
-→ Use the **debugging-pipeline-failures** skill to investigate the actual failure with kubectl commands
+→ Use the **investigating-failed-plrs** skill to investigate the actual failure via KubeArchive
 
 ## Keywords for Search
 

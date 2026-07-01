@@ -1,9 +1,0 @@
-# skill_digest: 277bf232d6be393d85b2319366d2fc3272f724b211a267eafcecbb712eff0bb0
-Based on the provenance information, I can confirm the details for this image:
-
-- Source Repository: https://github.com/ralphbean/llm-compressor-hermetic-demo
-- Exact Commit: 7f9a553dd100ba700fc8f9da942f8dfcecf6a1bd
-- Branch: main
-- Build Timestamp: 2025-10-21T20:19:23Z
-
-Would you like me to provide any additional information about this specific commit or the source repository?

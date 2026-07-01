@@ -55,7 +55,7 @@ This skill includes ready-to-use bash scripts that you can invoke directly:
 # 1. Get build log URL from provenance
 LOG_URL=$(~/.claude/skills/working-with-provenance/scripts/build-log-link.sh quay.io/org/image:tag)
 
-# 2. Open logs in browser or use debugging-pipeline-failures skill
+# 2. Open logs in browser or use investigating-failed-plrs skill
 echo $LOG_URL
 ```
 

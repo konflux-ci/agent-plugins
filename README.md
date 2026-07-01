@@ -8,14 +8,23 @@ Skills are reusable knowledge modules that Claude Code can automatically invoke 
 
 ## Available Skills
 
-### debugging-pipeline-failures
+### investigating-failed-plrs
 
-Systematic approach to investigate Konflux Tekton pipeline failures:
+Investigate why a specific Konflux PipelineRun failed:
 
-- Debug PipelineRun and TaskRun issues
-- Analyze build failures and CI/CD workflow problems
-- Use kubectl commands for comprehensive root cause analysis
-- Resolve common pipeline states (Pending, Failed, stuck Running)
+- Drill through PLR conditions, failed TaskRuns, pod status, and exit codes
+- Automated error and timing analysis scripts via KubeArchive
+- Detect known failure categories (ImagePull, OOM, EC assertion, Cancelled)
+- Collect and cache artifacts for offline investigation
+
+### investigating-slow-builds
+
+Investigate why Konflux builds or pipeline runs are slow:
+
+- Analyze kueue queue time, task durations, and scheduling delays
+- Check tenant ResourceQuota pressure
+- Query Prometheus for historical cluster and tenant metrics
+- Identify bottlenecks (kueue throttling, MPC provisioning, image pulls)
 
 ### navigating-github-to-konflux-pipelines
 

@@ -1,8 +1,0 @@
-# skill_digest: f15347d6f22704568ffc3656768cb503c13f92a22a775a59d9b0fda007964bfb
-Let me parse the URL details for you:
-
-- **Cluster**: konflux-ui.apps.stone-prd-rh01.pg1f.p1.openshiftapps.com
-- **Namespace**: rhtap-integration-tenant
-- **PipelineRun Name**: functional-test-78db6
-
-You can use these details to further investigate the failed functional test. Would you like me to help you debug the PipelineRun using kubectl?
