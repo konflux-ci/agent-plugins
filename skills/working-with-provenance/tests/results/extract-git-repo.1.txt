@@ -1,9 +1,0 @@
-# skill_digest: 277bf232d6be393d85b2319366d2fc3272f724b211a267eafcecbb712eff0bb0
-Great! From the provenance attestation, I can extract the key information:
-
-Repository URL: https://github.com/ralphbean/llm-compressor-hermetic-demo
-Commit SHA: 7f9a553dd100ba700fc8f9da942f8dfcecf6a1bd
-
-The image was built from the repository `ralphbean/llm-compressor-hermetic-demo` at the specific commit `7f9a553`. 
-
-Would you like me to provide more details about the repository or the specific commit?

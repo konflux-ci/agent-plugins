@@ -1,9 +1,0 @@
-# skill_digest: 277bf232d6be393d85b2319366d2fc3272f724b211a267eafcecbb712eff0bb0
-To summarize:
-- The exact source code commit for this Konflux production image is: 
-  **7f9a553dd100ba700fc8f9da942f8dfcecf6a1bd**
-- This commit was from the `main` branch of the repository 
-  https://github.com/ralphbean/llm-compressor-hermetic-demo
-- The commit was made on 2025-10-21 at 20:19:23 UTC
-
-Would you like me to fetch more details about this specific commit?
