@@ -26,9 +26,9 @@ else
     echo "Using cached PipelineRun ${PLR_FILE}"
 fi
 
-yellow=$(tput setaf 3)
-blue=$(tput setaf 4)
-reset=$(tput sgr0)
+yellow=$(tput setaf 3 2>/dev/null || true)
+blue=$(tput setaf 4 2>/dev/null || true)
+reset=$(tput sgr0 2>/dev/null || true)
 
 stat_waiting_time=0
 
@@ -62,7 +62,8 @@ printf "  %-22s %-22s %-22s %-22s\n" "$pr_created" "$pr_started" "$pr_finally" "
 echo
 
 # Track earliest TaskRun creation to compute PLR wait time
-trs_earliest_start=$(date --utc +%s)
+trs_earliest_start=""
+trs_processed=false
 
 for tr_name in $(yq '.items[0].status.childReferences[] | select(.kind == "TaskRun") | .name' "$PLR_FILE"); do
     tr_file="${CACHE_DIR}/collected-taskrun-${tr_name}.yaml"
@@ -79,8 +80,11 @@ for tr_name in $(yq '.items[0].status.childReferences[] | select(.kind == "TaskR
 
     # Track earliest TR
     if [[ "$tr_created" != "null" ]]; then
+        trs_processed=true
         tr_created_epoch=$(date -d "$tr_created" +%s)
-        [[ $tr_created_epoch -lt $trs_earliest_start ]] && trs_earliest_start=$tr_created_epoch
+        if [[ -z "$trs_earliest_start" ]] || [[ $tr_created_epoch -lt $trs_earliest_start ]]; then
+            trs_earliest_start=$tr_created_epoch
+        fi
     fi
 
     # Compute durations
@@ -123,7 +127,7 @@ for tr_name in $(yq '.items[0].status.childReferences[] | select(.kind == "TaskR
 
     # Compute TaskRun wait time (TR creation to first step start)
     if [[ "$step_count" -gt 0 && "$tr_created" != "null" ]]; then
-        first_step_start=$(yq '.items[0].status.steps[].terminated.startedAt' "$tr_file" | sort | head -n 1)
+        first_step_start=$(yq '.items[0].status.steps[].terminated.startedAt | select(. != null)' "$tr_file" | sort | head -n 1)
         if [[ -n "$first_step_start" && "$first_step_start" != "null" ]]; then
             tr_wait=$(( $(date -d "$first_step_start" +%s) - $(date -d "$tr_created" +%s) ))
             (( stat_waiting_time += tr_wait ))
@@ -134,7 +138,7 @@ for tr_name in $(yq '.items[0].status.childReferences[] | select(.kind == "TaskR
 done
 
 # PLR-level wait time
-if [[ "$pr_created" != "null" ]]; then
+if [[ "$pr_created" != "null" ]] && $trs_processed; then
     pr_created_epoch=$(date -d "$pr_created" +%s)
     plr_wait=$(( trs_earliest_start - pr_created_epoch ))
     (( stat_waiting_time += plr_wait ))

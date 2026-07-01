@@ -22,11 +22,11 @@ CACHE_DIR="${PLR_CACHE_DIR:-./collected-data}"
 mkdir -p "$CACHE_DIR"
 PLR_FILE="${CACHE_DIR}/collected-pipelinerun-${PLR_NAME}.yaml"
 
-yellow=$(tput setaf 3)
-green=$(tput setaf 2)
-blue=$(tput setaf 4)
-red=$(tput setaf 1)
-reset=$(tput sgr0)
+yellow=$(tput setaf 3 2>/dev/null || true)
+green=$(tput setaf 2 2>/dev/null || true)
+blue=$(tput setaf 4 2>/dev/null || true)
+red=$(tput setaf 1 2>/dev/null || true)
+reset=$(tput sgr0 2>/dev/null || true)
 
 fetch_or_cached() {
     local file="$1"

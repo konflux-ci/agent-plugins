@@ -19,7 +19,8 @@ Add this repository as a Claude Code plugin to get access to all Konflux skills.
 Once subscribed, skills will be automatically available when working on Konflux-related tasks:
 
 - **understanding-konflux-resources** - Quick reference for Konflux CI/CD Custom Resources (RP, RPA, ITS) - helps users understand Applications, Components, Snapshots, IntegrationTestScenarios, ReleasePlans, namespace placement, common abbreviations, and confusions
-- **debugging-pipeline-failures** - Use when investigating Konflux Tekton pipeline failures, PipelineRun/TaskRun issues, build failures, or CI/CD workflow problems
+- **investigating-failed-plrs** - Investigate why a specific Konflux PipelineRun failed via KubeArchive
+- **investigating-slow-builds** - Investigate why Konflux builds/pipeline runs are slow
 - **navigating-github-to-konflux-pipelines** - Use when GitHub PR or branch has failing checks and you need to find Konflux pipeline information (cluster, namespace, PipelineRun name)
 - **working-with-provenance** - Use when tracing Konflux builds from image references, finding build logs from artifacts, or verifying source commits for container images
 - **component-build-status** - Use to trigger component builds, releases or get a component or application status

@@ -378,9 +378,9 @@ Based on Konflux user pain points:
 
 1. **investigating-failed-plrs** - Investigate why a specific Konflux PipelineRun failed via KubeArchive
 2. **investigating-slow-builds** - Investigate why Konflux builds/pipeline runs are slow
-2. **configuring-integration-tests** - Setup and debug IntegrationTestScenarios
-3. **securing-supply-chain** - SBOM, provenance, artifact scanning patterns
-4. **multi-architecture-builds** - Configure and debug multi-arch component builds
+3. **configuring-integration-tests** - Setup and debug IntegrationTestScenarios
+4. **securing-supply-chain** - SBOM, provenance, artifact scanning patterns
+5. **multi-architecture-builds** - Configure and debug multi-arch component builds
 
 ## Questions or Issues?
 

@@ -26,13 +26,13 @@ else
     echo "Using cached PipelineRun ${PLR_FILE}"
 fi
 
-bold_in=$(tput smso)
-bold_out=$(tput rmso)
-red=$(tput setaf 1)
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
-blue=$(tput setaf 4)
-reset=$(tput sgr0)
+bold_in=$(tput smso 2>/dev/null || true)
+bold_out=$(tput rmso 2>/dev/null || true)
+red=$(tput setaf 1 2>/dev/null || true)
+green=$(tput setaf 2 2>/dev/null || true)
+yellow=$(tput setaf 3 2>/dev/null || true)
+blue=$(tput setaf 4 2>/dev/null || true)
+reset=$(tput sgr0 2>/dev/null || true)
 
 pr_name=$(yq '.items[0].metadata.name' "$PLR_FILE")
 pr_status=$(yq '.items[0].status.conditions[0].status' "$PLR_FILE")
