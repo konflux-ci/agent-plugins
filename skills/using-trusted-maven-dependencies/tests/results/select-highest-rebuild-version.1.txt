@@ -1,17 +1,15 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-I don't have specific information about the differences between those two Red Hat rebuilds of Guava 31.1-jre. To help you choose, I'd need to know:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+I don't have information about Red Hat's Maven repository or the specific differences between those two Red Hat rebuild versions of Guava 31.1-jre.
 
-1. **When were they built?** Red Hat typically releases multiple rebuilds to fix security issues or bugs discovered after the initial rebuild.
+To help you choose, I'd need to know:
 
-2. **What do your build/security policies require?** Most organizations prefer the latest rebuild, as it includes any fixes made since the previous version.
+1. **Where are these versions hosted?** (Red Hat's official repository, a specific Maven Central mirror, etc.)
+2. **What's the context of your use?** (production application, testing, specific Java version requirements, etc.)
+3. **Do you have access to release notes or changelog?** Red Hat rebuilds typically include security patches or bug fixes — the changelog should indicate what changed between `-redhat-00001` and `-redhat-00002`.
 
-3. **Are there release notes or changelogs?** Red Hat usually documents what changed between rebuilds.
+Generally, **you should use the latest rebuild** (`-redhat-00002`) unless:
+- It introduced a regression that affects your application
+- You have a specific requirement tied to the earlier version
+- Your team has pinned a specific version for compatibility reasons
 
-**General recommendation:** Unless you have a specific reason to use an older rebuild, use **31.1-jre-redhat-00002** (the higher number), as it's the latest and should include all fixes from the earlier rebuild.
-
-If you need to verify which one is appropriate for your specific situation, I'd recommend:
-- Checking your organization's Maven repository documentation
-- Reviewing any security bulletins from Red Hat
-- Consulting with your security or DevOps team about their dependency policies
-
-Would you like help updating your Maven configuration to use one of these versions?
+I'd recommend checking Red Hat's Maven repository documentation or the release notes for these specific versions to see what changed between them. If you can share a link to the repository or the release notes, I can help you evaluate the differences.

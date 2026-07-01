@@ -1,15 +1,18 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-Not necessarily. You only need to add it to both sections if you need dependencies from that repository in **both** places:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+Not necessarily. Whether you need both sections depends on what you're adding the repository for:
 
-- **`<repositories>`** — for regular project dependencies (libraries your code uses)
-- **`<pluginRepositories>`** — for Maven plugins (build tools, code generators, etc.)
+**Use `<repositories>` alone if:**
+- You're adding a repository for project dependencies (libraries your code depends on)
 
-**Common scenarios:**
+**Use `<pluginRepositories>` alone if:**
+- You're adding a repository for Maven plugins (build tools, code generators, etc.)
 
-1. **Only regular dependencies**: Add to `<repositories>` only
-2. **Only plugins**: Add to `<pluginRepositories>` only
-3. **Both dependencies and plugins from the same repo**: Add to both sections
+**Use both if:**
+- The repository hosts both regular dependencies AND Maven plugins that your build needs
 
-If you're unsure, a safe approach is to add it to both sections — it doesn't hurt to have it in both, and it ensures the repository is available for whatever you need from it.
+In most cases, you'll only need one or the other. For example:
+- A repository hosting a custom Java library → only `<repositories>`
+- A repository hosting a custom Maven plugin → only `<pluginRepositories>`
+- A repository like Sonatype's snapshot repo that hosts both dependencies and plugins → both sections
 
-If you're working with a specific trusted Maven repository and want guidance on the exact setup, feel free to share your `pom.xml` or the repository details and I can help you configure it correctly.
+If you're unsure, you can start with just `<repositories>` and add `<pluginRepositories>` later if you encounter issues resolving plugins from that repository.

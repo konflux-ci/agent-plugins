@@ -1,36 +1,17 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-It depends on what you're using the repository for:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+Not necessarily. It depends on what you're using from that repository:
 
-**Add to `<repositories>` if:**
-- You need dependencies (libraries, frameworks, etc.) from that repository
+- **`<repositories>`** — for regular project dependencies (artifacts your code directly depends on)
+- **`<pluginRepositories>`** — for Maven plugins (tools that Maven uses during the build, like compilers, test runners, etc.)
 
-**Add to `<pluginRepositories>` if:**
-- You need Maven plugins (build tools, code generators, etc.) from that repository
+**Add to both only if:**
+- The repository hosts both regular dependencies AND plugins you need
 
-**Add to BOTH if:**
-- The repository contains both regular dependencies AND plugins you want to use
+**Add to just one if:**
+- The repository only hosts regular dependencies → just `<repositories>`
+- The repository only hosts plugins → just `<pluginRepositories>`
 
-In most cases, you only need one or the other. For example:
-- A repository hosting utility libraries → only `<repositories>`
-- A repository with custom Maven plugins → only `<pluginRepositories>`
-- A comprehensive repository with both → both sections
+**In practice:**
+Most third-party repositories (Maven Central, JCenter, etc.) host regular dependencies, so you typically only need `<repositories>`. Plugin repositories are less common—you'd use them if you're pulling a custom Maven plugin from a non-standard location.
 
-Here's an example structure:
-
-```xml
-<repositories>
-  <repository>
-    <id>trusted-repo</id>
-    <url>https://example.com/maven</url>
-  </repository>
-</repositories>
-
-<pluginRepositories>
-  <pluginRepository>
-    <id>trusted-repo</id>
-    <url>https://example.com/maven</url>
-  </pluginRepository>
-</pluginRepositories>
-```
-
-If you only add it to one section, Maven won't find artifacts from that repository in the other section, so you'd get a "not found" error if you try to use something from the wrong category.
+If you're unsure, start with just `<repositories>`. Maven will tell you if it can't find a plugin and you'll need to add it to `<pluginRepositories>` as well.
