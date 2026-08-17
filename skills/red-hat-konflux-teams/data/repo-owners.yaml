@@ -21,10 +21,6 @@ konflux-ci/build-trusted-artifacts:
   - team: build
     clarification: Trusted artifacts for build pipelines
 
-konflux-ci/build-pipeline-tasks:
-  - team: build
-    clarification: Individual build pipeline tasks
-
 konflux-ci/build-tasks-dockerfiles:
   - team: build
     clarification: Dockerfiles for build task images
@@ -40,6 +36,10 @@ konflux-ci/caching:
 konflux-ci/clair-in-ci-db:
   - team: integration
     clarification: Clair vulnerability database for CI scanning
+
+konflux-ci/container-build-catalog:
+  - team: build
+    clarification: Individual build pipeline tasks
 
 konflux-ci/diffused:
   - team: container-health
