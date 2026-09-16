@@ -24,6 +24,19 @@ Teams use two kinds of JIRA locations:
 - **JIRA Project**: The project key where the team's epics and stories live (e.g., STONEBLD, KFLUXINFRA, RELEASE).
 - **JIRA Components**: Component names within the KONFLUX JIRA project used for routing support and triage. Not all teams have KONFLUX components — some work entirely within their own JIRA project.
 
+## JIRA Component Routing
+
+When assigning a KONFLUX issue, route by the operational subject of the work,
+not only by the repository where a requested documentation or code change will
+land. Use the team descriptions as ownership signals and preserve the
+distinction between implementation ownership and documentation location.
+
+In particular, assign `ContainerReleng` when an issue concerns Red Hat product or
+build onboarding/offboarding, EOL or decommission workflows, release
+configuration lifecycle, `ReleasePlan`/`ReleasePlanAdmission`, or cleanup of
+Red Hat product/component release resources. This remains true when the requested
+deliverable is a page in `konflux-ci/docs`.
+
 ## Keywords
 
 konflux-ci repo owner, repository ownership, JIRA project, JIRA component, file a bug, which team, who owns, team mapping, Red Hat Konflux teams, STONEBLD, KFLUXINFRA, STONEINTG, RELEASE, SRVKP, KONFLUX, KFLUXUI, KFLUXVNGD, KFLUXSE, KFLUXDP, CWFHEALTH, EC, ISV, KAR, PVO11Y, CLOUDDST, SPRE, KFLUXSPRT, ROK, RHELBLD, RELDEV
