@@ -85,6 +85,15 @@
       "author": {
         "name": "Konflux CI Team"
       }
+    },
+    {
+      "name": "generating-e2e-tests",
+      "source": "./skills/generating-e2e-tests",
+      "description": "Use when writing E2E tests based on JIRA ticket recommendations, acceptance criteria, or test scenarios. Auto-detects repo framework (Ginkgo, Chainsaw, Godog, CLI binary) and generates tests matching existing patterns.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Konflux Infra Team"
+      }
     }
   ]
 }
