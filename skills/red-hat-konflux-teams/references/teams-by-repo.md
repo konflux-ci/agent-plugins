@@ -36,7 +36,6 @@
 | konflux-ci/application-api | Vanguard | KFLUXVNGD | Application and Component API definitions |
 | konflux-ci/architecture | Vanguard | KFLUXVNGD | Architecture decision records and design docs |
 | konflux-ci/build-definitions | Build | STONEBLD | Build pipeline definitions and task bundles |
-| konflux-ci/build-pipeline-tasks | Build | STONEBLD | Individual build pipeline tasks |
 | konflux-ci/build-service | Build | STONEBLD | Build service controller |
 | konflux-ci/build-tasks-dockerfiles | Build | STONEBLD | Dockerfiles for build task images |
 | konflux-ci/build-trusted-artifacts | Build | STONEBLD | Trusted artifacts for build pipelines |
@@ -49,6 +48,7 @@
 | konflux-ci/community | Vanguard | KFLUXVNGD | Community governance and guidelines |
 | konflux-ci/community-catalog | Release | RELEASE | Community pipeline catalog |
 | konflux-ci/community-operators-prod | Operator Foundry | CLOUDDST | OLM operators production catalog |
+| konflux-ci/container-build-catalog | Build | STONEBLD | Individual build pipeline tasks |
 | konflux-ci/coverage-dashboard | Developer Productivity | KFLUXDP | Code coverage dashboard |
 | konflux-ci/coverport | Developer Productivity | KFLUXDP | Code coverage reporting |
 | konflux-ci/crossplane-components | Vanguard | KFLUXVNGD | Crossplane managed resource components |
