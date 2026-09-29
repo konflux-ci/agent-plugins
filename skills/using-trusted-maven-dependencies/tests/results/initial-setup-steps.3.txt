@@ -1,8 +1,99 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-To update your Maven project to use a trusted repository, I need to collect some information from you. Please provide:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+I'll help you configure Maven to use a trusted repository instead of Maven Central. Here are the main approaches:
 
-1. **Repository ID**: A single kebab-case identifier for the Maven repository (e.g., `my-trusted-repo`)
-2. **Repository URL**: A valid HTTPS URL to the root of the Maven repository (e.g., `https://repo.example.com/maven`)
-3. **Rebuild Version Suffix**: A regex pattern for the rebuild suffix (e.g., `rebuild-[\d]+` or `myorg-[\d]*`)
+## 1. **Update your `pom.xml` (Recommended)**
 
-You can provide these values directly in your next message, and I'll update your Maven project accordingly.
+Add a `<repositories>` section to override or supplement Maven Central:
+
+```xml
+<project>
+  ...
+  <repositories>
+    <repository>
+      <id>my-trusted-repo</id>
+      <name>My Trusted Repository</name>
+      <url>https://repo.example.com/maven</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  ...
+</project>
+```
+
+## 2. **Configure in `~/.m2/settings.xml`**
+
+For global configuration across all projects:
+
+```xml
+<settings>
+  ...
+  <repositories>
+    <repository>
+      <id>my-trusted-repo</id>
+      <url>https://repo.example.com/maven</url>
+    </repository>
+  </repositories>
+  ...
+</settings>
+```
+
+## 3. **Disable Maven Central**
+
+If you want to *only* use your trusted repo and disable Maven Central:
+
+```xml
+<repositories>
+  <repository>
+    <id>my-trusted-repo</id>
+    <url>https://repo.example.com/maven</url>
+  </repository>
+</repositories>
+```
+
+(Maven Central is the default, so omitting it disables it in favor of your configured repos)
+
+## 4. **Add Authentication (if needed)**
+
+In `~/.m2/settings.xml`:
+
+```xml
+<servers>
+  <server>
+    <id>my-trusted-repo</id>
+    <username>your-username</username>
+    <password>your-password</password>
+  </server>
+</servers>
+```
+
+The `<id>` must match the repository id in your `pom.xml`.
+
+## 5. **Use `mirrorOf` (Advanced)**
+
+To redirect all requests to your trusted repo:
+
+```xml
+<mirrors>
+  <mirror>
+    <id>my-trusted-repo</id>
+    <mirrorOf>*</mirrorOf>
+    <url>https://repo.example.com/maven</url>
+  </mirror>
+</mirrors>
+```
+
+This intercepts *all* repository requests (including Central) and routes them through your repo.
+
+---
+
+**Which approach should you use?**
+- **`pom.xml`**: Best for project-specific repos or when you want version control of the configuration
+- **`settings.xml`**: Best for machine/user-specific repos (credentials, internal company repos)
+- **`mirrorOf`**: Best for completely replacing Maven Central with your trusted repo
+
+Would you like help with a specific repository type (Nexus, Artifactory, GitHub Packages, etc.) or authentication setup?

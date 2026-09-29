@@ -1,19 +1,31 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-No, you don't necessarily need to add it to both sections, but it depends on your use case:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+Not necessarily. It depends on what you're using from that repository:
 
-**`<repositories>`** section:
-- Used for project dependencies (libraries your code uses)
-- Required if the trusted repository contains your project's dependencies
-
-**`<pluginRepositories>`** section:
-- Used for Maven plugins (build tools)
-- Required if the trusted repository contains Maven plugins you need
+- **`<repositories>`** — Use this if the repository contains regular project dependencies (JARs, libraries, etc.)
+- **`<pluginRepositories>`** — Use this if the repository contains Maven plugins
 
 **In practice:**
-- If your repository only hosts library dependencies, add it to `<repositories>`
-- If it only hosts plugins, add it to `<pluginRepositories>`
-- If it hosts both, add it to both sections
 
-Most commonly, you'll only need the `<repositories>` section. You'd only need `<pluginRepositories>` if you're using custom build plugins from that repository.
+1. **If the repository only has dependencies**: Add it only to `<repositories>`
+2. **If the repository only has plugins**: Add it only to `<pluginRepositories>`
+3. **If the repository has both**: Add it to both sections
 
-If you're working on updating a Maven project to use a trusted repository, I can help you with the specific configuration. Just let me know what you're trying to set up!
+For example:
+
+```xml
+<repositories>
+  <repository>
+    <id>my-repo</id>
+    <url>https://my-repo.example.com/maven</url>
+  </repository>
+</repositories>
+
+<pluginRepositories>
+  <pluginRepository>
+    <id>my-repo</id>
+    <url>https://my-repo.example.com/maven</url>
+  </pluginRepository>
+</pluginRepositories>
+```
+
+**Common case:** Most public Maven repositories (like Maven Central) serve both dependencies and plugins, so they're typically configured in both sections. However, if you're adding a custom/private repository and you know it only contains one type, you can skip the unnecessary section.

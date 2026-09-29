@@ -1,7 +1,7 @@
 ---
 name: using-trusted-maven-dependencies
 description: Use when updating a Maven project to source its dependencies from a trusted Maven repository instead of Maven Central.
-allowed-tools: Bash(grep*), Read(/tmp/use-trusted-maven-dependencies/**), Bash(mkdir -p /tmp/use-trusted-maven-dependencies*), Bash(rm /tmp/use-trusted-maven-dependencies/*), Bash(mvn help:effective-pom*), WebFetch
+allowed-tools: Bash(grep:*), Read, Edit, Bash(mkdir -p /tmp/use-trusted-maven-dependencies*), Bash(rm /tmp/use-trusted-maven-dependencies/*), Bash(mvn help:effective-pom*), WebFetch
 ---
 
 # Use Trusted Maven Dependencies

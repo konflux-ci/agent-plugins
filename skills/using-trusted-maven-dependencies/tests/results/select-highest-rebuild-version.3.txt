@@ -1,12 +1,14 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-I don't have specific information about the differences between those two Red Hat rebuilds of Guava 31.1-jre. To help you choose the right one, I'd recommend:
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+I don't have access to the Maven repository or information about those specific Red Hat rebuild versions of Guava 31.1-jre. This is a question that requires current information from the repository itself or Red Hat's documentation.
 
-1. **Check the Red Hat repository documentation** - The trusted Maven repository should have release notes or documentation explaining what changed between `-redhat-00001` and `-redhat-00002`.
+To find the answer, I'd recommend:
 
-2. **Look for security patches** - Red Hat typically increments rebuild versions to include security fixes. `-redhat-00002` is likely a newer version with additional patches compared to `-redhat-00001`.
+1. **Check the Maven Central Repository** — Visit https://mvnrepository.com/ and search for `com.google.guava:guava:31.1-jre` to see what versions are available and their release dates/statuses.
 
-3. **Check the repository metadata** - You can often find changelog entries or commit messages in the Red Hat Maven repository that explain what was fixed in each rebuild.
+2. **Check Red Hat's documentation** — Red Hat typically documents why they create rebuild versions (e.g., security patches, bug fixes). Look for release notes or advisories for those specific `-redhat-` versions.
 
-4. **Default to the latest** - Unless you have a specific reason to use an older rebuild, I'd recommend using `-redhat-00002` as it's the most recent version and likely includes all fixes from the earlier rebuild.
+3. **Use `mvn dependency:tree`** — If you have a project, run this to see what your dependencies pull in, which can help reveal compatibility issues.
 
-If you have access to the repository's documentation or release notes, those would provide the definitive answer. Would you like help updating your Maven configuration to use one of these versions?
+4. **Check the artifact metadata** — Use Maven commands to inspect the POM files of each version to see what changes between `-redhat-00001` and `-redhat-00002`.
+
+Generally, the **highest version number** (in this case `31.1-jre-redhat-00002`) would be the more recent rebuild and likely the one to use, unless there's a specific reason (like a known regression) documented. But I'd verify this with the actual repository or Red Hat's release notes to be sure.

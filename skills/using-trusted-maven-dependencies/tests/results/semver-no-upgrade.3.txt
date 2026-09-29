@@ -1,17 +1,32 @@
-# skill_digest: d0cd840676d9e00cf6517ca75b995312ad1419411f305ad2097c15415929910f
-The metadata endpoint returned a 404, meaning `org.springframework:spring-core` may not be present in the redhat-ga repository at that path. However, I can answer your question definitively based on the version information you've provided.
+# skill_digest: 3ae467313b06654ebe1cf8bfbc050feb66434e5371beabf4c9b1b7aa21834a09
+Based on your question about using RedHat's trusted rebuild of Spring Core, here are the key considerations:
 
----
+## Version Compatibility Concerns
 
-**No, you cannot use `5.3.21-redhat-00001` as a trusted rebuild of `5.3.20`.**
+**Version difference**: You're moving from `5.3.20` → `5.3.21-redhat-00001`. This is actually a **patch version bump** (5.3.20 → 5.3.21) plus RedHat's build suffix. While patch versions should be backwards compatible, this isn't a direct replacement of the same version.
 
-The version `5.3.21-redhat-00001` has a base version of `5.3.21`, which does **not** match your dependency's base version of `5.3.20`. The PATCH component differs (`21` vs `20`).
+## RedHat Rebuild Implications
 
-Per the trusted rebuild replacement rules, the base version (all components before the rebuild suffix) must match **exactly**. Using `5.3.21-redhat-00001` would constitute an **upgrade** of the base version, which is not permitted — it could introduce unintended behavioral changes beyond what a trusted rebuild guarantees.
+**You should use it if:**
+- ✅ You have a RedHat subscription or support agreement
+- ✅ You're using other RedHat products (RHEL, OpenShift, JBoss, etc.)
+- ✅ You need RedHat's security verification and support
+- ✅ Your organization's policy requires using only RedHat-verified dependencies
 
-A valid trusted rebuild for `org.springframework:spring-core:5.3.20` would need to look like:
-- `5.3.20-redhat-00001`
-- `5.3.20.redhat-00001`
-- `5.3.20+redhat-00001`
+**Be cautious because:**
+- ⚠️ RedHat rebuilds may have different transitive dependencies
+- ⚠️ The `-redhat-00001` suffix indicates this is a RedHat-specific build, potentially with modifications
+- ⚠️ You'll need to configure the RedHat repository in your Maven settings
+- ⚠️ Future updates will need to come from the same RedHat repository for consistency
+- ⚠️ Mixing RedHat and non-RedHat versions of Spring dependencies can cause conflicts
 
-If no such `5.3.20` rebuild exists in the redhat-ga repository, then this dependency **cannot** be replaced with a trusted rebuild from that repository.
+## Recommendation
+
+**If you're not already using RedHat products**, consider instead:
+- Using the official Spring `5.3.21` from Maven Central (which has the same patch level)
+- Implementing dependency verification via checksums/signatures
+- Using a tool like Sigstore or repository managers with provenance tracking
+
+**If you are using RedHat products**, then yes, using their trusted rebuilds is appropriate and aligns with their support model.
+
+Do you have a RedHat subscription, or are you using this as a general supply chain security measure?
