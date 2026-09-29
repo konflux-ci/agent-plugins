@@ -146,7 +146,7 @@ Before committing a new skill, verify:
   - [ ] SKILL.md created with proper frontmatter
   - [ ] README.md created documenting the skill
   - [ ] Entry added to `.claude-plugin/marketplace.json`
-  - [ ] Version number follows semver (start at 1.0.0)
+  - [ ] Version and author match `plugin.json` if skill already has one; otherwise start at 1.0.0 (follow semver)
 
 - [ ] **Git Commit**
   - [ ] Commit message describes what problem the skill solves
@@ -170,10 +170,22 @@ When adding a new skill, update `.claude-plugin/marketplace.json`:
 }
 ```
 
+> **Note:** The example above is for **new skills**. For existing skills that
+> already have a `plugin.json`, copy `version` and `author` from that file
+> instead of using the defaults shown here.
+
+**Existing skill metadata — `plugin.json` is the source of truth:**
+When adding a marketplace entry for an existing skill that already has a
+`plugin.json`, use the `version` and `author` values from that file. Do not
+override them with defaults. The "start at 1.0.0" convention below applies
+only to brand-new skills that have no existing `plugin.json`.
+
 **Version bumping:**
-- Patch (1.0.x): Bug fixes, typo corrections, minor clarifications
-- Minor (1.x.0): New sections, new examples, significant additions
-- Major (x.0.0): Breaking changes to skill structure or approach
+- New skills without a `plugin.json`: start at 1.0.0
+- Existing skills with a `plugin.json`: use the version from that file
+- Patch (x.x.+1): Bug fixes, typo corrections, minor clarifications
+- Minor (x.+1.0): New sections, new examples, significant additions
+- Major (+1.0.0): Breaking changes to skill structure or approach
 
 ### Skill Naming Conventions
 
