@@ -1,0 +1,20 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Great news — **`my-app-staging-xyz` has fully succeeded!** Here's a summary:
+
+| Stage | Pipeline | Status |
+|-------|----------|--------|
+| Tenant | `tenant-aaa111` | Succeeded |
+| Managed | `managed-bbb222` | Succeeded |
+| Final | `final-ccc333` | Succeeded |
+
+**Details:**
+- **Snapshot:** `my-app-snapshot-002`
+- **Release Plan:** `my-app-staging`
+- **Triggered by:** `testuser`
+- **Age:** ~3 hours old
+
+**Konflux UI links:**
+- Release: `https://konflux-ui.apps.test-cluster.example.com/ns/my-tenant/applications/my-app/releases/my-app-staging-xyz`
+- Managed pipeline logs: `https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-bbb222/logs`
+
+All three pipeline stages (tenant → managed → final) completed successfully. The release is done!

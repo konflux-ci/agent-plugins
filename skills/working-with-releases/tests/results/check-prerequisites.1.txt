@@ -1,0 +1,13 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+All required tools are installed and you're connected to a cluster:
+
+- `kubectl` - OK
+- `tkn` - OK
+- `jq` - OK
+- `curl` - OK
+- **Cluster**: `https://api.test-cluster.example.com:6443`
+
+You're all set. Would you like me to:
+1. **List recent releases** and their status?
+2. **Check for failed releases** specifically?
+3. **View logs** for a specific release?

@@ -24,6 +24,11 @@
       "uniqueItems": true,
       "description": "Optional list of paths to copy from real HOME to test environment HOME (e.g., .config/gh, .kube/config)"
     },
+    "mock_bin": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Path relative to tests/ directory containing mock CLI scripts to prepend to PATH during test execution"
+    },
     "test_scenarios": {
       "type": "array",
       "minItems": 1,

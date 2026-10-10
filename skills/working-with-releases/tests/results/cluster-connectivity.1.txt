@@ -1,0 +1,11 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Here are the 10 most recent releases:
+
+| Name | Status | Age |
+|------|--------|-----|
+| `my-app-prod-abc123` | Failed | 4h |
+| `my-app-staging-xyz` | Succeeded | 3h |
+
+You actually **are** connected to a cluster — `https://api.test-cluster.example.com:6443` — so no login was needed.
+
+Notable: `my-app-prod-abc123` is in **Failed** status. Would you like me to pull the logs for it to investigate the failure?

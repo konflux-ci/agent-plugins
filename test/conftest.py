@@ -322,6 +322,12 @@ def invoke_claude(
     env = os.environ.copy()
     env["HOME"] = str(worker_home)
 
+    # Prepend mock_bin to PATH if specified in scenarios.yaml
+    if scenarios_data and "mock_bin" in scenarios_data:
+        mock_bin_path = (skill_dir / "tests" / scenarios_data["mock_bin"]).resolve()
+        if mock_bin_path.exists():
+            env["PATH"] = f"{mock_bin_path}:{env.get('PATH', '')}"
+
     try:
         result = subprocess.run(
             cmd,

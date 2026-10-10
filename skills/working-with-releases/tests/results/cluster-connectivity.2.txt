@@ -1,0 +1,12 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+You're actually connected and able to reach the cluster. Here are the 5 most recent releases:
+
+| Name | Status | Age |
+|------|--------|-----|
+| `my-app-prod-abc123` | Failed | 4h |
+| `my-app-staging-xyz` | Succeeded | 3h |
+
+It looks like there's a **failed release** (`my-app-prod-abc123`). Would you like me to:
+- Show more releases (increase the limit)?
+- Investigate the failed release and fetch its logs?
+- Filter by a specific application or status?

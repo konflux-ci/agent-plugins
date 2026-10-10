@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Mock tkn for testing working-with-releases skill
+# Returns canned pipelinerun logs
+
+case "$*" in
+    *"pipelinerun logs"*|*"pr logs"*)
+        cat <<'LOG'
+[collect-data : collect-data] + echo -n release-uuid-12345
+[collect-data : collect-data] + get-resource release my-tenant/my-app-prod-abc123
+[collect-data : collect-data] Release data collected successfully
+
+[verify-conforma : run] Running Enterprise Contract verification...
+[verify-conforma : run] All policies passed
+
+[sign : run] Signing artifacts...
+[sign : run] Signing completed successfully
+
+[publish : use-trusted-artifact] Fetching artifacts...
+[publish : run] Publishing to registry...
+[publish : run] Error: Push failed (503) for 'https://quay.io/repository/my-org/my-app'
+[publish : run] Service temporarily unavailable
+LOG
+        ;;
+    *)
+        echo "mock-tkn: unhandled args: $*" >&2
+        exit 1
+        ;;
+esac
