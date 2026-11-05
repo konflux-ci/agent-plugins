@@ -15,11 +15,11 @@ Build pipelines, .tekton/ yaml files, SBOMs (partially), pipeline-migration-tool
 | hermetoproject/hermeto | Hermetic build tool (Hermeto) |
 | hermetoproject/pybuild-deps | Python build dependency resolution for Hermeto |
 | konflux-ci/build-definitions | Build pipeline definitions and task bundles |
-| konflux-ci/build-pipeline-tasks | Individual build pipeline tasks |
 | konflux-ci/build-service | Build service controller |
 | konflux-ci/build-tasks-dockerfiles | Dockerfiles for build task images |
 | konflux-ci/build-trusted-artifacts | Trusted artifacts for build pipelines |
 | konflux-ci/buildah-container | Buildah container image for builds |
+| konflux-ci/container-build-catalog | Individual build pipeline tasks |
 | konflux-ci/image-controller | Image repository management controller |
 | konflux-ci/konflux-build-cli | Konflux build CLI tool |
 | konflux-ci/pipeline-migration-tool | Tool for migrating pipeline configurations |
