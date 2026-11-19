@@ -316,7 +316,7 @@ Release admission, release pipelines, FBC, Signing, release monitoring, release 
 
 **JIRA Components (KONFLUX):** ContainerReleng
 
-ReleasePlanAdmission (RPA) configuration, konflux-release-data MRs (excluding tenants-config), quay.io/redhat-services-prod, eng-id assistance, policy exceptions, macos or windows binary signing, secret management for managed cluster.
+ReleasePlanAdmission (RPA) configuration, konflux-release-data MRs (excluding tenants-config), quay.io/redhat-services-prod, eng-id assistance, policy exceptions, macos or windows binary signing, secret management for managed cluster. Red Hat product and build onboarding and offboarding, EOL and decommission workflows, release configuration lifecycle, and cleanup of Red Hat product/component release resources.
 
 | Repository | Clarification |
 |---|---|
@@ -495,4 +495,3 @@ Konflux-CI Upstream, Caching, Project Controller (multi-version), Environment as
 | konflux-ci/tekton-tools | Tekton utility tools |
 | konflux-ci/tools | General-purpose platform tools |
 | konflux-ci/zot | Zot container registry deployment |
-
