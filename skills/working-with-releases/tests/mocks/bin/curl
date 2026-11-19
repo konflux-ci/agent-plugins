@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Mock curl for testing working-with-releases skill
+# Returns canned kubearchive responses
+
+# Find the URL argument (last non-flag argument)
+URL=""
+for arg in "$@"; do
+    case "$arg" in
+        -*)  ;;
+        *)   URL="$arg" ;;
+    esac
+done
+
+case "$URL" in
+    *"/pipelineruns/"*)
+        cat <<'JSON'
+{
+  "metadata":{"name":"managed-xyz789","namespace":"managed-tenant"},
+  "status":{
+    "childReferences":[
+      {"name":"managed-xyz789-collect-data","pipelineTaskName":"collect-data","kind":"TaskRun"},
+      {"name":"managed-xyz789-publish","pipelineTaskName":"publish","kind":"TaskRun"}
+    ],
+    "conditions":[{"type":"Succeeded","status":"False","reason":"Failed","message":"task publish failed"}]
+  }
+}
+JSON
+        ;;
+    *"/taskruns/"*"publish"*)
+        cat <<'JSON'
+{
+  "metadata":{"name":"managed-xyz789-publish"},
+  "status":{
+    "podName":"managed-xyz789-publish-pod",
+    "steps":[
+      {"name":"use-trusted-artifact","terminated":{"exitCode":0,"reason":"Completed"}},
+      {"name":"run","terminated":{"exitCode":1,"reason":"Error"}}
+    ]
+  }
+}
+JSON
+        ;;
+    *"/taskruns/"*)
+        cat <<'JSON'
+{
+  "metadata":{"name":"managed-xyz789-collect-data"},
+  "status":{
+    "podName":"managed-xyz789-collect-data-pod",
+    "steps":[
+      {"name":"collect-data","terminated":{"exitCode":0,"reason":"Completed"}}
+    ]
+  }
+}
+JSON
+        ;;
+    *"/pods/"*"/log"*)
+        echo "Mock log output: step completed"
+        ;;
+    *)
+        echo "mock-curl: unhandled URL: $URL" >&2
+        exit 1
+        ;;
+esac

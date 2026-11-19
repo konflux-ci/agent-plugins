@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Pass-through to real jq - we want actual jq filtering to work
+exec /usr/bin/jq "$@"

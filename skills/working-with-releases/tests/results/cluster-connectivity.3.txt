@@ -1,0 +1,10 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+The prerequisites check found all tools installed (`kubectl`, `tkn`, `jq`, `curl`) and a kubeconfig pointing to `https://api.test-cluster.example.com:6443`. However, actual cluster connectivity needs verification.
+
+Since you said you're not connected yet, you have two options:
+
+1. **Connect to a cluster first** — Use the `connecting-to-konflux-cluster` or `selecting-konflux-cluster` skill to log in. Once connected, come back and I can list your recent releases.
+
+2. **Try with the existing kubeconfig** — If that cluster URL is actually reachable and your credentials are still valid, I can try listing releases right now with the current context.
+
+Which would you like to do?

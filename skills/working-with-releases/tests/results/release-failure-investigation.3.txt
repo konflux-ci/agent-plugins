@@ -1,0 +1,36 @@
+# skill_digest: 5581f72b36f698cb338f96020cda3eb16ad6558e724eb0d946081bda53a75ba4
+Here's what went wrong with release `my-app-prod-abc123`:
+
+**Status: Failed** — Managed pipeline (`managed-tenant/managed-xyz789`)
+
+**Root cause:** The `publish` task failed with a **503 Service Unavailable** from Quay.io when trying to push the image:
+
+```
+Error: Push failed (503) for 'https://quay.io/repository/my-org/my-app'
+Service temporarily unavailable
+```
+
+**Pipeline stage summary:**
+
+| Stage | Status | Details |
+|---|---|---|
+| Tenant pipeline | Skipped | Not configured in ReleasePlan |
+| Managed pipeline | **Failed** | `publish` task — Quay.io 503 |
+| Final pipeline | Skipped | Not triggered due to failure |
+
+The earlier stages all passed — data collection, Enterprise Contract verification, and signing all completed successfully. This looks like a **transient Quay.io outage**, not a code or policy issue.
+
+**Recommended next step:** Retry the release. You can do a dry run first:
+
+```bash
+~/.claude/skills/working-with-releases/scripts/retry-release.sh my-app-prod-abc123 --namespace my-tenant --dry-run
+```
+
+Then if it looks good:
+
+```bash
+~/.claude/skills/working-with-releases/scripts/retry-release.sh my-app-prod-abc123 --namespace my-tenant
+```
+
+You can also view the full pipeline run in the Konflux UI:
+`https://konflux-ui.apps.test-cluster.example.com/ns/managed-tenant/applications/my-app/pipelineruns/managed-xyz789/logs`
