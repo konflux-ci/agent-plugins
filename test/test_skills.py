@@ -320,3 +320,51 @@ def test_scenarios_yaml_schema():
             f"scenarios.yaml validation errors:\n{error_msg}\n\n"
             "All scenarios.yaml files must conform to test/scenarios-schema.json"
         )
+
+
+@pytest.mark.test
+def test_marketplace_json_schema():
+    """
+    Validate marketplace.json against JSON schema.
+
+    Also checks that each plugin source directory exists and that entries
+    match the skill's .claude-plugin/plugin.json (the source of truth) when
+    one exists.
+    """
+    import jsonschema
+
+    with open("test/marketplace-schema.json") as f:
+        schema = json.load(f)
+
+    with open(".claude-plugin/marketplace.json") as f:
+        marketplace_data = json.load(f)
+
+    validator = jsonschema.Draft7Validator(schema)
+    errors = [
+        f"at '{'.'.join(str(p) for p in e.absolute_path) or 'root'}': {e.message}"
+        for e in validator.iter_errors(marketplace_data)
+    ]
+
+    for plugin in marketplace_data.get("plugins", []):
+        source = Path(plugin.get("source", ""))
+        if not source.is_dir():
+            errors.append(f"{plugin.get('name')}: source directory not found: {source}")
+            continue
+
+        plugin_json = source / ".claude-plugin" / "plugin.json"
+        if plugin_json.exists():
+            with open(plugin_json) as f:
+                plugin_data = json.load(f)
+            for field in ("name", "version", "author"):
+                if field in plugin_data and plugin_data[field] != plugin.get(field):
+                    errors.append(
+                        f"{plugin.get('name')}: '{field}' is {plugin.get(field)!r} "
+                        f"but {plugin_json} has {plugin_data[field]!r}"
+                    )
+
+    if errors:
+        error_msg = "\n".join(f"  - {e}" for e in errors)
+        pytest.fail(
+            f"marketplace.json validation errors:\n{error_msg}\n\n"
+            "marketplace.json must conform to test/marketplace-schema.json"
+        )
